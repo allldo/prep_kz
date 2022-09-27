@@ -1,0 +1,14 @@
+{% extends 'shop/base.html' %}
+{% block head %}
+{% endblock head %}
+{% block title %}
+    PREP KZ
+{% endblock title %}
+{% block content %}
+{% for product in products %}
+    {{ product.name }}
+    {{ product.price }}
+    {{ product.available }}
+    <a href="{% url 'shop:add_to_cart' %}">BUY</a>
+{% endfor %}
+{% endblock content %}

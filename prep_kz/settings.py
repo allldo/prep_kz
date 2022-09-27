@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-#_3q*0fzy7+eiu_mewdf%a=bx)m6g0sap=fdga_gl#b_&tfn8j
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+CART_SESSION_ID = 'cart'
 ALLOWED_HOSTS = []
 
 
@@ -71,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'shop.context_processors.cart'
             ],
         },
     },
