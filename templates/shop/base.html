@@ -2,6 +2,9 @@
 {% load static %}
 <html lang="en">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100;300;400;500;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'shop/base.css' %}">
 {% block head %}
 {% endblock head %}
@@ -24,17 +27,17 @@
         <!-- Лого -->
         <div id="logo"></div>
 
-        <a class="header_p">Снаряжение</a>
+        <a class="header_p">Снаряжение <span class="chevron_bottom_header">˅</span></a>
 
-        <a class="header_p">Для женщин</a>
+        <a class="header_p">Для женщин <span class="chevron_bottom_header">˅</span></a>
 
-        <a class="header_p">Для мужчин</a>
+        <a class="header_p">Для мужчин <span class="chevron_bottom_header">˅</span></a>
 
         <a class="header_p">Скидки</a>
 
-        <a class="header_p">Блог</a>
+        <a class="header_p">Блог <span class="chevron_bottom_header">˅</span></a>
 
-        <a class="header_p">Контакты</a>
+        <a class="header_p">Контакты <span class="chevron_bottom_header">˅</span></a>
 
         <a class="header_p"></a>
 
@@ -47,7 +50,69 @@
 {% block content %}
 {% endblock content %}
 <footer>
-
+<div>
+    <div class="footer_first_block_wrapper">
+        <div class="footer_flex_p">
+            <p class="footer_p24">Sign up for great offers & exclusive content
+</p>
+            <p class="footer_p">Receive exclusive offers and news that will brighten up your day!
+</p>
+        </div>
+        <div class="footer_flex_input">
+        <input class="footer_input" placeholder="Email">
+        <button class="footer_subscribe_button">SUBSCRIBE ></button>
+            </div>
+    </div>
+    <div class="footer_second_block_wrapper">
+        <div>
+            <p>INFORMATION</p>
+            <div>
+                <p>About Us</p>
+                <p>Our Guarantee</p>
+                <p>Customer Service</p>
+                <p>Privacy Policy</p>
+                <p>Return Policy</p>
+                <p>Become an Affiliate</p>
+            </div>
+        </div>
+        <div>  <p>SHOP</p>
+            <div>
+                <p>Women's</p>
+                <p>Men's</p>
+                <p>Kid's</p>
+                <p>Footwear</p>
+                <p>Equipment</p>
+                <p>By activity</p>
+            </div></div>
+        <div>  <p>HELP</p>
+            <div>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+            </div></div>
+        <div>  <p>DISCOVER</p>
+            <div>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+            </div></div>
+        <div>  <p>STORE LOCATOR</p>
+            <div>
+                <p>2972 Westheimer Rd. Santa Ana,
+Illinois 85486, USA</p>
+            </div>
+            <div>
+                <p>Call Us – 1-800-123-4567  support@example.com</p>
+            </div>
+        </div>
+    </div>
+</div>
 </footer>
 </body>
 </html>
