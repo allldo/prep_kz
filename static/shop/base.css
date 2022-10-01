@@ -43,7 +43,6 @@ body{
 }
 
 footer{
-    height: 35vh;
     background-color: #292929;
 }
 .footer_p24{
@@ -53,6 +52,13 @@ footer{
 }
 .footer_p{
     color: #9A9A9A;
+    font-weight: 500;
+    line-height: 1.8;
+}
+.footer_p_headline{
+    color: white;
+    margin-bottom: 3vh;
+    font-weight: 550;
 }
 .footer_first_block_wrapper{
     width: 70%;
@@ -61,6 +67,7 @@ footer{
     padding-bottom: 5vh;
     margin: 5vh auto 0 auto;
     border-bottom: 1px solid #eaeaea24;
+
 }
 .footer_second_block_wrapper{
         width: 70%;
@@ -69,6 +76,7 @@ footer{
     padding-bottom: 5vh;
     margin: 5vh auto 0 auto;
     border-bottom: 1px solid #eaeaea24;
+    justify-content: space-between;
 }
 .footer_flex_input{
     display: flex;
@@ -79,27 +87,40 @@ footer{
     margin: 0;
     width: 15vw;
     padding: 0;
-    border: none;
-    outline: none;
+    /*border: none;*/
+    /*outline: none;*/
+    flex: 1;
 }
 .footer_subscribe_button{
     text-align: center;
     align-self: center;
+    justify-content: center;
     color: white;
     font-size: 13px;
     font-weight: 600;
     background-color: #ECCA7E;
     margin: 0;
     padding: 20px;
-    outline: none;
-    border: none;
+    border: 2px;
     letter-spacing: 2px;
 }
 .footer_subscribe_button:hover{
     background-color: #e7bd5e;
+    cursor: pointer;
 }
 .footer_flex_p{
     display: flex;
     flex-direction: column;
 
+}
+.footer_third_block_wrapper{
+    display: flex;
+    width: 70%;
+    margin: 0 auto;
+    justify-content: space-between;
+    padding-bottom: 10vh;
+}
+.papers_wrapper{
+    display: flex;
+    flex-direction: row;
 }
