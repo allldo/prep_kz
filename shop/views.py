@@ -1,10 +1,12 @@
+from django.contrib.auth import login, authenticate
 from django.core.handlers.wsgi import WSGIRequest
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from .models import Product
 from .cart import Cart
 from .forms import CartAddProductForm
+from .service import log_in
 
 
 def main_page(request: WSGIRequest) -> HttpResponse:
@@ -21,6 +23,24 @@ def product_detail(request: WSGIRequest, product_id: int, product_slug: str) -> 
 
 def category_detail(request, category_slug: str):
     return render(request, 'shop/main.html')
+
+
+@require_POST
+def login_user(request):
+    """ Функция для отработки логина в систему """
+    if log_in(request, request.POST.get('username'), request.POST.get('password')):
+        return JsonResponse({
+            'logged': True,
+            'username': request.POST.get('username')
+        })
+    else:
+        return JsonResponse({
+            'logged': False, 'reason': 'Wrong credentials'
+        })
+
+
+def register(request):
+    return None
 
 
 @require_POST

@@ -6,6 +6,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@100;300;400;500;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'shop/base.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 {% block head %}
 {% endblock head %}
     <meta charset="UTF-8">
@@ -14,9 +16,31 @@
 <body>
 <header>
     <div class="upper_header_row">
-        <div>
-            <div></div>
-            <a>Sign In / Register</a>
+        <div class="flex_icon_n_user">
+            <div class="user_icon"></div>
+            <p class="username_header"></p>
+            {% if user.is_authenticated %}
+            <p class="username_header">{{ user }}</p>
+            {% else %}
+            <a class="sign_in">Sign In / Register</a>
+            {% endif %}
+            <div class="modal_sign_in">
+                <div class="first_section_text">
+                    <p>Вход</p>
+                    <a>Создать аккаунт</a>
+                </div>
+                <div class="login_section">
+                <label class="label">Имя пользователя <span class="red_star">*</span></label>
+                <input required placeholder="Имя пользователя" type="text" id="username_input">
+                    </div>
+                <div class="login_section">
+                <label class="label">Пароль <span class="red_star">*</span></label>
+                <input required placeholder="Пароль" type="password" id="password_input">
+                </div>
+                {% csrf_token %}
+                <p class="login_btn">ВОЙТИ</p>
+                <a class="forgot_password">Забыли пароль?</a>
+            </div>
         </div>
         <div>
             <div></div>
@@ -126,5 +150,30 @@ Illinois 85486, USA</p>
     </div>
 </div>
 </footer>
+<script>
+    $('.modal_sign_in').hide()
+    sign_in_btn = $('.login_btn');
+    modal_btn = $('.sign_in');
+    modal_btn.click(function (){
+        $('.modal_sign_in').show();
+    })
+    sign_in_btn.click(function (){
+        let login = $('#username_input').val()
+        let password = $('#password_input').val()
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'shop:login' %}",
+            data:{
+                username: login,
+                password: password,
+                csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()
+            },
+            success: function(response){
+                $('.sign_in').hide()
+              $('.username_header').text(response.username)
+            }
+        })
+    })
+</script>
 </body>
 </html>

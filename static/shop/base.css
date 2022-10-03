@@ -41,6 +41,100 @@ body{
 .chevron_bottom_header{
     color: #ECCA7E;
 }
+.user_icon{
+   background-image: url("../img/user_white.png");
+    width: 32px;
+    height: 32px;
+}
+.user_icon:hover{
+        background-image: url("../img/user_yellow.png");
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+.flex_icon_n_user{
+    display: flex;
+}
+.flex_icon_n_user:hover{
+    color: #e7bd5e;
+    cursor: pointer;
+}
+
+.sign_in:hover .user_icon, .username_header .user_icon{
+    background-image: url("../img/user_yellow.png");
+    width: 32px;
+    height: 32px;
+}
+.modal_sign_in{
+    position: absolute;
+    z-index: 1;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 14vw;
+    background-color: white;
+    border: 2px solid;
+    border-color: #e7bd5e white white white;
+    padding: 15px;
+}
+.first_section_text>p{
+    font-size: 17px;
+    letter-spacing: 2px;
+}
+.label{
+    margin-top: 2vh;
+    font-size: 14px;
+    color: #505050;
+}
+.first_section_text>a{
+    font-size: 14px;
+}
+.login_section{
+    display: flex;
+    flex-direction: column;
+}
+#username_input, #password_input{
+    width: 65%;
+    padding: 15px;
+    transition: 1s all;
+    outline: 0;
+    border: 1px solid #eaeaea;
+}
+.login_btn{
+    font-weight: 600;
+    color: white;
+    letter-spacing: 3px;
+    background-color: #ecca7e;
+    text-align: center;
+    padding: 15px 20px;
+    margin-top: 2vh;
+}
+.login_btn:hover{
+    cursor: pointer;
+    background-color: #e7bd5e;
+}
+.forgot_password{
+    margin-top: 1vh;
+    font-size: 14px;
+    align-self: flex-end;
+    text-decoration: underline dotted;
+}
+.red_star{
+    color: red;
+    font-size: 19px;
+}
+.first_section_text{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+
+
+
+
 
 footer{
     background-color: #292929;
