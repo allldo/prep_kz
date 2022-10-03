@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{% static 'js/splide-4.1.3/dist/css/splide.min.css' %}">
     <link rel="stylesheet" href="{% static 'shop/main.css' %}">
     <link rel="stylesheet" href="{% static 'shop/product.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 {% endblock head %}
 {% block title %}
     PREP KZ
@@ -17,12 +18,16 @@
             {% for product in products %}
 			<li class="splide__slide product_item">
                 <img class="product_image" src="{{ product.image.url }}">
-                <p class="product_categories">{{ product.get_product_categories }}</p>
-                <p class="product_name">{{ product.name }}</p>
+                {% if product.image_on_hover %}
+                <div class="second_img_wrapper"><img class="product_image_on_hover" src="{{ product.image_on_hover.url }}">
+                    </div>
+                {% endif %}
+                <p class="product_categories">{% for category in product.get_product_categories.all %}{% if forloop.counter0 > 0  %}, {% endif %}<a href="{{ category.get_absolute_url }}">{{ category }}</a>{% endfor %}</p>
+                <p class="product_name"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></p>
                 <div></div>
                 <div class="price_and_add_to_cart_flex">
-                    <p class="product_price"></p>
-                    <p class="product_add_to_cart_btn"></p>
+                    <p class="product_price">{{ product.price }} ₸</p>
+                    <p class="product_add_to_cart_btn"><span class="plus_symbol">+</span> В КОРЗИНУ</p>
                 </div>
             </li>
             {% endfor %}
@@ -33,11 +38,33 @@
     <script>
   var splide = new Splide( '.splide', {
   type   : 'loop',
-  perPage: 3,
+  perPage: 5,
   perMove: 1,
 } );
 
 splide.mount();
+$( document ).ready(function() {
+   let product_item = $('.product_item');
+    product_item.hover(function(){
+        let plus_symbol = $(this).find($('.plus_symbol'))
+        let second_image= $(this).find($('.product_image_on_hover'))
+        if (second_image.length){
+             $(this).find($('.product_image')).addClass('disappear')
+        second_image.addClass('product_image_on_hover_active')
+        }
+        plus_symbol.addClass('symbol_hovered');
+    },
+    function (){
+        let plus_symbol = $(this).find($('.plus_symbol'))
+        let second_image= $(this).find($('.product_image_on_hover'))
+        $(this).find($('.product_image')).removeClass('disappear')
+        second_image.removeClass('product_image_on_hover_active')
+        plus_symbol.removeClass('symbol_hovered');
+    }
+    )
+});
+
+
     </script>
 {% endblock content %}
 

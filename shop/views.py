@@ -13,10 +13,14 @@ def main_page(request: WSGIRequest) -> HttpResponse:
     return render(request, 'shop/main.html', context)
 
 
-def product_detail(request: WSGIRequest, product_id: int) -> HttpResponse:
+def product_detail(request: WSGIRequest, product_id: int, product_slug: str) -> HttpResponse:
     """ Страница отдельного товара """
-    context = {'product': get_object_or_404(Product, product_id)}
+    context = {'product': get_object_or_404(Product, id=product_id, slug=product_slug)}
     return render(request, 'shop/product_detail.html', context)
+
+
+def category_detail(request, category_slug: str):
+    return render(request, 'shop/main.html')
 
 
 @require_POST
