@@ -1,0 +1,39 @@
+{% extends 'shop/base.html' %}
+{% block head %}
+{% endblock head %}
+{% block title %}
+    Регистрация
+{% endblock title %}
+{% block content %}
+<div>
+<input placeholder="Эл. почта" id="email" type="email">
+<input placeholder="Имя пользователя" id="username" type="text">
+<input placeholder="Пароль" id="password1" type="password">
+<input placeholder="Подтвердите пароль" id="password2" type="password">
+    {% csrf_token %}
+<p id="register_button">Зарегистрироваться</p>
+</div>
+    <script>
+    let register_btn = $('#register_button');
+    register_btn.click(function (){
+        let email = $('#email').val()
+        let username = $('#email').val()
+        let password1 = $('#email').val()
+        let password2 = $('#email').val()
+        if (password1 === password2){
+           $.ajax({
+        type: 'POST',
+        url: "{% url 'shop:register' %}",
+        data:
+            {
+                email: email,
+                username: username,
+                password: password2,
+                csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()
+            }
+    })
+        }
+    })
+
+    </script>
+{% endblock content %}

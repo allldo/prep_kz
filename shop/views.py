@@ -1,11 +1,11 @@
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from .models import Product
 from .cart import Cart
-from .forms import CartAddProductForm
+from .forms import CartAddProductForm, RegisterForm
 from .service import log_in
 
 
@@ -39,8 +39,31 @@ def login_user(request):
         })
 
 
-def register(request):
-    return None
+def lk(request):
+    return render(request, 'lk/lk.html')
+
+
+def log_out(request: WSGIRequest):
+    """ Выход с аккаунта """
+    logout(request)
+
+
+def register(request: WSGIRequest):
+    """ Регистрация """
+    # if request.user.is_authenticated:
+    #     return redirect('company:profile')
+    context = {}
+    if request.POST:
+        form = RegisterForm(request.POST)
+        context['form_errors'] = form.errors
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('shop:lk')
+
+    form = RegisterForm()
+    context['register_form'] = form
+    return render(request, 'shop/register.html', context)
 
 
 @require_POST

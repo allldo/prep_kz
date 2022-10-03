@@ -54,14 +54,14 @@ body{
 }
 .flex_icon_n_user{
     display: flex;
+    width: fit-content;
 }
-.flex_icon_n_user:hover{
+.flex_icon_n_user:hover, .flex_icon_n_user:hover .user_icon{
     color: #e7bd5e;
     cursor: pointer;
 }
-
-.sign_in:hover .user_icon, .username_header .user_icon{
-    background-image: url("../img/user_yellow.png");
+.flex_icon_n_user:hover .user_icon{
+        background-image: url("../img/user_yellow.png");
     width: 32px;
     height: 32px;
 }

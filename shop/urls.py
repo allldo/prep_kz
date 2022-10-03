@@ -1,12 +1,15 @@
 from django.contrib import admin
 from django.urls import path
-from .views import add_to_cart, remove_from_cart, cart_detail, main_page, category_detail, product_detail, login_user, register
+from .views import add_to_cart, remove_from_cart, cart_detail, main_page, category_detail, product_detail, login_user,\
+    register, log_out, lk
 app_name = 'shop'
 
 urlpatterns = [
     path('', main_page, name='main_page'),
     path('login/', login_user, name='login'),
+    path('lk/', lk, name='lk'),
     path('register/', register, name='register'),
+    path('logout/', log_out, name='logout'),
     path('add_to_cart/', add_to_cart, name='add_to_cart'),
     path('remove_from_cart/', remove_from_cart, name='remove_from_cart'),
     path('cart/', cart_detail, name='cart_detail'),
