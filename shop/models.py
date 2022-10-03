@@ -10,9 +10,8 @@ class Customer(models.Model):
 
 
 class Category(models.Model):
-    product = models.ForeignKey('Product',
-                                related_name='products',
-                                on_delete=models.SET_NULL, null=True, blank=True)
+    product = models.ManyToManyField('Product',
+                                     related_name='products', null=True, blank=True)
     name = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=100, unique=True)
 
@@ -58,7 +57,8 @@ class Product(models.Model):
 
     def get_product_categories(self) -> QuerySet:
         """ Позволяет получить все категории товара """
-        return Category.objects.filter(product=self)
+        categories = Category.objects.filter(product=self)
+        return categories if categories.count() > 0 else None
 
     def get_absolute_url(self):
         """ Уникальная ссылка для товара """

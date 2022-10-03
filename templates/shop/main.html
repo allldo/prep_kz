@@ -1,14 +1,43 @@
 {% extends 'shop/base.html' %}
+{% load static %}
 {% block head %}
+    <script src="{% static 'js/splide-4.1.3/dist/js/splide.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'js/splide-4.1.3/dist/css/splide.min.css' %}">
+    <link rel="stylesheet" href="{% static 'shop/main.css' %}">
+    <link rel="stylesheet" href="{% static 'shop/product.css' %}">
 {% endblock head %}
 {% block title %}
     PREP KZ
 {% endblock title %}
 {% block content %}
-{% for product in products %}
-    {{ product.name }}
-    {{ product.price }}
-    {{ product.available }}
-    <a href="{% url 'shop:add_to_cart' %}">BUY</a>
-{% endfor %}
+
+<section class="splide">
+  <div class="splide__track product_track">
+		<ul class="splide__list product_list">
+            {% for product in products %}
+			<li class="splide__slide product_item">
+                <img class="product_image" src="{{ product.image.url }}">
+                <p class="product_categories">{{ product.get_product_categories }}</p>
+                <p class="product_name">{{ product.name }}</p>
+                <div></div>
+                <div class="price_and_add_to_cart_flex">
+                    <p class="product_price"></p>
+                    <p class="product_add_to_cart_btn"></p>
+                </div>
+            </li>
+            {% endfor %}
+		</ul>
+  </div>
+</section>
+
+    <script>
+  var splide = new Splide( '.splide', {
+  type   : 'loop',
+  perPage: 3,
+  perMove: 1,
+} );
+
+splide.mount();
+    </script>
 {% endblock content %}
+
