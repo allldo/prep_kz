@@ -5,8 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from .models import Product
-from .cart import Cart
+from .models import Product, Cart, ProductCartItem
 from .forms import CartAddProductForm, RegisterForm
 from .service import log_in, get_customer
 
@@ -70,17 +69,20 @@ def register(request: WSGIRequest):
 
 
 @require_POST
-def add_to_cart(request: WSGIRequest, product_id: int) -> HttpResponse:
+def add_to_cart(request: WSGIRequest) -> JsonResponse:
     """ Добавление товара в корзину """
-    cart = Cart(request)
-    product = get_object_or_404(Product, id=product_id)
-    form = CartAddProductForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        cart.add(product=product,
-                 quantity=cd['quantity'],
-                 update_quantity=cd['update'])
-    return redirect('cart:cart_detail')
+    cart = get_object_or_404(Cart, cart_owner=get_customer(request))
+    product = get_object_or_404(Product, id=request.POST.get('product_id'))
+    product_item = ProductCartItem.objects.create(product=product, quantity=request.POST.get('quantity'))
+    cart.product_item.add(product_item.id)
+    print(cart.total_sum())
+    return JsonResponse({
+        'added': True, 'product': {
+            'name': product.name,
+            'quantity': request.POST.get('quantity')
+        }
+
+    })
 
 
 @csrf_exempt

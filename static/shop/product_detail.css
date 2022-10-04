@@ -104,6 +104,7 @@ input::-webkit-inner-spin-button {
     padding: 20px;
     border: 2px;
     letter-spacing: 1px;
+    user-select: none;
 }
 .add_to_cart_btn:hover{
     background-color: #e7bd5e;

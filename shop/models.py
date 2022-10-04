@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 from django.urls import reverse
 from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
@@ -88,3 +89,38 @@ class Review(models.Model):
     def __str__(self):
         """ String representation of review """
         return self.user, self.date if self.user else self.name, self.date
+
+
+class Cart(models.Model):
+    cart_owner = models.ForeignKey('shop.Customer', on_delete=models.CASCADE)
+    # products = models.ManyToManyField('shop.Product', null=True, blank=True)
+    product_item = models.ManyToManyField('shop.ProductCartItem', null=True, blank=True)
+
+    def __str__(self):
+        return 'Корзина ' + self.cart_owner.user.username
+
+# TODO потенциально в селери таск
+
+    def total_sum(self):
+        """ Стоимость всех товаров в корзине """
+        total = 0
+        for product_item in self.product_item.all():
+            total += product_item.get_total_by_product()
+        return total
+    #
+    # def total_number_of_products(self):
+    #     """ Общее количество товаров в корзине """
+    #     return self.products.count()
+
+
+class ProductCartItem(models.Model):
+    product = models.ForeignKey('shop.Product', on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+
+    def __str__(self):
+        """ Название единицы товара """
+        return self.product.name + ' в количестве '+str(self.quantity)
+
+    def get_total_by_product(self):
+        """ Подсчет суммы по этой единицы """
+        return self.quantity*self.product.price

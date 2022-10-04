@@ -34,7 +34,8 @@
             <input type="number"  value="1" class="input_product_quantity">
             <p id="plus">+</p>
         </div>
-        <p class="add_to_cart_btn">+ Добавить в корзину</p>
+        <p class="add_to_cart_btn" id="{{ product.pk }}">+ Добавить в корзину</p>
+        {% csrf_token %}
     </div>
     <div class="wishlist_block">
         <div class="heart heart_default">
@@ -64,7 +65,10 @@
 <div class="product_reviews disappear"></div>
 </div>
 <div class="related_products">
+    {% for c in cart %}
 
+        {{ c }}
+    {% endfor %}
 </div>
 </section>
     <script>
@@ -95,6 +99,18 @@
             $('.additional_info').addClass('disappear')
             $('.product_reviews').removeClass('disappear')
 
+        })
+        $('.add_to_cart_btn').click(function (){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'shop:add_to_cart' %}",
+                data:
+                {
+                    product_id: $(this).attr('id'),
+                    quantity: $('.input_product_quantity').val(),
+                    csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()
+                },
+            })
         })
     </script>
 {% endblock content %}
