@@ -1,9 +1,100 @@
 {% extends 'shop/base.html' %}
+{% load static %}
 {% block head %}
+    <link rel="stylesheet" href="{% static 'shop/product_detail.css' %}">
+
 {% endblock head %}
 {% block title %}
     PREP KZ
 {% endblock title %}
 {% block content %}
+<section class="content_wrapper">
+<div>
+    <a href="{% url 'shop:main_page' %}">Домашняя страница</a><span>></span><a>Магазин</a> <span>></span><a>{{ product.name}}</a>
+</div>
+<div class="product_block_flex">
+    <div>
+        <img src="{{ product.image.url }}">
+    </div>
+    <div class="product_right_block_info">
+        <p class="{% if product.available %}in_stock">В наличии{% else %}not_in_stock">Нет в наличии{% endif %}</p>
+        <h2 class="product_name">{{ product.name }}</h2>
+        <div class="star_reviews_block">
+            <p>5</p>
+            <p class="star_reviews gray_p">({{ product.get_reviews_number }} reviews)</p>
+            <p class="gray_p product_articul_block">Артикул: <span class="product_articul">124312</span></p>
+        </div>
+        <p class="product_price">{{ product.price }} ₸</p>
+    <p class="product_description">{{ product.description }}</p>
+    <p class="gray_p quantity_p">Количество</p>
 
+    <div class="add_to_cart_block">
+        <div class="input_quantity">
+            <p id="minus">-</p>
+            <input type="number"  value="1" class="input_product_quantity">
+            <p id="plus">+</p>
+        </div>
+        <p class="add_to_cart_btn">+ Добавить в корзину</p>
+    </div>
+    <div class="wishlist_block">
+        <div class="heart heart_default">
+        </div>
+        <p>Добавить в список желаемого</p>
+    </div>
+    <p class="categories_list">
+        Categories: <span class="gray_p product_category">{% for category in product.get_product_categories.all %}{% if forloop.counter0 > 0  %}, {% endif %}{{ category }}{% endfor %}</span>
+    </p>
+    </div>
+</div>
+<div class="additional_images"></div>
+    <div class="headliners_info">
+        <h4 class="active" id="description">Описание</h4>
+        <h4 id="additional_info">Подробная информация</h4>
+        <h4 id="reviews">Отзывы {% if product.get_reviews_number > 0  %}({{ product.get_reviews_number }}){% endif %}</h4>
+    </div>
+<div class="below_product_info">
+<div class="description_block">
+    <p>
+        {{ product.description }}
+    </p>
+</div>
+<div class="additional_info disappear">
+    p[FKLDOPSLksfgkl
+</div>
+<div class="product_reviews disappear"></div>
+</div>
+<div class="related_products">
+
+</div>
+</section>
+    <script>
+        $('#minus').click(function (){
+            if ($('.input_product_quantity').val() === '1'){
+            }
+            else {
+                $('.input_product_quantity').val($('.input_product_quantity').val() - 1)
+            }
+            })
+        $('#plus').click(function (){
+            $('.input_product_quantity').val(parseInt($('.input_product_quantity').val())+1)
+        })
+        $('#additional_info').click(function (){
+            $('.description_block').addClass('disappear')
+            $('.additional_info').removeClass('disappear')
+            $('.product_reviews').addClass('disappear')
+
+        })
+        $('#description').click(function (){
+           $('.description_block').removeClass('disappear')
+            $('.additional_info').addClass('disappear')
+            $('.product_reviews').addClass('disappear')
+
+        })
+        $('#reviews').click(function (){
+            $('.description_block').addClass('disappear')
+            $('.additional_info').addClass('disappear')
+            $('.product_reviews').removeClass('disappear')
+
+        })
+    </script>
 {% endblock content %}

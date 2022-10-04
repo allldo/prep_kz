@@ -72,6 +72,10 @@ class Product(models.Model):
         """ Подсчет рейтинга продукта """
         return
 
+    def get_reviews_number(self):
+        """ Количество отзывов """
+        return Review.objects.filter(product=self).count()
+
 
 class Review(models.Model):
     product = models.ForeignKey('shop.Product', on_delete=models.CASCADE)

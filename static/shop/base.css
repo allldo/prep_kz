@@ -130,7 +130,10 @@ body{
 }
 
 
-
+/* DISAPPEAR */
+.disappear{
+    display: none;
+}
 
 
 
