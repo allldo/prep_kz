@@ -29,12 +29,14 @@ a{
     width: 16px;
     height: 16px;
     align-self: center;
+    transition: all 1s;
 }
 .heart_colored{
     background-image: url("../img/colored_heart.png");
     width: 16px;
     height: 16px;
     align-self: center;
+    transition: all 1s;
 }
 .loupe{
     background-image: url("../img/loupe.png");
@@ -42,4 +44,5 @@ a{
     height: 16px;
     align-self: center;
     background-size: contain;
+    transition: 1s all;
 }

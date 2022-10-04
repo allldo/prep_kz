@@ -8,6 +8,10 @@ class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     wishlist = models.ManyToManyField('shop.Product', null=True, blank=True)
 
+    def __str__(self):
+        """ Имя пользователя """
+        return self.user.username
+
 
 class Category(models.Model):
     product = models.ManyToManyField('Product',

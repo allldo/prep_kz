@@ -24,7 +24,7 @@
             {% else %}
             <a class="sign_in">Sign In / Register</a>
             {% endif %}
-            <div class="modal_sign_in">
+            <div class="modal_sign_in disappear">
                 <div class="first_section_text">
                     <p>Вход</p>
                     <a href="{% url 'shop:register' %}">Создать аккаунт</a>
@@ -151,11 +151,10 @@ Illinois 85486, USA</p>
 </div>
 </footer>
 <script>
-    $('.modal_sign_in').hide()
     sign_in_btn = $('.login_btn');
     modal_btn = $('.sign_in');
     modal_btn.click(function (){
-        $('.modal_sign_in').show();
+        $('.modal_sign_in').removeClass('disappear');
     })
     sign_in_btn.click(function (){
         let login = $('#username_input').val()

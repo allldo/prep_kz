@@ -10,7 +10,7 @@
     PREP KZ
 {% endblock title %}
 {% block content %}
-
+{% load services_template %}
 <section class="splide">
   <div class="splide__track product_track">
 		<ul class="splide__list product_list">
@@ -27,7 +27,7 @@
                 <div class="star_and_btns">
                     <div>5</div>
                     <div class="product_btns disappear">
-                        <div class="heart_default" id="{{ product.pk }}"></div>
+                        <div class="heart {% is_product_in_wishlist request product.pk as result %}{% if result %}heart_colored{% else %} heart_default{% endif %}" id="{{ product.pk }}_product"></div>
                         <div class="loupe"></div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
   </div>
 </section>
 
-    <script>
+    <script type="text/javascript">
   var splide = new Splide( '.splide', {
   type   : 'loop',
   perPage: 5,
@@ -73,7 +73,8 @@ $( document ).ready(function() {
     }
     )
 });
-$('.heart_default').click(function (){
+$('.heart').click(function (){
+    if ($(this).hasClass('heart_default')){
     $.ajax({
         type: 'POST',
         url: "{% url 'shop:add_to_wishlist' %}",
@@ -81,12 +82,34 @@ $('.heart_default').click(function (){
             {
                 product_id: $(this).attr('id')
             },
-        success: function (){
+        success: function (response){
+            console.log(response)
+             if (response.redirect === true){
+                 window.location.href = '/login/'
+             }
+            let prod_id = response.product_id
+            console.log($('#'+prod_id+'_product').removeClass('heart_default'))
+            $('#'+prod_id+'_product').addClass('heart_colored')
+            $('#'+prod_id+'_product').removeClass('heart_default')
 
         }
     })
+    }
+    else{
+        $.ajax({
+        type: 'POST',
+        url:  "{% url 'shop:remove_from_wishlist' %}",
+        data:
+            {
+                product_id: $(this).attr('id')
+            },
+        success: function (response){
+            $('#'+response.product_id).removeClass('heart_colored');
+            $('#'+response.product_id).addClass('heart_default');
+        }
+    })
+    }
 })
-
 
     </script>
 {% endblock content %}

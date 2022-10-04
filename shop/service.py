@@ -1,6 +1,9 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import AnonymousUser
 from django.core.handlers.wsgi import WSGIRequest
+from django.http import Http404
 from django.shortcuts import get_object_or_404
+from typing import Union
 
 from .models import Customer
 
@@ -13,6 +16,8 @@ def log_in(request: WSGIRequest, username: str, password: str) -> bool:
     return False
 
 
-def get_customer(request: WSGIRequest) -> Customer:
+def get_customer(request: WSGIRequest) -> Union[Customer, bool]:
+    if isinstance(request.user, AnonymousUser):
+        return False
     customer = get_object_or_404(Customer, user=request.user)
     return customer

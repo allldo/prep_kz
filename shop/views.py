@@ -27,9 +27,10 @@ def category_detail(request, category_slug: str):
     return render(request, 'shop/main.html')
 
 
-@require_POST
 def login_user(request):
     """ Функция для отработки логина в систему """
+    if request.method == 'GET':
+        return render(request, 'shop/login_page.html')
     if log_in(request, request.POST.get('username'), request.POST.get('password')):
         return JsonResponse({
             'logged': True,
@@ -83,11 +84,35 @@ def add_to_cart(request: WSGIRequest, product_id: int) -> HttpResponse:
 
 
 @csrf_exempt
-@login_required
 def add_to_wishlist(request: WSGIRequest):
+    """ Добавить товар в список желаемого """
     customer = get_customer(request)
+    if not customer:
+        return JsonResponse({
+            'redirect': True
+        })
     product_id = request.POST.get('product_id')
-    # customer.wishlist
+    product_id = product_id[:-8]
+    customer.wishlist.add(product_id)
+    return JsonResponse({
+        'added': True, 'product_id': product_id
+    })
+
+
+@csrf_exempt
+def remove_from_wishlist(request: WSGIRequest):
+    """ Добавить товар в список желаемого """
+    customer = get_customer(request)
+    if not customer:
+        return JsonResponse({
+            'redirect': True
+        })
+    product_id = request.POST.get('product_id')
+    product_id = product_id[:-8]
+    customer.wishlist.remove(product_id)
+    return JsonResponse({
+        'removed': True, 'product_id': product_id
+    })
 
 
 def remove_from_cart(request: WSGIRequest, product_id: int) -> HttpResponse:
