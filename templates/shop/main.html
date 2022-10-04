@@ -27,8 +27,8 @@
                 <div class="star_and_btns">
                     <div>5</div>
                     <div class="product_btns disappear">
-                        <div class="heart {% is_product_in_wishlist request product.pk as result %}{% if result %}heart_colored{% else %} heart_default{% endif %}" id="{{ product.pk }}_product"></div>
-                        <div class="loupe"></div>
+                        <div title="Добавить в список желаемого" class="heart {% is_product_in_wishlist request product.pk as result %}{% if result %}heart_colored{% else %} heart_default{% endif %}" id="{{ product.pk }}_product"></div>
+                        <div class="loupe" title="Быстрый просмотр"></div>
                     </div>
                 </div>
 

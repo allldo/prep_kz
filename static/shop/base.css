@@ -132,7 +132,7 @@ body{
 
 /* DISAPPEAR */
 .disappear{
-    display: none;
+    display: none !important;
 }
 
 
