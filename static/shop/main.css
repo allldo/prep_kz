@@ -10,3 +10,36 @@ a{
 .product_list{
 
 }
+.star_and_btns{
+    display: flex;
+    justify-content: space-between;
+    width: 95%;
+    margin: 0 auto;
+}
+.product_btns{
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
+}
+.heart_colored:hover, .heart_default:hover, .loupe:hover{
+    cursor: pointer;
+}
+.heart_default{
+    background-image: url("../img/heart_default.png");
+    width: 16px;
+    height: 16px;
+    align-self: center;
+}
+.heart_colored{
+    background-image: url("../img/colored_heart.png");
+    width: 16px;
+    height: 16px;
+    align-self: center;
+}
+.loupe{
+    background-image: url("../img/loupe.png");
+    width: 16px;
+    height: 16px;
+    align-self: center;
+    background-size: contain;
+}

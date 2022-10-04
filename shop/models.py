@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    wishlist = models.ForeignKey('shop.Product', on_delete=models.CASCADE, null=True, blank=True)
+    wishlist = models.ManyToManyField('shop.Product', null=True, blank=True)
 
 
 class Category(models.Model):

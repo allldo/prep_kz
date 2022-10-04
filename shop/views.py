@@ -1,12 +1,14 @@
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from .models import Product
 from .cart import Cart
 from .forms import CartAddProductForm, RegisterForm
-from .service import log_in
+from .service import log_in, get_customer
 
 
 def main_page(request: WSGIRequest) -> HttpResponse:
@@ -78,6 +80,14 @@ def add_to_cart(request: WSGIRequest, product_id: int) -> HttpResponse:
                  quantity=cd['quantity'],
                  update_quantity=cd['update'])
     return redirect('cart:cart_detail')
+
+
+@csrf_exempt
+@login_required
+def add_to_wishlist(request: WSGIRequest):
+    customer = get_customer(request)
+    product_id = request.POST.get('product_id')
+    # customer.wishlist
 
 
 def remove_from_cart(request: WSGIRequest, product_id: int) -> HttpResponse:
