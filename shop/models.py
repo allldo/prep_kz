@@ -123,6 +123,9 @@ class Cart(models.Model):
         """ Получение всех продуктов в корзине """
         return self.product_item.all()
 
+    def total_products_in_cart(self):
+        """ Общее количество продуктов в корзине """
+        return self.product_item.all().count()
 
 # class ProductOptions(models.Model):
 #     SIZES_CHOICES = (
