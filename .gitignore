@@ -3,6 +3,7 @@ venv/
 __pycache__/
 *.py[cod]
 
+media/
 # C extensions
 *.so
 
@@ -14,7 +15,6 @@ dist/
 eggs/
 lib/
 lib64/
-parts/
 sdist/
 var/
 *.egg-info/

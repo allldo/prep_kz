@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Sum
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
@@ -12,6 +13,10 @@ class Customer(models.Model):
     def __str__(self):
         """ Имя пользователя """
         return self.user.username
+
+    def get_cart(self):
+        """ Получение корзины """
+        return get_object_or_404(Cart, cart_owner=self)
 
 
 class Category(models.Model):
@@ -107,10 +112,10 @@ class Cart(models.Model):
         for product_item in self.product_item.all():
             total += product_item.get_total_by_product()
         return total
-    #
-    # def total_number_of_products(self):
-    #     """ Общее количество товаров в корзине """
-    #     return self.products.count()
+
+    def get_all_products_in_cart(self):
+        """ Получение всех продуктов в корзине """
+        return self.product_item.all()
 
 
 class ProductCartItem(models.Model):

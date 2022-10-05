@@ -1,0 +1,53 @@
+.loupe_pop_up{
+    align-self: center;
+    width: 1000px;
+    height: 500px;
+    margin: 0 auto;
+    position: absolute;
+    top: 20%;
+    background-color: white;
+    /*box-shadow:0 0 0 1600px rgba(0,0,0,0.65);*/
+    display: flex;
+    z-index: 5;
+    transition: all 0.3s ease-in;
+
+}
+.loader{
+    background-image: url("../../gif/loader.gif");
+    width: 64px;
+    height: 64px;
+    align-self: center;
+    margin: 0 auto;
+}
+.overflow_blocked{
+    overflow: hidden scroll;
+}
+.img_slide > img{
+    width: 500px;
+    height: 500px;
+    background-size: cover;
+}
+#loupe_product_info{
+    margin-left: 2vw;
+}
+.darken{
+    width: 100%;
+    top:0;
+    bottom: 0;
+    position: absolute;
+    background-color: black;
+    opacity: 0.6;
+    z-index: 4;
+}
+#carousel_loupe{
+    width: 500px;
+    visibility: visible !important;
+}
+
+#loupe_product_name{
+    font-size: 30px;
+}
+#loupe_product_price{
+    font-size: 20px;
+    color: #415844;
+}

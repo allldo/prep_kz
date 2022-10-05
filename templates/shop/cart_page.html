@@ -1,0 +1,11 @@
+{% extends 'shop/base.html' %}
+{% block head %}
+{% endblock head %}
+{% block title %}
+{% endblock title %}
+{% block content %}
+    {% for product in cart.get_all_products_in_cart %}
+        {{ product.product.name }}
+    {% endfor %}
+    {{ cart.total_sum }}
+{% endblock content %}

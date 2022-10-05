@@ -126,8 +126,9 @@ def remove_from_cart(request: WSGIRequest, product_id: int) -> HttpResponse:
 
 def cart_detail(request: WSGIRequest) -> HttpResponse:
     """ Страница корзины """
-    cart = Cart(request)
-    for item in cart:
-        item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'],
-                                                                   'update': True})
-    return render(request, 'shop/card_detail.html', {'cart': cart})
+    customer = get_customer(request)
+    context = {
+        'customer': customer,
+        'cart': customer.get_cart()
+    }
+    return render(request, 'shop/cart_page.html', context)
