@@ -132,3 +132,33 @@ def cart_detail(request: WSGIRequest) -> HttpResponse:
         'cart': customer.get_cart()
     }
     return render(request, 'shop/cart_page.html', context)
+
+
+# redirect_field_name='/login/'
+@login_required()
+def addresses(request: WSGIRequest) -> HttpResponse:
+    return render(request, 'lk/')
+
+
+# redirect_field_name='/login/'
+@login_required()
+def history(request: WSGIRequest) -> HttpResponse:
+    return render(request, 'lk/')
+
+
+# redirect_field_name='/login/'
+@login_required()
+def current_delivery(request: WSGIRequest) -> HttpResponse:
+    return render(request, 'lk/')
+
+
+# redirect_field_name='/login/'
+@login_required()
+def wishlist(request: WSGIRequest) -> HttpResponse:
+    return render(request, 'lk/')
+
+
+# redirect_field_name='/login/'
+@login_required()
+def reviews(request: WSGIRequest) -> HttpResponse:
+    return render(request, 'lk/')

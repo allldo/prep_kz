@@ -1,0 +1,31 @@
+section{
+    background-color: #f0f1f2;
+    padding: 5vh;
+}
+.lk_sidebar{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 20px;
+    width: fit-content;
+    padding: 10px;
+    margin-left: 15vw;
+}
+.lk_profile_data{
+
+}
+.sidebar_item{
+    margin-top: 2vh;
+    color: #606971;
+}
+.sidebar_item>a{
+    display: flex;
+}
+.sidebar_item:hover{
+    color: black;
+}
+.active{
+    background-color: #ecca7e;
+    border-radius: 10px;
+    padding: 5px;
+}
