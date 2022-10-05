@@ -56,12 +56,28 @@ transition: all .5s;
 .product_name{
     margin-top: 1vh;
     transition: 0.3s;
+    display: inline-block;
+  position: relative;
+    width: fit-content;
 }
 .product_name, .product_categories{
     margin-left: 5px;
 }
-.product_name:hover{
-    text-decoration: underline;
+.product_name:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #9a9a9a;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+.product_name:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 
 .price_and_add_to_cart_flex{

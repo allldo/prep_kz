@@ -26,7 +26,7 @@
                 <p class="product_name"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></p>
 
                 <div class="star_and_btns">
-                    <div>5</div>
+                    <div>{{ product.get_score }}</div>
                     <div class="product_btns disappear">
                         <div title="Добавить в список желаемого" class="heart {% is_product_in_wishlist request product.pk as result %}{% if result %}heart_colored{% else %} heart_default{% endif %}" id="{{ product.pk }}_product"></div>
                         <div class="loupe" id="{{ product.pk }}" title="Быстрый просмотр"></div>

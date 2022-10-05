@@ -76,7 +76,12 @@ class Product(models.Model):
 
     def get_score(self):
         """ Подсчет рейтинга продукта """
-        return
+        reviews_related = Review.objects.filter(product=self)
+        if reviews_related.exists():
+            reviews_total = reviews_related.count()
+            return reviews_related.aggregate(Sum('rating'))['rating__sum']/reviews_total
+        else:
+            return 0
 
     def get_reviews_number(self):
         """ Количество отзывов """
@@ -88,12 +93,13 @@ class Review(models.Model):
     user = models.ForeignKey('Customer', on_delete=models.CASCADE, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=120, null=True, blank=True)
+    rating = models.FloatField(default=0.0)
     email = models.EmailField(max_length=120, null=True, blank=True)
     content = models.TextField()
 
     def __str__(self):
         """ String representation of review """
-        return self.user, self.date if self.user else self.name, self.date
+        return self.user.user.username
 
 
 class Cart(models.Model):
@@ -116,6 +122,19 @@ class Cart(models.Model):
     def get_all_products_in_cart(self):
         """ Получение всех продуктов в корзине """
         return self.product_item.all()
+
+
+# class ProductOptions(models.Model):
+#     SIZES_CHOICES = (
+#
+#     )
+#     COLOR_CHOICES = (
+#
+#     )
+#     brand =
+#     weight =
+#     size =
+#     color =
 
 
 class ProductCartItem(models.Model):
