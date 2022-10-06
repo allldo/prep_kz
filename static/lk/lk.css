@@ -1,3 +1,7 @@
+a{
+    text-decoration: none;
+    color: black;
+}
 section{
     background-color: #f0f1f2;
     padding: 5vh;
@@ -7,25 +11,43 @@ section{
     flex-direction: column;
     background-color: white;
     border-radius: 20px;
-    width: fit-content;
     padding: 10px;
+    width: 15vw;
     margin-left: 15vw;
 }
 .lk_profile_data{
 
 }
+.included_sidebar > .lk_sidebar> .active > a:nth-child(1) >i >svg{
+    fill: #fff;
+    /*background-color: #9a9a9a;*/
+}
 .sidebar_item{
     margin-top: 2vh;
     color: #606971;
+    padding: 7px;
 }
 .sidebar_item>a{
     display: flex;
 }
+.sidebar_item>a>p{
+    margin-left: 1vw;
+    align-self: center;
+}
 .sidebar_item:hover{
     color: black;
+}
+.sidebar_item>i{
+    align-self: center;
 }
 .active{
     background-color: #ecca7e;
     border-radius: 10px;
-    padding: 5px;
+}
+.active>a>p{
+    color: white;
+}
+.lk_shevron_right{
+    margin-left: auto;
+    align-self: flex-start;
 }

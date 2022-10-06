@@ -41,8 +41,12 @@ def login_user(request):
         })
 
 
+@login_required()
 def lk(request):
-    return render(request, 'lk/lk.html')
+    context = {
+        'sidebar_val': 1
+    }
+    return render(request, 'lk/lk.html', context)
 
 
 def log_out(request: WSGIRequest):
@@ -137,28 +141,43 @@ def cart_detail(request: WSGIRequest) -> HttpResponse:
 # redirect_field_name='/login/'
 @login_required()
 def addresses(request: WSGIRequest) -> HttpResponse:
-    return render(request, 'lk/')
+    context = {
+        'sidebar_val': 2
+    }
+    return render(request, 'lk/lk_address.html', context)
 
 
 # redirect_field_name='/login/'
 @login_required()
 def history(request: WSGIRequest) -> HttpResponse:
-    return render(request, 'lk/')
+    context = {
+        'sidebar_val': 3
+    }
+    return render(request, 'lk/lk_history.html', context)
 
 
 # redirect_field_name='/login/'
 @login_required()
 def current_delivery(request: WSGIRequest) -> HttpResponse:
-    return render(request, 'lk/')
+    context = {
+        'sidebar_val': 4
+    }
+    return render(request, 'lk/lk_delivery.html', context)
 
 
 # redirect_field_name='/login/'
 @login_required()
 def wishlist(request: WSGIRequest) -> HttpResponse:
-    return render(request, 'lk/')
+    context = {
+        'sidebar_val': 5
+    }
+    return render(request, 'lk/lk_wishlist.html', context)
 
 
 # redirect_field_name='/login/'
 @login_required()
 def reviews(request: WSGIRequest) -> HttpResponse:
-    return render(request, 'lk/')
+    context = {
+        'sidebar_val': 6
+    }
+    return render(request, 'lk/lk_reviews.html', context)

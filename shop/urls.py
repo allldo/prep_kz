@@ -23,6 +23,6 @@ urlpatterns = [
     path('shop/lk/addresses/', addresses, name='addresses'),
     path('shop/lk/history/', history, name='history'),
     path('shop/lk/current_delivery', current_delivery, name='current_delivery'),
-    path('shop/lk/wishlist', wishlist, 'wishlist'),
+    path('shop/lk/wishlist', wishlist, name='wishlist'),
     path('shop/lk/reviews', reviews, name='reviews'),
 ]
