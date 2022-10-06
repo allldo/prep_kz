@@ -4,7 +4,8 @@ a{
 }
 section{
     background-color: #f0f1f2;
-    padding: 5vh;
+    padding: 2vh;
+    display: flex;
 }
 .lk_sidebar{
     display: flex;
@@ -14,12 +15,36 @@ section{
     padding: 10px;
     width: 15vw;
     margin-left: 15vw;
+    margin-top: 2vh;
+    position: sticky;
+}
+.lk_breadcrumbs{
+    margin-left: 15vw;
+}
+.lk_breadcrumbs>li, .lk_breadcrumbs>a{
+    font-size: 12px;
+    display: inline-flex;
+}
+.lk_breadcrumbs>li>a:hover{
+    text-decoration: underline !important;
 }
 .lk_profile_data{
-
+    background-color: white;
+    width: 45%;
+    height: 35%;
+    border-radius: 20px;
+    padding: 20px;
+    margin-left: 3vw;
+    margin-top: 4vh;
 }
+.included_sidebar > .lk_sidebar> .active > a:nth-child(1) >i >svg>g>#Conversation{
+    /*fill: #;*/
+    stroke: #fff;
+}
+
 .included_sidebar > .lk_sidebar> .active > a:nth-child(1) >i >svg{
     fill: #fff;
+    /*stroke: #fff;*/
     /*background-color: #9a9a9a;*/
 }
 .sidebar_item{
@@ -50,4 +75,34 @@ section{
 .lk_shevron_right{
     margin-left: auto;
     align-self: flex-start;
+}
+
+
+/*         PROFILE DATA               */
+
+.inner_profile_data{
+    display: flex;
+    flex-direction: column;
+}
+.lk_profile_input_group{
+    display: flex;
+    flex-direction: column;
+    margin-top: 2vh;
+    padding-bottom: 2vh;
+}
+.lk_profile_input{
+    width: 30%;
+    margin-top: 1vh;
+    border-radius: 10px;
+    border: 1px solid #d9dcde;
+    height: 3vh;
+    padding: 7px;
+    transition: 0.4s all;
+}
+.lk_profile_input:focus{
+    border-color: #ecca7e;
+    outline: #ecca7e;
+}
+.lk_profile_input:hover{
+    border-color: black;
 }

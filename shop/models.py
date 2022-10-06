@@ -9,6 +9,9 @@ from django.contrib.auth.models import User
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     wishlist = models.ManyToManyField('shop.Product', null=True, blank=True)
+    name = models.CharField(max_length=125, null=True, blank=True)
+    surname = models.CharField(max_length=125, null=True, blank=True)
+    phone_number = models.CharField(max_length=125, null=True, blank=True)
 
     def __str__(self):
         """ Имя пользователя """
@@ -17,6 +20,10 @@ class Customer(models.Model):
     def get_cart(self):
         """ Получение корзины """
         return get_object_or_404(Cart, cart_owner=self)
+
+    def is_authenticated(self):
+        """ Для шаблона """
+        return True
 
 
 class Category(models.Model):

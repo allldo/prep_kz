@@ -2,17 +2,28 @@
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'lk/lk.css' %}">
+    <link rel="stylesheet" href="{% static 'lk/lk_address.css' %}">
 {% endblock head %}
 {% block title %}
     Личный кабинет
 {% endblock title %}
 {% block content %}
 <section>
-<div></div>
+
     <div class="included_sidebar">
+        <div class="lk_breadcrumbs">
+    {% include 'shop/parts/lk_breadcrumbs.html' %}<a>Адресная книга</a>
+</div>
 {% include 'shop/parts/lk_sidebar.html' %}
     </div>
 <div class="lk_profile_data">
+<h3>Мои адреса</h3>
+
+{% if user.does_have_address %}
+{% else %}
+    <p>У вас нет сохраненных адресов</p>
+    <span class="lk_profile_add_address">Добавить новый адрес</span>
+{% endif %}
 
 </div>
 </section>

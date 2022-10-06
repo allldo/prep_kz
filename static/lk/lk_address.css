@@ -1,0 +1,21 @@
+.lk_profile_data>h3{
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 2vh;
+    letter-spacing: 1px;
+}
+.lk_profile_data>p{
+    color: rgb(92 102 110);
+    margin-top: 3vh;
+    font-weight: 400;
+    padding-bottom: 3vh;
+}
+.lk_profile_add_address{
+    background-color: #ecca7e;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 12px;
+}
+.lk_profile_add_address:hover{
+    cursor: pointer;
+    background-color: #e7bd5e;
+}

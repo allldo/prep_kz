@@ -20,7 +20,7 @@
             <div class="user_icon"></div>
             <p class="username_header"></p>
             {% if user.is_authenticated %}
-            <p class="username_header">{{ user }}</p>
+            <p class="username_header actual">{{ user }}</p>
             {% else %}
             <a class="sign_in">Sign In / Register</a>
             {% endif %}
@@ -46,7 +46,7 @@
         <a href="{% url 'shop:cart_detail' %}" style="align-self: center">
         <div class="cart_icon_block">
             <div class="bag"></div>
-            <p>({{ cart.total_products_in_cart }})</p>
+            <p>({% if cart %}{{ cart.total_products_in_cart }}){% endif %}</p>
         </div>
         </a>
     {% endif %}
@@ -191,13 +191,27 @@ Illinois 85486, USA</p>
 </footer>
 <script>
     sign_in_btn = $('.login_btn');
-    modal_btn = $('.sign_in');
-    modal_btn.click(function (){
-        $('.modal_sign_in').removeClass('disappear');
-    })
-    $('.flex_icon_n_user').click(function (){
+    modal_btn = $('.flex_icon_n_user');
+
+    if ($('.username_header').hasClass('actual')){
+      $('.flex_icon_n_user').click(function (){
       window.location.href = '/lk/'
     })
+    }
+    else{
+        modal_btn.click(function (){
+        $('.modal_sign_in').removeClass('disappear');
+    })
+    }
+  document.addEventListener("click", (e) => {
+      const isClosest = e.target.closest('.modal_sign_in');
+      console.log(isClosest)
+      const isCreateButton = e.target.closest('.flex_icon_n_user');
+      if (!isClosest && !isCreateButton) {
+        $('.modal_sign_in').addClass('disappear');
+         }
+ });
+
     sign_in_btn.click(function (){
         let login = $('#username_input').val()
         let password = $('#password_input').val()

@@ -1,7 +1,7 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.core.handlers.wsgi import WSGIRequest
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -41,17 +41,10 @@ def login_user(request):
         })
 
 
-@login_required()
-def lk(request):
-    context = {
-        'sidebar_val': 1
-    }
-    return render(request, 'lk/lk.html', context)
-
-
 def log_out(request: WSGIRequest):
     """ Выход с аккаунта """
     logout(request)
+    return HttpResponseRedirect(redirect_to='shop:main_page')
 
 
 def register(request: WSGIRequest):
@@ -136,6 +129,15 @@ def cart_detail(request: WSGIRequest) -> HttpResponse:
         'cart': customer.get_cart()
     }
     return render(request, 'shop/cart_page.html', context)
+
+
+@login_required()
+def lk(request):
+    context = {
+        'sidebar_val': 1,
+        'user': get_customer(request)
+    }
+    return render(request, 'lk/lk.html', context)
 
 
 # redirect_field_name='/login/'

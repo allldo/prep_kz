@@ -8,12 +8,25 @@
 {% endblock title %}
 {% block content %}
 <section>
-<div></div>
+
     <div class="included_sidebar">
-{% include 'shop/parts/lk_sidebar.html' %}
+<div class="lk_breadcrumbs">
+    {% include 'shop/parts/lk_breadcrumbs.html' %}<a>Профиль</a>
+</div>
+        {% include 'shop/parts/lk_sidebar.html' %}
     </div>
 <div class="lk_profile_data">
+<div class="inner_profile_data">
+    <p>Мой профиль</p>
+    <div class="lk_profile_input_group">
+        <input value="{{ user.user.username }}" class="lk_profile_input">
+        <input value="{{ user.name }}" class="lk_profile_input">
+        <input value="{{ user.surname }}" class="lk_profile_input">
+        <input value="{{ user.phone_number }}"  class="lk_profile_input">
+    </div>
+    <p>Сохранить</p>
 
+</div>
 </div>
 </section>
 {% endblock content %}

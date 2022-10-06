@@ -28,6 +28,9 @@
     display: flex;
     justify-content: flex-end;
 }
+.upper_header_row>a{
+    margin-right: 15vw;
+}
 body{
     display: flex;
     flex-direction: column;
@@ -57,7 +60,6 @@ body{
 }
 .cart_icon_block{
     display: flex;
-    margin-right: 15vw;
 }
 .cart_icon_block:hover .bag{
     background-image: url("../img/bag_yellow.png");
@@ -83,12 +85,17 @@ body{
     width: fit-content;
     margin-right: 2vw;
 }
-.flex_icon_n_user:hover, .flex_icon_n_user:hover .user_icon{
+.flex_icon_n_user:hover, .flex_icon_n_user:hover .user_icon, .flex_icon_n_user:hover .sign_in{
     color: #e7bd5e;
     cursor: pointer;
 }
 .flex_icon_n_user:hover .user_icon{
         background-image: url("../img/user_yellow.png");
+}
+.sign_in{
+    color: white;
+    align-self: center;
+    margin-right: 15vw;
 }
 .modal_sign_in{
     position: absolute;
