@@ -28,7 +28,7 @@
                 <p class="product_name"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></p>
 
                 <div class="star_and_btns">
-                    <div class="product_rating" data-rating="{{ product.get_score }}"></div>
+                    <div class="product_rating rrt" data-rating="{{ product.get_score }}"></div>
                     <div class="product_btns disappear">
                         <div title="Добавить в список желаемого" class="heart {% is_product_in_wishlist request product.pk as result %}{% if result %}heart_colored{% else %} heart_default{% endif %}" id="{{ product.pk }}_product"></div>
                         <div class="loupe" id="{{ product.pk }}" title="Быстрый просмотр"></div>
@@ -46,16 +46,22 @@
 </section>
 
     <script type="text/javascript">
+
       document.addEventListener( 'DOMContentLoaded', function () {
 
-          var splide = new Splide('#main_page_slider', {
+         var splide = new Splide('#main_page_slider', {
               type: 'loop',
               perPage: 5,
               perMove: 1,
               pagination: true,
           });
-
           splide.mount();
+
+        $('.rrt').starRating({
+        totalStars: 5,
+        starSize: 15,
+        readOnly: true,
+    })
       });
 $( document ).ready(function() {
    let product_item = $('.product_item');
@@ -117,11 +123,7 @@ $('.heart').click(function (){
     })
     }
 })
-    $('.product_rating').starRating({
-        totalStars: 5,
-        starSize: 15,
-        readOnly: true,
-    })
+
     </script>
     {% include 'shop/parts/quickview_js.html' %}
 {% endblock content %}

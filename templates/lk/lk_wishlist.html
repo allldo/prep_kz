@@ -45,11 +45,13 @@
 </section>
     <script>
     let heart = $('.lk_wishlisted_heart');
-    $('.lk_wishlisted_rating').starRating({
+      document.addEventListener( 'DOMContentLoaded', function () {
+        $('.lk_wishlisted_rating').starRating({
         totalStars: 5,
         starSize: 15,
         readOnly: true,
-    });
+    })
+      });
     heart.click(function (){
         console.log($(this).attr('id'))
         $.ajax({
