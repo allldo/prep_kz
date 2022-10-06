@@ -135,7 +135,7 @@ def cart_detail(request: WSGIRequest) -> HttpResponse:
 def lk(request):
     context = {
         'sidebar_val': 1,
-        'user': get_customer(request)
+        'customer': get_customer(request)
     }
     return render(request, 'lk/lk.html', context)
 
@@ -144,7 +144,8 @@ def lk(request):
 @login_required()
 def addresses(request: WSGIRequest) -> HttpResponse:
     context = {
-        'sidebar_val': 2
+        'sidebar_val': 2,
+        'customer': get_customer(request)
     }
     return render(request, 'lk/lk_address.html', context)
 
@@ -153,7 +154,8 @@ def addresses(request: WSGIRequest) -> HttpResponse:
 @login_required()
 def history(request: WSGIRequest) -> HttpResponse:
     context = {
-        'sidebar_val': 3
+        'sidebar_val': 3,
+        'customer': get_customer(request)
     }
     return render(request, 'lk/lk_history.html', context)
 
@@ -162,7 +164,8 @@ def history(request: WSGIRequest) -> HttpResponse:
 @login_required()
 def current_delivery(request: WSGIRequest) -> HttpResponse:
     context = {
-        'sidebar_val': 4
+        'sidebar_val': 4,
+        'customer': get_customer(request)
     }
     return render(request, 'lk/lk_delivery.html', context)
 
@@ -171,7 +174,8 @@ def current_delivery(request: WSGIRequest) -> HttpResponse:
 @login_required()
 def wishlist(request: WSGIRequest) -> HttpResponse:
     context = {
-        'sidebar_val': 5
+        'sidebar_val': 5,
+        'customer': get_customer(request)
     }
     return render(request, 'lk/lk_wishlist.html', context)
 
@@ -180,6 +184,7 @@ def wishlist(request: WSGIRequest) -> HttpResponse:
 @login_required()
 def reviews(request: WSGIRequest) -> HttpResponse:
     context = {
-        'sidebar_val': 6
+        'sidebar_val': 6,
+        'customer': get_customer(request)
     }
     return render(request, 'lk/lk_reviews.html', context)

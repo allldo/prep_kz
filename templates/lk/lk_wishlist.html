@@ -2,6 +2,8 @@
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'lk/lk.css' %}">
+    <link rel="stylesheet" href="{% static 'lk/lk_wishlist.css' %}">
+        <link rel="stylesheet" href="{% static 'shop/parts/quickview.css' %}">
 {% endblock head %}
 {% block title %}
     Личный кабинет
@@ -10,9 +12,49 @@
 <section>
 <div></div>
     <div class="included_sidebar">
+        <div class="lk_breadcrumbs">
+    {% include 'shop/parts/lk_breadcrumbs.html' %}<a>Список желаемого</a>
+</div>
 {% include 'shop/parts/lk_sidebar.html' %}
     </div><div class="lk_profile_data">
-
+<h3>Желаемое</h3>
+    {% if customer.is_empty_wishlist %}
+        <p>В вашем списке желаний пока нет товаров!</p>
+        <span><a href="{% url 'shop:main_page' %}">Перейти в каталог</a></span>
+    {% else %}
+        <div class="lk_wishlisted_items_wrapper">
+        {% for wishlisted in customer.wishlist.all %}
+        <div class="lk_wishlisted_item" id="{{ wishlisted.pk }}_item">
+        <a href="{{ wishlisted.get_absolute_url }}"><img src="{{ wishlisted.image.url }}" class="lk_wishlisted_img"></a>
+        <a  href="{{ wishlisted.get_absolute_url }}" class="lk_wishlisted_name">{{ wishlisted.name }}</a>
+            <div class="lk_wishlisted_icons">
+                <div class="lk_wishlisted_heart heart_colored" id="{{ wishlisted.pk }}_product"></div>
+                {% csrf_token %}
+                <div class="lk_wishlisted_loupe loupe"></div>
+            </div>
+        <p class="lk_wishlisted_price">{{ wishlisted.price }} ₸</p>
+        </div>
+        {% endfor %}
+        </div>
+    {% endif %}
 </div>
 </section>
+    <script>
+    let heart = $('.lk_wishlisted_heart');
+    heart.click(function (){
+        console.log($(this).attr('id'))
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'shop:remove_from_wishlist' %}",
+            data: {
+                product_id: $(this).attr('id'),
+                csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
+            },
+            success: function (response){
+                $('#'+response.product_id+'_item').remove()
+            }
+        })
+    })
+    </script>
+    {% include 'shop/parts/quickview_js.html' %}
 {% endblock content %}

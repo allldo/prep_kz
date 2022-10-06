@@ -25,6 +25,11 @@ class Customer(models.Model):
         """ Для шаблона """
         return True
 
+    def is_empty_wishlist(self):
+        """ Проверка есть ли желаемые продукты """
+        print(self.wishlist.all())
+        return True if self.wishlist.all().count() == 0 else False
+
 
 class Category(models.Model):
     product = models.ManyToManyField('Product',

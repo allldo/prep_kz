@@ -1,0 +1,78 @@
+.lk_profile_data>h3{
+    border-bottom: 1px solid #9a9a9a;
+    padding-bottom: 2vh;
+    letter-spacing: 1px;
+}
+.lk_profile_data>p{
+    color: #606971;
+    margin-top: 2vh;
+}
+.lk_profile_data>span{
+    padding: 5px;
+    transition: 0.4s all;
+    border: 1px solid transparent;
+    color: #3e8f3e;
+    margin-top: 1vh;
+}
+.lk_profile_data>span:hover{
+    border: 1px solid #e7bd5e;
+    border-radius: 8px;
+}
+.lk_wishlisted_items_wrapper{
+    display: flex;
+    margin-top: 2vh;
+}
+/* wishlisted item */
+.lk_wishlisted_item{
+    margin-left: 1vw;
+    width: 200px;
+    padding: 5px;
+    border: 1px solid transparent;
+    transition: 1s all;
+    /*border-right-color: #9a9a9a;*/
+}
+.lk_wishlisted_item:hover{
+    border: 1px solid #e7bd5e;
+box-shadow: 0px 0px 8px 9px rgba(34, 60, 80, 0.2);
+
+}
+.lk_wishlisted_img{
+    width: 200px;
+    height: 200px;
+    background-size: contain;
+}
+.lk_wishlisted_price{
+    font-size: 24px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    margin-top: 2vh;
+}
+.lk_wishlisted_name{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+.lk_wishlisted_icons{
+    display: flex;
+    justify-content: space-between;
+    width: 30%;
+    margin: 0 auto;
+}
+.lk_wishlisted_heart, .lk_wishlisted_loupe{
+        width: 16px;
+    height: 16px;
+    background-size: contain;
+}
+.lk_wishlisted_heart:hover, .lk_wishlisted_loupe:hover{
+    cursor: pointer;
+}
+.heart_default{
+        background-image: url("../img/heart_default.png");
+}
+.heart_colored{
+    background-image: url("../img/colored_heart.png");
+}
+.lk_wishlisted_loupe{
+    background-image: url("../img/loupe.png");
+}

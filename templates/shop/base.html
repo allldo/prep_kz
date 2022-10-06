@@ -19,7 +19,7 @@
         <div class="flex_icon_n_user">
             <div class="user_icon"></div>
             <p class="username_header"></p>
-            {% if user.is_authenticated %}
+            {% if request.user.is_authenticated %}
             <p class="username_header actual">{{ user }}</p>
             {% else %}
             <a class="sign_in">Sign In / Register</a>
