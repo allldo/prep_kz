@@ -86,14 +86,16 @@ class Product(models.Model):
         """ Уникальная ссылка для товара """
         return reverse('shop:product_detail', args=[self.id, self.slug])
 
-    def get_score(self):
+    def get_score(self) -> float:
         """ Подсчет рейтинга продукта """
+        return self.rating
+
+    def set_score(self):
+        """ Установить рейтинг """
         reviews_related = Review.objects.filter(product=self)
         if reviews_related.exists():
             reviews_total = reviews_related.count()
-            return reviews_related.aggregate(Sum('rating'))['rating__sum']/reviews_total
-        else:
-            return 0
+            self.rating = reviews_related.aggregate(Sum('rating'))['rating__sum'] / reviews_total
 
     def get_reviews_number(self):
         """ Количество отзывов """

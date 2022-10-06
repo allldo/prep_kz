@@ -55,14 +55,19 @@ box-shadow: 0px 0px 8px 9px rgba(34, 60, 80, 0.2);
 
 .lk_wishlisted_icons{
     display: flex;
-    justify-content: space-between;
-    width: 30%;
     margin: 0 auto;
 }
 .lk_wishlisted_heart, .lk_wishlisted_loupe{
         width: 16px;
     height: 16px;
+    background-repeat: no-repeat;
     background-size: contain;
+}
+.lk_wishlisted_heart{
+    margin-left: 3vw;
+}
+.lk_wishlisted_loupe{
+    margin-left: 1vw;
 }
 .lk_wishlisted_heart:hover, .lk_wishlisted_loupe:hover{
     cursor: pointer;
@@ -75,4 +80,7 @@ box-shadow: 0px 0px 8px 9px rgba(34, 60, 80, 0.2);
 }
 .lk_wishlisted_loupe{
     background-image: url("../img/loupe.png");
+}
+.lk_wishlisted_rating{
+    display: flex;
 }

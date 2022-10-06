@@ -4,6 +4,9 @@
     <link rel="stylesheet" href="{% static 'lk/lk.css' %}">
     <link rel="stylesheet" href="{% static 'lk/lk_wishlist.css' %}">
         <link rel="stylesheet" href="{% static 'shop/parts/quickview.css' %}">
+    <script type="text/javascript" src="{% static 'js/star-rating-svg/dist/jquery.star-rating-svg.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'js/star-rating-svg/src/css/star-rating-svg.css' %}">
+
 {% endblock head %}
 {% block title %}
     Личный кабинет
@@ -28,6 +31,7 @@
         <a href="{{ wishlisted.get_absolute_url }}"><img src="{{ wishlisted.image.url }}" class="lk_wishlisted_img"></a>
         <a  href="{{ wishlisted.get_absolute_url }}" class="lk_wishlisted_name">{{ wishlisted.name }}</a>
             <div class="lk_wishlisted_icons">
+                <div class="lk_wishlisted_rating" data-rating="{{ wishlisted.get_score }}"></div>
                 <div class="lk_wishlisted_heart heart_colored" id="{{ wishlisted.pk }}_product"></div>
                 {% csrf_token %}
                 <div class="lk_wishlisted_loupe loupe"></div>
@@ -41,6 +45,11 @@
 </section>
     <script>
     let heart = $('.lk_wishlisted_heart');
+    $('.lk_wishlisted_rating').starRating({
+        totalStars: 5,
+        starSize: 15,
+        readOnly: true,
+    });
     heart.click(function (){
         console.log($(this).attr('id'))
         $.ajax({

@@ -2,7 +2,8 @@
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'shop/product_detail.css' %}">
-
+        <script type="text/javascript" src="{% static 'js/star-rating-svg/dist/jquery.star-rating-svg.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'js/star-rating-svg/src/css/star-rating-svg.css' %}">
 {% endblock head %}
 {% block title %}
     PREP KZ
@@ -20,7 +21,7 @@
         <p class="{% if product.available %}in_stock">В наличии{% else %}not_in_stock">Нет в наличии{% endif %}</p>
         <h2 class="product_name">{{ product.name }}</h2>
         <div class="star_reviews_block">
-            <p>5</p>
+            <p class="product_rating" data-rating="{{ product.get_score }}"></p>
             <p class="star_reviews gray_p">({{ product.get_reviews_number }} reviews)</p>
             <p class="gray_p product_articul_block">Артикул: <span class="product_articul">124312</span></p>
         </div>
@@ -68,6 +69,11 @@
 </div>
 </section>
     <script>
+    $('.product_rating').starRating({
+             totalStars: 5,
+        starSize: 15,
+        readOnly: true,
+    })
         $('#minus').click(function (){
             if ($('.input_product_quantity').val() === '1'){
             }

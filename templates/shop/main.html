@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="{% static 'shop/main.css' %}">
     <link rel="stylesheet" href="{% static 'shop/product.css' %}">
     <link rel="stylesheet" href="{% static 'shop/parts/quickview.css' %}">
+        <script type="text/javascript" src="{% static 'js/star-rating-svg/dist/jquery.star-rating-svg.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'js/star-rating-svg/src/css/star-rating-svg.css' %}">
 {% endblock head %}
 {% block title %}
     PREP KZ
@@ -26,7 +28,7 @@
                 <p class="product_name"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></p>
 
                 <div class="star_and_btns">
-                    <div>{{ product.get_score }}</div>
+                    <div class="product_rating" data-rating="{{ product.get_score }}"></div>
                     <div class="product_btns disappear">
                         <div title="Добавить в список желаемого" class="heart {% is_product_in_wishlist request product.pk as result %}{% if result %}heart_colored{% else %} heart_default{% endif %}" id="{{ product.pk }}_product"></div>
                         <div class="loupe" id="{{ product.pk }}" title="Быстрый просмотр"></div>
@@ -115,7 +117,11 @@ $('.heart').click(function (){
     })
     }
 })
-
+    $('.product_rating').starRating({
+        totalStars: 5,
+        starSize: 15,
+        readOnly: true,
+    })
     </script>
     {% include 'shop/parts/quickview_js.html' %}
 {% endblock content %}

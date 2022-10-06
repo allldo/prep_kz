@@ -59,6 +59,7 @@ transition: all .5s;
     display: inline-block;
   position: relative;
     width: fit-content;
+    font-size: 18px;
 }
 .product_name, .product_categories{
     margin-left: 5px;
