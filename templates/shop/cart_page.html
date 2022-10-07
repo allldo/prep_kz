@@ -1,11 +1,62 @@
 {% extends 'shop/base.html' %}
+{% load static %}
 {% block head %}
+    <link rel="stylesheet" href="{% static 'shop/cart_page.css' %}">
 {% endblock head %}
 {% block title %}
 {% endblock title %}
 {% block content %}
-    {% for product in cart.get_all_products_in_cart %}
-        {{ product.product.name }}
-    {% endfor %}
-    {{ cart.total_sum }}
+<section>
+<h1>Корзина</h1>
+<div class="cart_blocks_wrapper">
+<div class="cart_product_list">
+    {% if cart.product_item.all %}
+        <div class="cart_not_empty">
+        {% for item in cart.get_all_products_in_cart %}
+            <div class="cart_product_item">
+            <div class="cart_item_im_and_delete">
+                <img class="cart_item_img" src="{{ item.product.image.url }}">
+                <p class="delete_from_cart" id="{{ item.product.pk }}">Удалить</p>
+                {% csrf_token %}
+            </div>
+                <div class="cart_item_name"><p>{{ item.product.name }}</p>
+                {% if item.quantity > 1 %}<p>1шт/{{ item.product.price }}</p>{% endif %}
+                </div><p class="cart_item_price">{{ item.get_total_by_product }} ₸</p> <div>{{ item.quantity }}</div>
+            </div>
+        {% endfor %}
+        <p>Очистить корзину</p>
+        </div>
+    {% else %}
+        <div class="cart_empty">
+    <div class="cart_icon"></div><p>У вас нет товаров в корзине</p>
+        </div>
+    {% endif %}
+
+</div>
+<div class="cart_checkout_form">
+    <h4>Сумма к оплате</h4>
+    <div class="cart_total_sum"><p><span>{{ cart.total_products_in_cart }}</span> товаров на сумму</p><p>{{ cart.total_sum }} ₸</p></div>
+    <div class="cart_sum_to_pay"><p>К оплате</p><p class="cart_total">{{ cart.total_sum }} ₸</p></div>
+    <p class="cart_to_checkout_btn {% if cart.product_item.all %}active_btn{% endif %}">Оформить заказ</p>
+    <span>Оформляя заказ, вы подтверждаете свое согласие с нашими <a>условиями покупки</a> в интернет-магазине</span>
+</div>
+</div>
+</section>
+    <script>
+        let delete_from_cart_btn = $('.delete_from_cart')
+        delete_from_cart_btn.click( function(){
+            let product = $(this).attr('id')
+            $.ajax({
+            url: "{% url 'shop:remove_from_cart' %}",
+            type: 'POST',
+        data:{
+                product_id: product,
+                csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()
+        },
+        success: function (response){
+                console.log('deleted', response)
+        }
+        })
+            })
+    </script>
 {% endblock content %}

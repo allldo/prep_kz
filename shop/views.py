@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from .models import Product, Cart, ProductCartItem
 from .forms import  RegisterForm
-from .service import log_in, get_customer
+from .service import log_in, get_customer, get_cart
 
 
 def main_page(request: WSGIRequest) -> HttpResponse:
@@ -70,7 +70,7 @@ def add_to_cart(request: WSGIRequest) -> JsonResponse:
     """ Добавление товара в корзину """
     cart = get_object_or_404(Cart, cart_owner=get_customer(request))
     product = get_object_or_404(Product, id=request.POST.get('product_id'))
-    product_item = ProductCartItem.objects.create(product=product, quantity=request.POST.get('quantity'))
+    product_item = ProductCartItem.objects.get_or_create(product=product, quantity=request.POST.get('quantity'))
     cart.product_item.add(product_item.id)
     return JsonResponse({
         'added': True, 'product': {
@@ -113,12 +113,12 @@ def remove_from_wishlist(request: WSGIRequest):
     })
 
 
-def remove_from_cart(request: WSGIRequest, product_id: int) -> HttpResponse:
+def remove_from_cart(request: WSGIRequest) -> HttpResponse:
     """ Удаление товара из корзины """
-    cart = Cart(request)
-    product = get_object_or_404(Product, id=product_id)
-    cart.remove(product)
-    return redirect('cart:cart_detail')
+    get_cart(request).delete_product_from_cart(request.POST.get('product_id'))
+    return JsonResponse({
+        'deleted': True
+    })
 
 
 def cart_detail(request: WSGIRequest) -> HttpResponse:

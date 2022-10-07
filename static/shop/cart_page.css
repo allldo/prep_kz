@@ -1,0 +1,124 @@
+section{
+    background-color: #f0f1f2;
+}
+.cart_icon{
+    background-image: url("../img/cart.png");
+    width: 24px;
+    height: 24px;
+    align-self: center;
+}
+.cart_product_list{
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    margin-left: 20vw;
+    width: 40vw;
+}
+.cart_blocks_wrapper{
+    display: flex;
+}
+.cart_empty{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 5vw 15vw;
+}
+.cart_checkout_form{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 20px;
+    margin-left: 1vw;
+    width: 15vw;
+}
+.cart_checkout_form>h4{
+    font-size: 20px;
+}
+.cart_checkout_form>span{
+    margin-top: 1vh;
+}
+.cart_not_empty{
+    /*padding: 0 5vw;*/
+}
+.cart_product_item{
+    display: flex;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 2vh;
+}
+.cart_item_img{
+    width: 80px;
+    height: 80px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.cart_item_im_and_delete{
+    display: flex;
+    flex-direction: column;
+}
+.delete_from_cart{
+    align-self: center;
+    color: #9a9a9a;
+    font-size: 14px;
+    font-weight: 500;
+}
+.delete_from_cart:hover{
+    cursor: pointer;
+}
+.cart_item_name{
+    font-size: 18px;
+    font-weight: 500;
+    align-self: center;
+    width: 75%;
+}
+.cart_item_price{
+    align-self: center;
+    font-size: 20px;
+    font-weight: bolder;
+}
+.cart_total_sum{
+    justify-content: space-between;
+    display: flex;
+    border-bottom: 1px solid #9a9a9a;
+    padding-bottom: 2vh;
+    margin-top: 2vh;
+}
+.cart_not_empty>p{
+    color: #9a9a9a;
+    text-align: center;
+    margin-top: 2vh;
+    font-weight: bolder;
+}
+.cart_not_empty>p:hover{
+    cursor: pointer;
+    color: #cccccc;
+}
+.cart_sum_to_pay{
+    margin-top: 2vh;
+    display: flex;
+    padding-bottom: 2vh;
+    justify-content: space-between;
+}
+.cart_total{
+    font-weight: bolder;
+    font-size: 24px;
+}
+.cart_to_checkout_btn{
+    text-align: center;
+    background-color: #9a9a9a;
+    border-radius: 15px;
+    padding: 15px 25px;
+
+}
+.active_btn{
+        border: 1px solid #ecca7e;
+       background-color: #ecca7e;
+}
+.active_btn:hover{
+    background-color: #e7bd5e;
+}
+.cart_to_checkout_btn:hover{
+    cursor: not-allowed;
+}

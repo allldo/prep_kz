@@ -140,11 +140,15 @@ class Cart(models.Model):
 
     def get_all_products_in_cart(self):
         """ Получение всех продуктов в корзине """
-        return self.product_item.all()
+        return self.product_item.select_related('product')
 
     def total_products_in_cart(self):
         """ Общее количество продуктов в корзине """
         return self.product_item.all().count()
+
+    def delete_product_from_cart(self, product_id):
+        """ Удаление товара из корзины """
+        ProductCartItem.objects.get(product_id=product_id, cart=self).delete()
 
 # class ProductOptions(models.Model):
 #     SIZES_CHOICES = (

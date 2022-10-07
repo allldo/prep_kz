@@ -9,6 +9,7 @@ from .models import Customer
 
 
 def log_in(request: WSGIRequest, username: str, password: str) -> bool:
+    """ Функция входа """
     user = authenticate(username=username, password=password)
     if user is not None:
         login(request, user)
@@ -17,7 +18,13 @@ def log_in(request: WSGIRequest, username: str, password: str) -> bool:
 
 
 def get_customer(request: WSGIRequest) -> Union[Customer, bool]:
+    """ Получение юзера (залогиненного) """
     if isinstance(request.user, AnonymousUser):
         return False
     customer = get_object_or_404(Customer, user=request.user)
     return customer
+
+
+def get_cart(request: WSGIRequest):
+    """ Получение корзины """
+    return get_customer(request).get_cart()
