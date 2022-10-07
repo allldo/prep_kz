@@ -148,7 +148,20 @@ class Cart(models.Model):
 
     def delete_product_from_cart(self, product_id):
         """ Удаление товара из корзины """
-        ProductCartItem.objects.get(product_id=product_id, cart=self).delete()
+        ProductCartItem.objects.get(product_id=product_id, cart=self, customer=self.cart_owner).delete()
+
+    def add_product_to_cart(self, product_id, quantity):
+        """ Добавление в корзину """
+        product = get_object_or_404(Product, id=product_id)
+        try:
+            item = ProductCartItem.objects.get(product=product, customer=self.cart_owner)
+            item.quantity += int(quantity)
+            item.save()
+        except:
+            new_product = ProductCartItem.objects.create(product=product, customer=self.cart_owner, quantity=quantity)
+            self.product_item.add(new_product)
+        json_return = {'name': product.name}
+        return json_return
 
 # class ProductOptions(models.Model):
 #     SIZES_CHOICES = (
@@ -164,6 +177,7 @@ class Cart(models.Model):
 
 
 class ProductCartItem(models.Model):
+    customer = models.ForeignKey('shop.Customer', on_delete=models.CASCADE)
     product = models.ForeignKey('shop.Product', on_delete=models.CASCADE)
     quantity = models.IntegerField()
 

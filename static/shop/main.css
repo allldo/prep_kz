@@ -97,6 +97,9 @@ a{
     height: 48px;
     transition: 0.3s all;
 }
+.product_add_to_cart_btn:hover{
+    cursor: pointer;
+}
 .svg_item_z{
         width: 64px;
     height: 64px;

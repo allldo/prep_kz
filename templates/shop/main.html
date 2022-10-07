@@ -37,7 +37,12 @@
 
                 <div class="price_and_add_to_cart_flex">
                     <p class="product_price">{{ product.price }} ₸</p>
-                    <p class="product_add_to_cart_btn"><span class="plus_symbol">+</span> В КОРЗИНУ</p>
+                    {% is_in_cart request product.pk as result %}
+                    {% if not result %}
+                    <p class="product_add_to_cart_btn" id="{{ product.pk }}"><span class="plus_symbol">+</span> В КОРЗИНУ</p>{% csrf_token %}
+                    {% else %}
+                        <p>Перейти в корзину</p>
+                    {% endif %}
                 </div>
             </li>
             {% endfor %}
@@ -181,7 +186,18 @@ $('.heart').click(function (){
     })
     }
 })
+$('.product_add_to_cart_btn').click(function (){
 
+    $.ajax({
+        type: 'POST',
+        url: "{% url 'shop:add_to_cart' %}",
+        data:{
+            product_id: $(this).attr('id'),
+            quantity: 1,
+            csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()
+        },
+    })
+})
     </script>
 
     {% include 'shop/parts/quickview_js.html' %}

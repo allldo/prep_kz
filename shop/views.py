@@ -66,15 +66,16 @@ def register(request: WSGIRequest):
 
 
 @require_POST
+@login_required()
 def add_to_cart(request: WSGIRequest) -> JsonResponse:
     """ Добавление товара в корзину """
     cart = get_object_or_404(Cart, cart_owner=get_customer(request))
-    product = get_object_or_404(Product, id=request.POST.get('product_id'))
-    product_item = ProductCartItem.objects.get_or_create(product=product, quantity=request.POST.get('quantity'))
-    cart.product_item.add(product_item.id)
+    json_data = cart.add_product_to_cart(request.POST.get('product_id'), request.POST.get('quantity'))
+    # product_item = ProductCartItem.objects.create(product=product, quantity=request.POST.get('quantity'))
+    # cart.product_item.add(product_item.id)
     return JsonResponse({
         'added': True, 'product': {
-            'name': product.name,
+            'name': json_data['name'],
             'quantity': request.POST.get('quantity')
         }
 
