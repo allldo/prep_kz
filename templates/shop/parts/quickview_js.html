@@ -6,24 +6,23 @@
 		<ul class="splide__list" id="list_of_slides">
 			<li class="splide__slide img_slide">
 				<img id="first_slide">
-			</li>
 {#			<li class="splide__slide">#}
 {#				<img id="second_slide">#}
-{#			</li>#}
+			</li>
 		</ul>
   </div>
     </div>
     <div id="loupe_product_info" class="disappear">
         <h5 id="loupe_product_name"></h5>
         <div>
-            <p>3 stars</p>
+            <div class="loupe_rating"></div>
             <p id="loupe_product_reviews"></p>
         </div>
         <p id="loupe_product_price"></p>
         <p id="loupe_product_description"></p>
         <p id="loupe_product_add_to_cart"></p>
             <div>
-                <div></div>
+                <div class="loupe_wishlist"></div>
                 <p>Добавить в список желаемого</p>
             </div>
         <p class="loupe_product_category">
@@ -41,11 +40,17 @@
 
     function make_modal_content(response){
         loader.addClass('disappear')
+        console.log(response.product)
+        if (response.wishlisted === true){
+            $('.loupe_wishlist').addClass('heart_colored')
+        }
+        else{
+            $('.loupe_wishlist').addClass('heart_default')
+        }
         $('#loupe_product_info').removeClass('disappear')
         $('#loupe_product_name').text(response.product.name)
         $('#first_slide').attr('src', response.product.image)
         if (response.product.image_on_hover !== null) {
-            console.log('not null')
             $('#list_of_slides').append(
                 $('li').addClass('splide__slide').append('img').attr('id', 'second_slide')
             )
@@ -65,11 +70,30 @@
         }
         $('#loupe_product_price').text(response.product.price+ ' ₸')
         $('#loupe_product_description').text(response.product.description)
-        $('#loupe_product_categories').text(response.product.get_product_categories)
+        let literal = ''
+        for (let x=0; x<response.product.get_product_categories.length; x++){
+            literal+=response.product.get_product_categories[x].name
+            if (x+1 !== response.product.get_product_categories.length){
+                literal += ', '
+            }
+        }
+        $('#loupe_product_categories').text(literal)
+        $('.loupe_rating').starRating({
+            totalStars: 5,
+            starSize: 15,
+            readOnly: true,
+        })
+        $('.loupe_rating').attr('data-rating', response.product.rating)
         }
 
      function close_and_destroy(){
-
+        $('#loupe_product_price').text('')
+        $('#loupe_product_description').text('')
+        $('.loupe_rating').starRating('destroy')
+        $('#loupe_product_reviews').text('')
+        $('#loupe_product_name').text('')
+        $('#first_slide').attr('src', '213')
+         loader.removeClass('disappear')
      }
 
     loupe.click(function (){
@@ -83,7 +107,6 @@
             },
             success: function (response){
                 $('body').addClass('overflow_blocked')
-                console.log(response.product)
                 setTimeout(()=>make_modal_content(response), 650 )
 
             },
@@ -101,6 +124,8 @@
         loupe_modal.toggle("disappear");
     }
     darken.addClass('disappear');
-    setTimeout(()=>loader.removeClass('disappear'), 650 )  }
+
+    setTimeout(close_and_destroy(), 650 )
+  close_and_destroy()}
  });
 </script>

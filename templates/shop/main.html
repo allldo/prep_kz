@@ -159,12 +159,10 @@ $('.heart').click(function (){
                 product_id: $(this).attr('id')
             },
         success: function (response){
-            console.log(response)
              if (response.redirect === true){
                  window.location.href = '/login/'
              }
             let prod_id = response.product_id
-            console.log($('#'+prod_id+'_product').removeClass('heart_default'))
             $('#'+prod_id+'_product').addClass('heart_colored')
             $('#'+prod_id+'_product').removeClass('heart_default')
 

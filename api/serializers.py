@@ -13,7 +13,7 @@ class CategorySerializer(ModelSerializer):
 
 class ProductSerializer(ModelSerializer):
     get_reviews_number = serializers.ReadOnlyField(allow_null=True)
-    get_product_categories = serializers.ReadOnlyField()
+    get_product_categories = CategorySerializer(many=True)
 
     class Meta:
         fields = '__all__'

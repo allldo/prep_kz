@@ -9,7 +9,7 @@
     /*box-shadow:0 0 0 1600px rgba(0,0,0,0.65);*/
     display: flex;
     z-index: 5;
-    transition: all 0.3s ease-in;
+    transition: visibility 1s ease-in;
 
 }
 .loader{
@@ -50,4 +50,5 @@
 #loupe_product_price{
     font-size: 20px;
     color: #415844;
+    font-weight: bolder;
 }
