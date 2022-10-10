@@ -33,6 +33,7 @@
 .darken{
     width: 100%;
     top:0;
+    height: 140vh;
     bottom: 0;
     position: absolute;
     background-color: black;

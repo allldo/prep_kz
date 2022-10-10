@@ -78,18 +78,11 @@
             }
         }
         $('#loupe_product_categories').text(literal)
-        $('.loupe_rating').starRating({
-            totalStars: 5,
-            starSize: 15,
-            readOnly: true,
-        })
-        $('.loupe_rating').attr('data-rating', response.product.rating)
         }
 
      function close_and_destroy(){
         $('#loupe_product_price').text('')
         $('#loupe_product_description').text('')
-        $('.loupe_rating').starRating('destroy')
         $('#loupe_product_reviews').text('')
         $('#loupe_product_name').text('')
         $('#first_slide').attr('src', '213')

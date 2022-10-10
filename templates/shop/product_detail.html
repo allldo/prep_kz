@@ -10,9 +10,22 @@
     PREP KZ
 {% endblock title %}
 {% block content %}
+    {% load services_template %}
 <section class="content_wrapper">
-<div>
-    <a href="{% url 'shop:main_page' %}">Домашняя страница</a><span>></span><a>Магазин</a> <span>></span><a>{{ product.name}}</a>
+<div class="breadcrumbs_product_detail">
+<li><a href="{% url 'shop:main_page' %}">Домашняя</a>
+<svg class="BreadcrumbsNext__CrumbIcon" fill="none" stroke="" viewBox="0 0 16 16" width="16" height="16">
+    <path d="M7.85355 4.85355L10.6464 7.64645C10.8417 7.84171 10.8417 8.15829 10.6464 8.35355L7.85355 11.1464C7.53857 11.4614 7 11.2383 7 10.7929V5.20711C7 4.76165 7.53857 4.53857 7.85355 4.85355Z" fill="#737171"></path>
+</svg>
+    </li>
+<li>
+<a>
+    {{ product.name}}
+</a>
+</li></div>
+<div class="added_to_cart disappear">
+<p class="added_to_cart_product">"{{ product.name }}"<span> товар был добавлен в корзину</span></p>
+    <a href="{% url 'shop:cart_detail' %}">Перейти в корзину</a>
 </div>
 <div class="product_block_flex">
     <div>
@@ -22,7 +35,7 @@
         <p class="{% if product.available %}in_stock">В наличии{% else %}not_in_stock">Нет в наличии{% endif %}</p>
         <h2 class="product_name">{{ product.name }}</h2>
         <div class="star_reviews_block">
-            <p class="product_rating det" data-rating="{{ product.get_score }}"></p>
+            <p class="product_rating" id="det" data-rating="{{ product.get_score }}"></p>
             <p class="star_reviews gray_p">({{ product.get_reviews_number }} reviews)</p>
             <p class="gray_p product_articul_block">Артикул: <span class="product_articul">124312</span></p>
         </div>
@@ -36,13 +49,18 @@
             <input type="number"  value="1" class="input_product_quantity">
             <p id="plus">+</p>
         </div>
-        <p class="add_to_cart_btn" id="{{ product.pk }}">+ Добавить в корзину</p>
+            <p class="add_to_cart_btn" id="{{ product.pk }}">+ Добавить в корзину</p>
         {% csrf_token %}
     </div>
     <div class="wishlist_block">
-        <div class="heart heart_default">
-        </div>
-        <p>Добавить в список желаемого</p>
+        {% is_product_in_wishlist request product.pk as is_wishlisted %}
+        {% if is_wishlisted %}
+        <div class="heart heart_colored"></div>
+        <p class="already_in_wishlist">Уже в списке желаемого</p>
+        {% else %}
+        <div class="heart heart_default"></div>
+        <p class="add_to_wishlist_p">Добавить в список желаемого</p>
+        {% endif %}
     </div>
     <p class="categories_list">
         Categories: <span class="gray_p product_category">{% for category in product.get_product_categories.all %}{% if forloop.counter0 > 0  %}, {% endif %}{{ category }}{% endfor %}</span>
@@ -67,9 +85,9 @@
 <div class="product_reviews disappear">
     {% for review in product.get_reviews %}
         <div>
-        <div class="product_rating_detail det" data-rating="{{ review.rating }}"></div>
-        <p>{{ review.user }} <span>{{ review.date|date:'M d, Y'|localize }}</span></p>
-        <p>{{ review.content }}</p>
+        <div class="product_rating_detail drr" data-rating="{{ review.get_rating }}">{{ review.get_rating }}</div>
+        <p class="review_user">{{ review.user }} <span>{{ review.date|date:'M d, Y'|localize }}</span></p>
+        <p class="review_content">{{ review.content }}</p>
         </div>
     {% endfor %}
 </div>
@@ -79,12 +97,65 @@
 </section>
     <script>
       document.addEventListener( 'DOMContentLoaded', function () {
-        $('.det').starRating({
+$('#det').starRating({
+        totalStars: 5,
+        starSize: 15,
+        readOnly: true,
+    })
+          $('.drr').starRating({
         totalStars: 5,
         starSize: 15,
         readOnly: true,
     })
       });
+      $('.wishlist_block').click(function (){
+        if ($('.heart').hasClass('heart_default')){
+             $.ajax({
+        type: 'POST',
+        url: "{% url 'shop:add_to_wishlist' %}",
+        data:
+            {
+                product_id: '{{ product.pk }}_product'
+            },
+        success: function (response){
+             if (response.redirect === true){
+                 window.location.href = '/login/'
+             }
+            $('.heart').addClass('heart_colored')
+            $('.heart').removeClass('heart_default')
+            $('.add_to_wishlist_p').text('Добавлено в список желаемого')
+        }
+    })
+        }
+        else{
+                         $.ajax({
+        type: 'POST',
+        url: "{% url 'shop:remove_from_wishlist' %}",
+        data:
+            {
+                product_id: '{{ product.pk }}_product'
+            },
+        success: function (response){
+             if (response.redirect === true){
+                 window.location.href = '/login/'
+             }
+            let prod_id = response.product_id
+            $('.heart').addClass('heart_colored')
+            $('.heart').removeClass('heart_default')
+
+        }
+    })
+        }
+      })
+function isInViewport(elem) {
+    var bounding = elem.getBoundingClientRect();
+    return (
+        bounding.top >= 0 &&
+        bounding.left >= 0 &&
+        bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+};
         $('#minus').click(function (){
             if ($('.input_product_quantity').val() === '1'){
             }
@@ -97,18 +168,27 @@
         })
         $('#additional_info').click(function (){
             $('.description_block').addClass('disappear')
+            $('#description').removeClass('active')
+            $('#additional_info').addClass('active')
+            $('#reviews').removeClass('active')
             $('.additional_info').removeClass('disappear')
             $('.product_reviews').addClass('disappear')
 
         })
         $('#description').click(function (){
            $('.description_block').removeClass('disappear')
+            $('#description').addClass('active')
+            $('#additional_info').removeClass('active')
+            $('#reviews').removeClass('active')
             $('.additional_info').addClass('disappear')
             $('.product_reviews').addClass('disappear')
 
         })
         $('#reviews').click(function (){
             $('.description_block').addClass('disappear')
+            $('#description').removeClass('active')
+            $('#additional_info').removeClass('active')
+            $('#reviews').addClass('active')
             $('.additional_info').addClass('disappear')
             $('.product_reviews').removeClass('disappear')
 
@@ -123,7 +203,13 @@
                     quantity: $('.input_product_quantity').val(),
                     csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()
                 },
+                success: function (response){
+                    $('.added_to_cart').removeClass('disappear')
+                }
             })
         })
+      if (!isInViewport($('.wishlist_block'))){
+          console.log('notin viewpoert')
+      }
     </script>
 {% endblock content %}

@@ -120,6 +120,10 @@ class Review(models.Model):
         """ String representation of review """
         return self.user.user.username
 
+    def get_rating(self):
+        """ Получение рейтинга в формате приемлимом для js либы """
+        return str(self.rating).replace(',', '.')
+
 
 class Cart(models.Model):
     cart_owner = models.ForeignKey('shop.Customer', on_delete=models.CASCADE)
