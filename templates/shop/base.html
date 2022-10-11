@@ -205,7 +205,6 @@ Illinois 85486, USA</p>
     }
   document.addEventListener("click", (e) => {
       const isClosest = e.target.closest('.modal_sign_in');
-      console.log(isClosest)
       const isCreateButton = e.target.closest('.flex_icon_n_user');
       if (!isClosest && !isCreateButton) {
         $('.modal_sign_in').addClass('disappear');

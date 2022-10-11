@@ -1,73 +1,94 @@
-<div class="darken disappear"></div>
-<div class="loupe_pop_up" style="display: none">
-    <div class="loader"></div>
-    <div id="carousel_loupe" class="splide">
-  <div class="splide__track">
-		<ul class="splide__list" id="list_of_slides">
-			<li class="splide__slide img_slide">
-				<img id="first_slide">
+
+    <div class="darken disappear"></div>
+<div class="loader disappear"></div>
+<div id="quick_view_added" style="display: none">
+</div>
+{#<div class="loupe_pop_up" style="display: none">#}
+{#    <div class="loader"></div>#}
+{#    <div id="carousel_loupe" class="splide">#}
+{#  <div class="splide__track">#}
+{#		<ul class="splide__list" id="list_of_slides">#}
+{#			<li class="splide__slide img_slide">#}
+{#				<img id="first_slide">#}
 {#			<li class="splide__slide">#}
 {#				<img id="second_slide">#}
-			</li>
-		</ul>
-  </div>
-    </div>
-    <div id="loupe_product_info" class="disappear">
-        <h5 id="loupe_product_name"></h5>
-        <div>
-            <div class="loupe_rating"></div>
-            <p id="loupe_product_reviews"></p>
-        </div>
-        <p id="loupe_product_price"></p>
-        <p id="loupe_product_description"></p>
-        <p id="loupe_product_add_to_cart"></p>
-            <div>
-                <div class="loupe_wishlist"></div>
-                <p>Добавить в список желаемого</p>
-            </div>
-        <p class="loupe_product_category">
-            Категории: <span id="loupe_product_categories"></span>
-        </p>
-    </div>
-</div>
+{#			</li>#}
+{#		</ul>#}
+{#  </div>#}
+{#    </div>#}
+{#    <div id="loupe_product_info" class="disappear">#}
+{#        <h5 id="loupe_product_name"></h5>#}
+{#        <div>#}
+{#            <div class="loupe_rating" data-rating=""></div>#}
+{#            <p id="loupe_product_reviews"></p>#}
+{#        </div>#}
+{#        <p id="loupe_product_price"></p>#}
+{#        <p id="loupe_product_description"></p>#}
+{#        <p id="loupe_product_add_to_cart"></p>#}
+{#            <div>#}
+{#                <div class="loupe_wishlist"></div>#}
+{#                <p>Добавить в список желаемого</p>#}
+{#            </div>#}
+{#        <p class="loupe_product_category">#}
+{#            Категории: <span id="loupe_product_categories"></span>#}
+{#        </p>#}
+{#    </div>#}
+{#</div>#}
 <script>
 {#  loader start  #}
     let loupe = $('.loupe')
     let loader = $('.loader')
-    let loupe_modal = $('.loupe_pop_up')
+    let loupe_modal = $('#quick_view_added')
     let darken = $('.darken')
 
 
     function make_modal_content(response){
+
+        $('#quick_view_added').html(
+            '<div class="loupe_pop_up" style=""> \
+    <div id="carousel_loupe" class="splide">\
+  <div class="splide__track">\
+		<ul class="splide__list" id="list_of_slides">\
+			<li class="splide__slide img_slide">\
+				<img id="first_slide">\
+			</li>\
+		</ul>\
+  </div>\
+    </div>\
+    <div id="loupe_product_info" class="disappear">\
+        <h5 id="loupe_product_name"></h5>\
+        <div>\
+            <div class="loupe_rating" data-rating=""></div>\
+            <p id="loupe_product_reviews"></p>\
+        </div>\
+        <p id="loupe_product_price"></p>\
+        <p id="loupe_product_description"></p>\
+        <p id="loupe_product_add_to_cart"></p>\
+            <div>\
+                <div class="loupe_wishlist"></div>\
+                <p>Добавить в список желаемого</p>\
+            </div>\
+        <p class="loupe_product_category">\
+            Категории: <span id="loupe_product_categories"></span>\
+        </p>\
+    </div>\
+</div>'
+        )
         loader.addClass('disappear')
+        darken.removeClass('disappear')
         console.log(response.product)
         if (response.wishlisted === true){
             $('.loupe_wishlist').addClass('heart_colored')
-        }
+         }
         else{
             $('.loupe_wishlist').addClass('heart_default')
-        }
+         }
         $('#loupe_product_info').removeClass('disappear')
         $('#loupe_product_name').text(response.product.name)
         $('#first_slide').attr('src', response.product.image)
-        if (response.product.image_on_hover !== null) {
-            $('#list_of_slides').append(
-                $('li').addClass('splide__slide').append('img').attr('id', 'second_slide')
-            )
-            $('#second_slide').attr('src', response.product.image_on_hover)
-
-            var splidick = new Splide('#carousel_loupe', {
-                type: 'loop',
-                perPage: 1,
-                perMove: 1,
-                pagination: false,
-            });
-
-            splidick.mount();
-        }
         if (response.product.get_reviews_number !== 0){
             $('#loupe_product_reviews').text(response.product.get_reviews_number + ' Отзывов')
-        }
+         }
         $('#loupe_product_price').text(response.product.price+ ' ₸')
         $('#loupe_product_description').text(response.product.description)
         let literal = ''
@@ -76,22 +97,26 @@
             if (x+1 !== response.product.get_product_categories.length){
                 literal += ', '
             }
-        }
+         }
         $('#loupe_product_categories').text(literal)
+        $('.loupe_rating').attr('data-rating', response.product.rating)
+        $('.loupe_rating').starRating({
+            totalStars: 5,
+            starSize: 15,
+            readOnly: true,
+         })
         }
 
      function close_and_destroy(){
-        $('#loupe_product_price').text('')
-        $('#loupe_product_description').text('')
-        $('#loupe_product_reviews').text('')
-        $('#loupe_product_name').text('')
-        $('#first_slide').attr('src', '213')
-         loader.removeClass('disappear')
+         darken.addClass('disappear')
+         $('.loupe_pop_up').remove()
      }
 
-    loupe.click(function (){
-        $('.loupe_pop_up').toggle('disappear')
+    $('.loupe').on('click', function (){
+        console.log('gotta open modal')
+        $('#quick_view_added').toggle('disappear')
         $('.darken').removeClass('disappear')
+        setTimeout(()=>loader.removeClass('disappear'), 350 )
         $.ajax({
             type: 'GET',
             url: "{% url 'api:get_product_info' %}",
@@ -100,7 +125,7 @@
             },
             success: function (response){
                 $('body').addClass('overflow_blocked')
-                setTimeout(()=>make_modal_content(response), 650 )
+                setTimeout(()=>make_modal_content(response), 1150 )
 
             },
             error: function (){
@@ -110,15 +135,16 @@
 
     })
   document.addEventListener("click", (e) => {
-  const isClosest = e.target.closest('.loupe_pop_up');
-  const isCreateButton = e.target.closest('.loupe');
-  if (!isClosest && !isCreateButton) {
+  const modal = e.target.closest('.loupe_pop_up');
+  const loupe_btn = e.target.closest('.loupe');
+  console.log(e.target)
+  if (!modal && !loupe_btn) {
     if (!darken.hasClass('disappear')) {
+        console.log('loupe to open')
         loupe_modal.toggle("disappear");
     }
-    darken.addClass('disappear');
 
     setTimeout(close_and_destroy(), 650 )
-  close_and_destroy()}
+   }
  });
 </script>

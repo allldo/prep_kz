@@ -117,6 +117,8 @@
               perPage: 5,
               perMove: 1,
               pagination: true,
+             drag: false,
+            dragAngleThreshold: 0
           });
           splide.mount();
 
@@ -197,7 +199,6 @@ $('.product_add_to_cart_btn').click(function (){
     })
 })
     </script>
-
     {% include 'shop/parts/quickview_js.html' %}
 {% endblock content %}
 

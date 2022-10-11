@@ -1,23 +1,37 @@
 .loupe_pop_up{
     align-self: center;
-    width: 1000px;
-    height: 500px;
-    margin: 0 auto;
-    position: absolute;
-    top: 20%;
-    background-color: white;
+    width: 100%;
+    height: 100%;
+    position: relative;
     /*box-shadow:0 0 0 1600px rgba(0,0,0,0.65);*/
     display: flex;
-    z-index: 5;
-    transition: visibility 1s ease-in;
 
+}
+#quick_view_added{
+    background-color: white;
+    transition: visibility 1s ease-in;
+        width: 1000px;
+    height: 500px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    position: absolute;
+        z-index: 5;
+    top: 20%;
+    display: flex;
 }
 .loader{
     background-image: url("../../gif/loader.gif");
     width: 64px;
     height: 64px;
+    z-index: 6;
     align-self: center;
+    position: absolute;
+    top: 30%;
+    left: 0;
+    right: 0;
     margin: 0 auto;
+
 }
 .overflow_blocked{
     overflow: hidden scroll;
