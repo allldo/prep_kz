@@ -34,7 +34,7 @@
                 <div class="lk_wishlisted_rating" data-rating="{{ wishlisted.get_score }}"></div>
                 <div class="lk_wishlisted_heart heart_colored" id="{{ wishlisted.pk }}_product"></div>
                 {% csrf_token %}
-                <div class="lk_wishlisted_loupe loupe"></div>
+                <div class="lk_wishlisted_loupe loupe" id="{{ wishlisted.pk }}"></div>
             </div>
         <p class="lk_wishlisted_price">{{ wishlisted.price }} ₸</p>
         </div>

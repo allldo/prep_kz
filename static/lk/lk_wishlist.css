@@ -72,11 +72,12 @@ box-shadow: 0px 0px 8px 9px rgba(34, 60, 80, 0.2);
 .lk_wishlisted_heart:hover, .lk_wishlisted_loupe:hover{
     cursor: pointer;
 }
-.heart_default{
-        background-image: url("../img/heart_default.png");
-}
 .heart_colored{
-    background-image: url("../img/colored_heart.png");
+        background-image: url("../img/colored_heart.png");
+    width: 16px;
+    height: 16px;
+    align-self: center;
+    transition: all 1s;
 }
 .lk_wishlisted_loupe{
     background-image: url("../img/loupe.png");
