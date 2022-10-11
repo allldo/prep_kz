@@ -64,9 +64,17 @@
         <p id="loupe_product_price"></p>\
         <p id="loupe_product_description"></p>\
         <p id="loupe_product_add_to_cart"></p>\
+            <div class="add_to_cart_block">\
+        <div class="input_quantity">\
+            <p id="minus">-</p>\
+            <input type="number"  value="1" class="input_product_quantity">\
+            <p id="plus">+</p>\
+        </div>\
+            <p class="add_to_cart_btn">+ Добавить в корзину</p>\
+    </div>\
             <div>\
                 <div class="loupe_wishlist"></div>\
-                <p>Добавить в список желаемого</p>\
+                <p class="loupe_wishlist_text"></p>\
             </div>\
         <p class="loupe_product_category">\
             Категории: <span id="loupe_product_categories"></span>\
@@ -79,15 +87,25 @@
         console.log(response.product)
         if (response.wishlisted === true){
             $('.loupe_wishlist').addClass('heart_colored')
+            $('.loupe_wishlist_text').text('Убрать из списка желаемого')
          }
         else{
             $('.loupe_wishlist').addClass('heart_default')
+            $('.loupe_wishlist_text').text('Добавить в список желаемого')
          }
         $('#loupe_product_info').removeClass('disappear')
         $('#loupe_product_name').text(response.product.name)
         $('#first_slide').attr('src', response.product.image)
-        if (response.product.get_reviews_number !== 0){
-            $('#loupe_product_reviews').text(response.product.get_reviews_number + ' Отзывов')
+        let reviews_number = response.product.get_reviews_number
+        if (reviews_number !== 0){
+            let ending = ''
+            if (reviews_number>1 && reviews_number<5){
+                ending += 'а'
+            }
+            else if (reviews_number>=5){
+                ending+='ов'
+            }
+            $('#loupe_product_reviews').text('('+response.product.get_reviews_number + ' отзыв'+ending+')')
          }
         $('#loupe_product_price').text(response.product.price+ ' ₸')
         $('#loupe_product_description').text(response.product.description)
@@ -105,6 +123,16 @@
             starSize: 15,
             readOnly: true,
          })
+        $('#minus').on('click', function (){
+            if ($('.input_product_quantity').val() === '1'){
+            }
+            else {
+                $('.input_product_quantity').val($('.input_product_quantity').val() - 1)
+            }
+            })
+        $('#plus').on('click', function (){
+            $('.input_product_quantity').val(parseInt($('.input_product_quantity').val())+1)
+        })
         }
 
      function close_and_destroy(){

@@ -44,6 +44,16 @@
 #loupe_product_info{
     margin-left: 2vw;
 }
+#loupe_product_info>div{
+    display: flex;
+}
+#loupe_product_reviews{
+    margin-left: 1vw;
+    color: #9a9a9a;
+}
+.loupe_wishlist_text{
+    margin-left: 1vh;
+}
 .darken{
     width: 100%;
     top:0;
@@ -66,4 +76,65 @@
     font-size: 20px;
     color: #415844;
     font-weight: bolder;
+}
+.loupe_product_category{
+    margin-top: 2vh;
+}
+#loupe_product_categories, .loupe_wishlist_text{
+    color: #9a9a9a;
+}
+
+
+
+
+
+
+
+
+#minus, #plus{
+    user-select: none;
+    align-self: center;
+    font-size: 19px;
+    font-weight: 600;
+}
+.add_to_cart_block{
+    display: flex;
+    height: 5vh;
+    margin-top: 2vh;
+    padding-bottom: 2vh;
+}
+.input_quantity{
+    display: flex;
+    border: 1px solid #eaeaea;
+    padding: 2px 10px;
+}
+.input_product_quantity{
+    border: none;
+    outline: none;
+    width: 3vw;
+    text-align: center;
+    font-size: 17px;
+}
+.add_to_cart_btn{
+   text-align: center;
+    align-self: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: #ECCA7E;
+    margin: 0 0 0 1vh;
+    padding: 15px 20px;
+    border: 2px;
+    letter-spacing: 1px;
+    user-select: none;
+}
+.add_to_cart_btn:hover{
+    background-color: #e7bd5e;
+    cursor: pointer;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
