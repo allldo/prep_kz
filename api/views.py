@@ -17,3 +17,12 @@ def get_product_info(request: WSGIRequest):
     return Response({
         'product': serialized_product, 'wishlisted': wishlisted
     })
+
+
+@api_view(['POST'])
+def clear_cart(request: WSGIRequest):
+    customer = get_customer(request)
+    customer.get_cart().clear_cart()
+    return Response({
+        'deleted': True
+    })

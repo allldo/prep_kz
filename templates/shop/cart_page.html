@@ -24,7 +24,7 @@
                 </div><p class="cart_item_price">{{ item.get_total_by_product }} ₸</p> <div>{{ item.quantity }}</div>
             </div>
         {% endfor %}
-        <p>Очистить корзину</p>
+        <p class="clear_cart">Очистить корзину</p>
         </div>
     {% else %}
         <div class="cart_empty">
@@ -35,7 +35,7 @@
 </div>
 <div class="cart_checkout_form">
     <h4>Сумма к оплате</h4>
-    <div class="cart_total_sum"><p><span>{{ cart.total_products_in_cart }}</span> товаров на сумму</p><p>{{ cart.total_sum }} ₸</p></div>
+    <div class="cart_total_sum"><p><span class="cart_num_of_products">{{ cart.total_products_in_cart }}</span> товаров на сумму</p><p class="cart_total_sum_t">{{ cart.total_sum }} ₸</p></div>
     <div class="cart_sum_to_pay"><p>К оплате</p><p class="cart_total">{{ cart.total_sum }} ₸</p></div>
     <p class="cart_to_checkout_btn {% if cart.product_item.all %}active_btn{% endif %}">Оформить заказ</p>
     <span>Оформляя заказ, вы подтверждаете свое согласие с нашими <a>условиями покупки</a> в интернет-магазине</span>
@@ -58,5 +58,24 @@
         }
         })
             })
+        $('.clear_cart').click(function (){
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'api:clear_cart' %}",
+                data:{
+                    csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()
+                },
+                success: function (response){
+                    console.log('deleted')
+                    $('.cart_product_item').remove()
+                    $('.cart_icon_block>p').text('(0)')
+                    $('.cart_num_of_products').text('0')
+                    $('.cart_total_sum_t').text('0 ₸')
+                    $('.cart_total').text('0 ₸')
+                }
+
+            })
+        })
     </script>
 {% endblock content %}

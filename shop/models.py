@@ -167,6 +167,9 @@ class Cart(models.Model):
         json_return = {'name': product.name}
         return json_return
 
+    def clear_cart(self):
+        """ Полная очистка корзины """
+        ProductCartItem.objects.filter(cart=self, customer=self.cart_owner).delete()
 # class ProductOptions(models.Model):
 #     SIZES_CHOICES = (
 #
