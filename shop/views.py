@@ -5,7 +5,7 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from .models import Product, Cart, ProductCartItem
+from .models import Product, Cart, ProductCartItem, Category
 from .forms import  RegisterForm
 from .service import log_in, get_customer, get_cart
 
@@ -23,7 +23,15 @@ def product_detail(request: WSGIRequest, product_id: int, product_slug: str) -> 
 
 
 def category_detail(request, category_slug: str):
-    return render(request, 'shop/main.html')
+    """ Страница фильтра """
+    category = get_object_or_404(Category, slug=category_slug)
+    products_ordered_by_price = Product.objects.all().order_by('-price')
+    highest_price = products_ordered_by_price.first()
+    lowest_price = products_ordered_by_price.last()
+    filtered = Category.objects.filter(slug=category_slug).first().product.all()
+    context = {'category': category, 'all_categories': Category.objects.all(), 'highest_price': highest_price,
+               'lowest_price': lowest_price, 'filtered': filtered}
+    return render(request, 'shop/category_detail.html', context)
 
 
 def login_user(request):

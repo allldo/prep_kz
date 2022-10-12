@@ -50,7 +50,7 @@ transition: all .5s;
     display: block;
 }
 .product_categories{
-    color: #9A9A9A;
+    color: #9A9A9A !important;
     margin-top: 1vh;
 }
 .product_name{

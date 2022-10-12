@@ -1,0 +1,80 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'shop/category_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'shop/product.css' %}">
+{% endblock head %}
+{% block title %}
+{{ category.name}}
+{% endblock title %}
+{% block content %}
+    {% load services_template %}
+  <section class="category_filter_wrapper">
+    <div class="category_filter_options_sidebar">
+        <div class="product_categories_options">
+            <div>
+                <p class="category_block_name">Категории продуктов</p>
+                <div></div>
+            </div>
+            {% for cat in all_categories %}
+                <div class="category_option"><input type="checkbox" ><p class="category_option_name">{{ cat.name }}</p></div>
+            {% endfor %}
+        </div>
+    <div class="product_price_filter">
+        <p class="category_block_name">Сортировка по цене</p>
+        <div>
+              <input type="range" min="1" max="{{ highest_price }}" value="50" class="slider" id="myRange">
+            <p>Цена: ₸<span id="lowest_price">{{ lowest_price.price }}</span> - ₸<span id="highest_price">{{ highest_price.price }}</span></p>
+        </div>
+    </div>
+    </div>
+    <div class="category_filter_items">
+        <div class="category_top_filters_panel">
+            <p>Сортировать по:
+                <select id="sort_choice">
+            <option>Цене (сначала дешевле)</option>
+            <option>Цене (сначала дороже)</option>
+            <option>Отзывам</option>
+            <option>Рейтингу</option>
+        </select>
+            </p>
+        <p>
+            Показывать: <select id="num_choice">
+            <option>15</option>
+            <option>30</option>
+            <option>45</option>
+        </select>товаров на странице
+        </p>
+        </div>
+        <div class="category_filtered_items_wrapper">
+            {% for product in filtered %}
+                <div class="product_item">
+                <img class="product_image" src="{{ product.image.url }}">
+                <div class="category_filtered_item">
+<p class="product_categories">{% for category in product.get_product_categories.all %}{% if forloop.counter0 > 0  %}, {% endif %}<a href="{{ category.get_absolute_url }}">{{ category }}</a>{% endfor %}</p>
+                <p class="product_name"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></p>
+
+                <div class="star_and_btns">
+                    <div class="product_rating rrt" data-rating="{{ product.get_score }}"></div>
+                    <div class="product_btns disappear">
+                        <div title="Добавить в список желаемого" class="heart {% is_product_in_wishlist request product.pk as result %}{% if result %}heart_colored{% else %} heart_default{% endif %}" id="{{ product.pk }}_product"></div>
+                        <div class="loupe" id="{{ product.pk }}" title="Быстрый просмотр"></div>
+                    </div>
+                </div>
+
+                <div class="price_and_add_to_cart_flex">
+                    <p class="product_price">{{ product.price }} ₸</p>
+                    {% is_in_cart request product.pk as result %}
+                    {% if not result %}
+                    <p class="product_add_to_cart_btn" id="{{ product.pk }}"><span class="plus_symbol">+</span> В КОРЗИНУ</p>{% csrf_token %}
+                    {% else %}
+                        <p>Перейти в корзину</p>
+                    {% endif %}
+                </div>
+                </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    </section>
+{% endblock content %}

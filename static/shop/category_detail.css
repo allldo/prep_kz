@@ -1,0 +1,113 @@
+a{
+    text-decoration: none;
+    color: unset;
+}
+.category_filter_wrapper{
+    width: 70%;
+    margin: 5vh auto;
+    display: flex;
+    justify-content: space-around;
+}
+.category_filter_options_sidebar{
+    width: 20%;
+    height: 50vh;
+}
+
+.product_categories_options{
+    border-top: 1px solid #eaeaea;
+    padding-top: 2vh;
+}
+.category_option{
+    display: flex;
+}
+.category_option_name{
+    margin-left: 1vw;
+}
+.product_price_filter{
+    margin-top: 2vh;
+    padding-top: 2vh;
+    border-top: 1px solid #eaeaea;
+}
+.category_block_name{
+    font-weight: bolder;
+    font-size: 20px;
+    padding-bottom: 1vh;
+}
+
+
+
+
+
+
+
+/*  SLIDER RANGE  */
+.slidecontainer {
+  width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 25px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #04AA6D; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #04AA6D; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+/* SLIDER RANGE*/
+
+/* PRODUCT ITEMS */
+
+
+.category_filter_items{
+       width: 75%;
+}
+.category_top_filters_panel{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1vh;
+    border-bottom: 1px solid #eaeaea;
+}
+#sort_choice, #num_choice{
+    border: none;
+    outline: none;
+}
+#num_choice{
+
+}
+.category_filtered_items_wrapper{
+    display: flex;
+    flex-wrap: wrap;
+}
+.category_filtered_item{
+
+}
+.product_image{
+    width: 310px !important;
+    height: 310px !important;
+}
