@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.core.handlers.wsgi import WSGIRequest
@@ -8,6 +10,7 @@ from django.views.decorators.http import require_POST
 from .models import Product, Cart, ProductCartItem, Category
 from .forms import  RegisterForm
 from .service import log_in, get_customer, get_cart
+from django.db.models import Q
 
 
 def main_page(request: WSGIRequest) -> HttpResponse:
@@ -28,9 +31,11 @@ def category_detail(request, category_slug: str):
     products_ordered_by_price = Product.objects.all().order_by('-price')
     highest_price = products_ordered_by_price.first()
     lowest_price = products_ordered_by_price.last()
-    filtered = Category.objects.filter(slug=category_slug).first().product.all()
-    context = {'category': category, 'all_categories': Category.objects.all(), 'highest_price': highest_price,
-               'lowest_price': lowest_price, 'filtered': filtered}
+    context = {'highest_price': highest_price, 'lowest_price': lowest_price, 'all_categories': Category.objects.all()}
+    context['category']: category
+
+    filtered = Category.objects.filter(slug=category_slug).first().product.all().order_by('-price')[:15]
+    context = {'filtered': filtered}
     return render(request, 'shop/category_detail.html', context)
 
 

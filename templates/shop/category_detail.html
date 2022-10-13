@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{% static 'shop/product.css' %}">
      <script type="text/javascript" src="{% static 'js/star-rating-svg/dist/jquery.star-rating-svg.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'js/star-rating-svg/src/css/star-rating-svg.css' %}">
+        <link rel="stylesheet" href="{% static 'shop/parts/quickview.css' %}">
 {% endblock head %}
 {% block title %}
 {{ category.name}}
@@ -19,7 +20,7 @@
                 <div></div>
             </div>
             {% for cat in all_categories %}
-                <div class="category_option"><input type="checkbox" ><p class="category_option_name">{{ cat.name }}</p></div>
+                <div class="category_option"><input class="option_checkbox" type="checkbox" name="category" value="{{ cat.name }}"><p class="category_option_name">{{ cat.name }}</p></div>
             {% endfor %}
         </div>
     <div class="product_price_filter">
@@ -109,4 +110,5 @@
     )
 });
     </script>
+    {% include 'shop/parts/quickview_js.html' %}
 {% endblock content %}
