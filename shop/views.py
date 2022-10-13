@@ -5,9 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from .models import Product, Cart, ProductCartItem, Category
+from .models import Product, Cart, ProductCartItem, Category, City, Address
 from .forms import  RegisterForm
 from .service import log_in, get_customer, get_cart
 from django.db.models import Q
@@ -157,9 +158,20 @@ def lk(request):
 # redirect_field_name='/login/'
 @login_required()
 def addresses(request: WSGIRequest) -> HttpResponse:
+    customer = get_customer(request)
+    if request.method == 'POST':
+        city = request.POST.get('city')
+        num_of_house = request.POST.get('number_of_house')
+        floor = request.POST.get('floor')
+        flat = request.POST.get('flat')
+        Address.objects.create(customer=customer, city=City.objects.get(name=city), floor=floor, flat=flat,
+                               house=num_of_house)
+        return HttpResponseRedirect(reverse('shop:addresses'))
     context = {
         'sidebar_val': 2,
-        'customer': get_customer(request)
+        'customer': get_customer(request),
+        'cities': City.objects.all(),
+        'addresses': Address.objects.filter(customer=customer)
     }
     return render(request, 'lk/lk_address.html', context)
 

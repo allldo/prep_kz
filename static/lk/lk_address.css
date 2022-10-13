@@ -14,8 +14,24 @@
     color: white;
     padding: 15px 40px;
     border-radius: 12px;
+    margin-top: 3vh;
 }
 .lk_profile_add_address:hover{
     cursor: pointer;
     background-color: #e7bd5e;
+}
+.addresses_formset{
+    display: flex;
+    flex-wrap: wrap;
+}
+.addresses_formset>input{
+    width: 35%;
+}
+.addresses_formset>select{
+    height: 4.5vh;
+}
+.address_item{
+    border: 1px solid #eaeaea;
+    width: max-content;
+    padding: 15px;
 }

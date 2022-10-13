@@ -30,6 +30,27 @@ class Customer(models.Model):
         print(self.wishlist.all())
         return True if self.wishlist.all().count() == 0 else False
 
+    def does_have_address(self):
+        return True if Address.objects.filter(customer=self).exists() else False
+
+
+class Address(models.Model):
+    customer = models.ForeignKey('shop.Customer', on_delete=models.CASCADE, related_name='customer')
+    city = models.ForeignKey('shop.City', on_delete=models.CASCADE, related_name='city')
+    house = models.CharField(max_length=100)
+    floor = models.IntegerField()
+    flat = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.customer, self.city
+
+
+class City(models.Model):
+    name = models.CharField(max_length=225)
+
+    def __str__(self):
+        return self.name
+
 
 class Category(models.Model):
     product = models.ManyToManyField('Product',

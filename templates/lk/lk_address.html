@@ -18,13 +18,50 @@
     </div>
 <div class="lk_profile_data">
 <h3>Мои адреса</h3>
+<form action="" method="POST">
+<div class="addresses_formset disappear">
 
-{% if user.does_have_address %}
+    <select class="lk_profile_input" name="city">
+        {% for city in cities %}
+        <option class="lk_profile_input" value="{{ city.name }}">{{ city.name }}</option>
+        {% endfor %}
+    </select>
+    <input class="lk_profile_input" name="number_of_house" placeholder="Номер дома" type="text">
+    <input class="lk_profile_input" name="floor" placeholder="Этаж" type="text">
+    <input class="lk_profile_input" name="flat" placeholder="Квартира" type="text">
+<div><p id="cancel">Отменить</p><button id="add_address" type="submit">Добавить</button></div>
+</div>
+{% csrf_token %}
+</form>
+{% if customer.does_have_address %}
+    <div class="address_list">
+        {% for address in addresses %}
+            <div class="address_item">
+            <p class="address_house">{{ address.house }}</p><div class="trash_bin"></div>
+            <p class="address_etc">{{ address.flat }}, {{ address.floor }}, {{ address.city }}</p>
+            </div>
+
+        {% endfor %}
+    </div>
 {% else %}
+    <div class="addresses_empty">
     <p>У вас нет сохраненных адресов</p>
     <span class="lk_profile_add_address">Добавить новый адрес</span>
+    </div>
 {% endif %}
 
 </div>
 </section>
+    <script>
+        $('.lk_profile_add_address').click(function (){
+            $('.addresses_formset').removeClass('disappear')
+            $('.addresses_empty').addClass('disappear')
+        })
+        $('#cancel').click(function (){
+            $('.addresses_formset').addClass('disappear')
+            if (!$('.address_list').length){
+                $('.addresses_empty').removeClass('disappear')
+            }
+        })
+    </script>
 {% endblock content %}
