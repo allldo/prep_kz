@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from .models import Product, Cart, ProductCartItem, Category, City, Address
+from .models import Product, Cart, ProductCartItem, Category, City, Address, Review
 from .forms import  RegisterForm
 from .service import log_in, get_customer, get_cart
 from django.db.models import Q
@@ -219,8 +219,21 @@ def wishlist(request: WSGIRequest) -> HttpResponse:
 # redirect_field_name='/login/'
 @login_required()
 def reviews(request: WSGIRequest) -> HttpResponse:
+    customer_reviews = Review.objects.filter(user=get_customer(request))
     context = {
         'sidebar_val': 6,
-        'customer': get_customer(request)
+        'customer': get_customer(request),
+        'reviews': customer_reviews
     }
     return render(request, 'lk/lk_reviews.html', context)
+
+
+@require_POST
+def delete_review(request):
+    review_id = request.POST.get('review_id')
+    get_object_or_404(Review, id=review_id).delete()
+    return JsonResponse({
+        'deleted': True,
+        'review_id': review_id
+    })
+

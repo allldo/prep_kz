@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from .views import add_to_cart, remove_from_cart, cart_detail, main_page, category_detail, product_detail, login_user,\
     register, log_out, lk, add_to_wishlist, remove_from_wishlist, addresses, history, current_delivery, wishlist,\
-    reviews, delete_address
+    reviews, delete_address, delete_review
 app_name = 'shop'
 
 urlpatterns = [
@@ -26,4 +26,5 @@ urlpatterns = [
     path('shop/lk/current_delivery', current_delivery, name='current_delivery'),
     path('shop/lk/wishlist', wishlist, name='wishlist'),
     path('shop/lk/reviews', reviews, name='reviews'),
+    path('shop/lk/reviews/delete_review', delete_review, name='delete_review'),
 ]

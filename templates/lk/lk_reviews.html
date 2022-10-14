@@ -1,7 +1,11 @@
 {% extends 'shop/base.html' %}
+{% load l10n %}
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'lk/lk.css' %}">
+    <link rel="stylesheet" href="{% static 'lk/lk_reviews.css' %}">
+    <script type="text/javascript" src="{% static 'js/star-rating-svg/dist/jquery.star-rating-svg.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'js/star-rating-svg/src/css/star-rating-svg.css' %}">
 {% endblock head %}
 {% block title %}
     Личный кабинет
@@ -11,12 +15,60 @@
 <div></div>
     <div class="included_sidebar">
         <div class="lk_breadcrumbs">
-    {% include 'shop/parts/lk_breadcrumbs.html' %}<a>Профиль</a>
+    {% include 'shop/parts/lk_breadcrumbs.html' %}<a>Мои отзывы</a>
 </div>
 {% include 'shop/parts/lk_sidebar.html' %}
     </div>
 <div class="lk_profile_data">
-
+    <div class="reviews_list">
+        {% for review in reviews %}
+            <div class="review_item" id="{{ review.pk }}">
+            <div>
+                <a href="{{ review.product.get_absolute_url }}">
+                <img class="review_image" src="{{ review.product.image.url }}">
+                </a>
+            </div>
+            <div class="review_text">
+                <a href="{{ review.product.get_absolute_url }}" class="review_product_name">{{ review.product.name }}</a>
+                <p class="review_content">{{ review.content }}</p>
+                <div class="review_rating" data-rating="{{ review.get_rating }}"></div>
+                <p>{{ review.date|date:'M d, Y'|localize }}</p>
+            </div>
+            <i data-review="{{ review.pk }}" >
+                  <svg version="1.1" id="trash_bin" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 64 64" fill="#8e979f" enable-background="new 0 0 64 64" xml:space="preserve">
+<g>
+	<path d="M39,0H25c-1.104,0-2,0.896-2,2v6H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h2v50c0,1.104,0.896,2,2,2h36c1.104,0,2-0.896,2-2V12
+		h2c1.104,0,2-0.896,2-2s-0.896-2-2-2H41V2C41,0.896,40.104,0,39,0z M48,12v48H16V12H48z M27,8V4h10v4H27z"/>
+	<path d="M26,56c1.104,0,2-0.896,2-2V20c0-1.104-0.896-2-2-2s-2,0.896-2,2v34C24,55.104,24.896,56,26,56z"/>
+	<path d="M38,56c1.104,0,2-0.896,2-2V20c0-1.104-0.896-2-2-2s-2,0.896-2,2v34C36,55.104,36.896,56,38,56z"/>
+</g>
+                      {% csrf_token %}
+</svg>
+            </i>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 </section>
+    <script>
+        $('.review_rating').starRating({
+            totalStars: 5,
+            starSize: 15,
+            readOnly: true,
+        })
+        $('#trash_bin').click(function (){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'shop:delete_review' %}",
+                data:{
+                    review_id: $(this).parent().attr('data-review'),
+                    csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
+                },
+                success: function (response){
+                    $(document).find('#'+response.review_id).remove()
+                }
+            })
+        })
+    </script>
 {% endblock content %}

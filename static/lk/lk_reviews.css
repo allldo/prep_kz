@@ -1,0 +1,33 @@
+.review_item{
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+    width: 95%;
+}
+.review_image{
+    width: 165px;
+    height: 165px;
+}
+.review_product_name{
+    font-weight: bolder;
+    padding-bottom: 1vh;
+    font-size: 18px;
+}
+.review_content{
+
+}
+.review_text{
+    margin-left: 1vw;
+    width: 100%;
+}
+.reviews_list{
+
+}
+#trash_bin{
+    justify-self: flex-end;
+}
+#trash_bin:hover{
+    fill: #606971;
+    cursor: pointer;
+}
