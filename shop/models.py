@@ -31,6 +31,7 @@ class Customer(models.Model):
         return True if self.wishlist.all().count() == 0 else False
 
     def does_have_address(self):
+        """ Проверка есть ли адреса у кастомера """
         return True if Address.objects.filter(customer=self).exists() else False
 
 
@@ -41,8 +42,8 @@ class Address(models.Model):
     floor = models.IntegerField()
     flat = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.customer, self.city
+    # def __str__(self):
+    #     return self.customer, self.city
 
 
 class City(models.Model):

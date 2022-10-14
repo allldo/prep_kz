@@ -176,6 +176,16 @@ def addresses(request: WSGIRequest) -> HttpResponse:
     return render(request, 'lk/lk_address.html', context)
 
 
+@require_POST
+def delete_address(request):
+    address = request.POST.get('address_id')
+    get_object_or_404(Address, id=address).delete()
+    return JsonResponse({
+        'deleted': True,
+        'address_id': address
+    })
+
+
 # redirect_field_name='/login/'
 @login_required()
 def history(request: WSGIRequest) -> HttpResponse:

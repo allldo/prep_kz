@@ -30,8 +30,34 @@
 .addresses_formset>select{
     height: 4.5vh;
 }
+.address_list{
+    display: flex;
+}
 .address_item{
     border: 1px solid #eaeaea;
     width: max-content;
     padding: 15px;
+    display: flex;
+    margin-top: 2vh;
+    max-width: 30%;
+    flex-direction: column;
+    box-shadow: 0 1px 8px rgb(0 0 0 / 10%);
+}
+.trash_bin:hover #trash_bin{
+    fill: #606971;
+    cursor: pointer;
+}
+.trash_bin{
+    align-self: center;
+}
+.address_item_name_row{
+    display: flex;
+    justify-content: space-between;
+}
+.address_item_name_row>p{
+    font-weight: bolder;
+    padding-bottom: 1vh;
+}
+.address_etc{
+    color: #9a9a9a;
 }

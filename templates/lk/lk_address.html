@@ -37,12 +37,26 @@
     <div class="address_list">
         {% for address in addresses %}
             <div class="address_item">
-            <p class="address_house">{{ address.house }}</p><div class="trash_bin"></div>
-            <p class="address_etc">{{ address.flat }}, {{ address.floor }}, {{ address.city }}</p>
+            <div class="address_item_name_row">
+                {% csrf_token %}
+                <p class="address_house">{{ address.house }}</p><i class="trash_bin" id="{{ address.pk }}">
+                <svg version="1.1" id="trash_bin" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="24px" height="24px" viewBox="0 0 64 64" fill="#8e979f" enable-background="new 0 0 64 64" xml:space="preserve">
+<g>
+	<path d="M39,0H25c-1.104,0-2,0.896-2,2v6H10c-1.104,0-2,0.896-2,2s0.896,2,2,2h2v50c0,1.104,0.896,2,2,2h36c1.104,0,2-0.896,2-2V12
+		h2c1.104,0,2-0.896,2-2s-0.896-2-2-2H41V2C41,0.896,40.104,0,39,0z M48,12v48H16V12H48z M27,8V4h10v4H27z"/>
+	<path d="M26,56c1.104,0,2-0.896,2-2V20c0-1.104-0.896-2-2-2s-2,0.896-2,2v34C24,55.104,24.896,56,26,56z"/>
+	<path d="M38,56c1.104,0,2-0.896,2-2V20c0-1.104-0.896-2-2-2s-2,0.896-2,2v34C36,55.104,36.896,56,38,56z"/>
+</g>
+</svg>
+            </i>
+                </div>
+            <p class="address_etc">кв {{ address.flat }}, {{ address.floor }} этаж, {{ address.city }}</p>
             </div>
 
         {% endfor %}
     </div>
+    <span class="lk_profile_add_address">Добавить новый адрес</span>
 {% else %}
     <div class="addresses_empty">
     <p>У вас нет сохраненных адресов</p>
@@ -62,6 +76,19 @@
             if (!$('.address_list').length){
                 $('.addresses_empty').removeClass('disappear')
             }
+        })
+        $('.trash_bin').click(function (){
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'shop:delete_address' %}",
+                data:{
+                    address_id: $(this).attr('id'),
+                    csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
+                },
+                success: function (response){
+                    $('.address_item').find('#'+response.address_id).parent().parent().remove()
+                }
+            })
         })
     </script>
 {% endblock content %}
