@@ -70,7 +70,7 @@
             <input type="number"  value="1" class="input_product_quantity">\
             <p id="plus">+</p>\
         </div>\
-            <p class="add_to_cart_btn">+ Добавить в корзину</p>\
+            <p class="add_to_cart_btn" id="quick_view_add_to_cart">+ Добавить в корзину</p>\
     </div>\
             <div>\
                 <div class="loupe_wishlist"></div>\
@@ -84,14 +84,38 @@
         )
         loader.addClass('disappear')
         darken.removeClass('disappear')
-        console.log(response.product)
+        console.log(response)
         if (response.wishlisted === true){
             $('.loupe_wishlist').addClass('heart_colored')
             $('.loupe_wishlist_text').text('Убрать из списка желаемого')
+            $('.loupe_wishlist').click(function (){
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'shop:remove_from_wishlist' %}",
+                    data:{
+                        product_id: response.product.id+'_product'
+                    },
+                    success: function (answer){
+                        $('.loupe_wishlist').removeClass('heart_colored').addClass('heart_default')
+                    }
+                })
+            })
          }
         else{
             $('.loupe_wishlist').addClass('heart_default')
             $('.loupe_wishlist_text').text('Добавить в список желаемого')
+                    $('.loupe_wishlist').click(function (){
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'shop:add_to_wishlist' %}",
+                    data:{
+                        product_id: response.product.id+'_product'
+                    },
+                    success: function (answer){
+                        $('.loupe_wishlist').removeClass('heart_default').addClass('heart_colored')
+                    }
+                })
+            })
          }
         $('#loupe_product_info').removeClass('disappear')
         $('#loupe_product_name').text(response.product.name)
@@ -132,6 +156,18 @@
             })
         $('#plus').on('click', function (){
             $('.input_product_quantity').val(parseInt($('.input_product_quantity').val())+1)
+        })
+        $('#quick_view_add_to_cart').click(function (){
+            $.ajax({
+                url: "{% url 'shop:add_to_cart' %}",
+                type: 'POST',
+                data:
+                    {
+                        csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
+                        quantity: $('.input_product_quantity').val(),
+                        product_id: response.product.id
+                    }
+            })
         })
         }
 
