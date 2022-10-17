@@ -3,6 +3,7 @@
 {% block head %}
     <script src="{% static 'js/splide-4.1.3/dist/js/splide.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'js/splide-4.1.3/dist/css/splide.min.css' %}">
+    <link rel="stylesheet" href="{% static 'js/splide-4.1.3/dist/css/themes/splide-skyblue.min.css' %}">
     <link rel="stylesheet" href="{% static 'shop/main.css' %}">
     <link rel="stylesheet" href="{% static 'shop/product.css' %}">
     <link rel="stylesheet" href="{% static 'shop/parts/quickview.css' %}">
@@ -15,6 +16,8 @@
 {% block content %}
 {% load services_template %}
 <section class="splide" id="main_page_slider">
+{#  <ul class="splide__pagination"></ul>#}
+
   <div class="splide__track product_track">
 		<ul class="splide__list product_list">
             {% for product in products %}
@@ -114,9 +117,8 @@
 
          var splide = new Splide('#main_page_slider', {
               type: 'loop',
-              perPage: 5,
+              perPage: 4,
               perMove: 1,
-              pagination: true,
              drag: false,
             dragAngleThreshold: 0
           });
