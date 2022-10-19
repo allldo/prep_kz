@@ -19,14 +19,43 @@
 <div class="inner_profile_data">
     <p>Мой профиль</p>
     <div class="lk_profile_input_group">
-        <input value="{{ user.user.username }}" class="lk_profile_input">
-        <input value="{{ user.name }}" class="lk_profile_input">
-        <input value="{{ user.surname }}" class="lk_profile_input">
-        <input value="{{ user.phone_number }}"  class="lk_profile_input">
+        <input id="input_username" value="{{ customer.user.username }}" class="lk_profile_input">
+        <input id="input_name" value="{% if customer.name %}{{ customer.name }}{% endif %}" class="lk_profile_input">
+        <input id="input_surname" value="{% if customer.surname %}{{ customer.surname }}{% endif %}" class="lk_profile_input">
+        <input id="input_phone_number" value="{% if customer.phone_number %}{{ customer.phone_number }}{% endif %}"  class="lk_profile_input">
     </div>
-    <p>Сохранить</p>
+{% csrf_token %}
+    <p id="save_data_btn">Сохранить</p>
 
 </div>
 </div>
 </section>
+    <script>
+    $('#save_data_btn').click(function (){
+        let username_val =  $('#input_username').val()
+        let name_val =  $('#input_name').val()
+        let surname_val =  $('#input_surname').val()
+        let phone_number_val =  $('#input_phone_number').val()
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'api:lk_change_info' %}",
+            data:
+        {
+            username: username_val,
+            name: name_val,
+            surname: surname_val,
+            phone_number: phone_number_val,
+            csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
+        },
+        success: function (response){
+                if (response.changed === true){
+                    $('#input_username').val(username_val)
+                    $('#input_name').val(name_val)
+                    $('#input_surname').val(surname_val)
+                    $('#input_phone_number').val(phone_number_val)
+                }
+        }
+        })
+    })
+    </script>
 {% endblock content %}

@@ -1,4 +1,5 @@
 from django.core.handlers.wsgi import WSGIRequest
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -22,9 +23,20 @@ def get_product_info(request: WSGIRequest):
 
 
 @api_view(['POST'])
-def clear_cart(request: WSGIRequest):
+def clear_cart(request: WSGIRequest) -> HttpResponse:
     customer = get_customer(request)
     customer.get_cart().clear_cart()
     return Response({
         'deleted': True
+    })
+
+
+@api_view(['POST'])
+def lk_change_info(request: WSGIRequest) -> HttpResponse:
+    customer = get_customer(request)
+    username, name, surname, phone_number = request.POST.get('username'), request.POST.get('name'), \
+                                            request.POST.get('surname'), request.POST.get('phone_number')
+    customer.set_params(username=username, name=name, surname=surname, phone_number=phone_number)
+    return Response({
+        'changed': True
     })

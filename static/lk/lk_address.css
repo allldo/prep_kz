@@ -12,6 +12,7 @@
 .lk_profile_add_address{
     background-color: #ecca7e;
     color: white;
+    width: max-content;
     padding: 15px 40px;
     border-radius: 12px;
     margin-top: 3vh;

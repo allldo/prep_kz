@@ -27,12 +27,18 @@ class Customer(models.Model):
 
     def is_empty_wishlist(self):
         """ Проверка есть ли желаемые продукты """
-        print(self.wishlist.all())
         return True if self.wishlist.all().count() == 0 else False
 
     def does_have_address(self):
         """ Проверка есть ли адреса у кастомера """
         return True if Address.objects.filter(customer=self).exists() else False
+
+    def set_params(self, **kwargs):
+        self.user.username = kwargs['username']
+        self.name = kwargs['name']
+        self.surname = kwargs['surname']
+        self.phone_number = kwargs['phone_number']
+        self.save()
 
 
 class Address(models.Model):
