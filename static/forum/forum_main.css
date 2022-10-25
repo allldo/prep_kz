@@ -1,0 +1,27 @@
+.main_forum_block{
+    width: 80%;
+    background-color: #1b6d85;
+    height: 100%;
+}
+.forum_body{
+    background-color: #9a9a9a;
+    height: 100vh;
+    width: 75%;
+    margin: 5vh auto;
+    display: flex;
+    justify-content: space-between;
+}
+.forum_subblock{
+    width: 15%;
+    background-color: #00bbff;
+    height: 100%;
+}
+.login_block{
+
+}
+.relevant_posts{
+
+}
+.forum_stats{
+
+}

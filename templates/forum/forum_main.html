@@ -1,0 +1,37 @@
+{% extends 'forum/forum_base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'forum/forum_main.css' %}">
+{% endblock head %}
+{% block title %}
+    Главная форума
+{% endblock title %}
+{% block content %}
+    <section class="forum_body">
+        <div class="main_forum_block">
+
+        </div>
+
+        <div class="forum_subblock">
+            {% if not user.is_authenticated %}
+            <div class="login_block">
+            <p>Авторизация</p>
+            <input placeholder="Логин">
+            <input placeholder="Пароль">
+            <p>
+                <div>
+                <p>Забыли пароль?</p><p>Зарегистрироваться</p>
+            </div>
+            </p>
+            </div>
+            {% endif %}
+            <div class="relevant_posts">
+                <p>Последние сообщения</p>
+
+            </div>
+            <div class="forum_stats">
+
+            </div>
+        </div>
+    </section>
+{% endblock content %}
