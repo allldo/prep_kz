@@ -25,7 +25,7 @@ urlpatterns = [
     path('blog/', include('blog.urls', namespace='blog')),
     path('forum/', include('forum.urls', namespace='forum')),
     path('admin/', admin.site.urls),
-
+    path('tinymce/', include('tinymce.urls')),
 ]
 if settings.DEBUG:
     import debug_toolbar
