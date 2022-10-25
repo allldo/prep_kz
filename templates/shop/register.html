@@ -17,9 +17,9 @@
     let register_btn = $('#register_button');
     register_btn.click(function (){
         let email = $('#email').val()
-        let username = $('#email').val()
-        let password1 = $('#email').val()
-        let password2 = $('#email').val()
+        let username = $('#username').val()
+        let password1 = $('#password1').val()
+        let password2 = $('#password2').val()
         if (password1 === password2){
            $.ajax({
         type: 'POST',

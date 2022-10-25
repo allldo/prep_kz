@@ -2,6 +2,7 @@ from itertools import chain
 
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -12,6 +13,7 @@ from .models import Product, Cart, ProductCartItem, Category, City, Address, Rev
 from .forms import  RegisterForm
 from .service import log_in, get_customer, get_cart
 from django.db.models import Q
+
 
 
 def main_page(request: WSGIRequest) -> HttpResponse:
@@ -58,7 +60,7 @@ def login_user(request):
 def log_out(request: WSGIRequest):
     """ Выход с аккаунта """
     logout(request)
-    return HttpResponseRedirect(redirect_to='shop:main_page')
+    return HttpResponseRedirect(reverse('shop:main_page'))
 
 
 def register(request: WSGIRequest):
@@ -67,12 +69,10 @@ def register(request: WSGIRequest):
     #     return redirect('company:profile')
     context = {}
     if request.POST:
-        form = RegisterForm(request.POST)
-        context['form_errors'] = form.errors
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('shop:lk')
+        user = User.objects.create(email=request.POST.get('email'),
+                                   username=request.POST.get('username'), password=request.POST.get('password'))
+        login(request, user)
+        return HttpResponseRedirect(reverse('shop:lk'))
 
     form = RegisterForm()
     context['register_form'] = form

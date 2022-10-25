@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'forum',
     'blog',
     'api',
-    'shop',
+    'shop.apps.ShopConfig',
 ]
 ROTATE_REFRESH_TOKENS = True
 BLACKLIST_AFTER_ROTATION = True

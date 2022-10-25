@@ -12,7 +12,7 @@ class Customer(models.Model):
     name = models.CharField(max_length=125, null=True, blank=True)
     surname = models.CharField(max_length=125, null=True, blank=True)
     phone_number = models.CharField(max_length=125, null=True, blank=True)
-    total_messages = models.IntegerField()
+    total_messages = models.IntegerField(default=0)
     is_admin = models.BooleanField(default=False)
     is_banned = models.BooleanField(default=False)
 
