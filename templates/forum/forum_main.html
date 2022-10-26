@@ -9,7 +9,31 @@
 {% block content %}
     <section class="forum_body">
         <div class="main_forum_block">
+        <div class="front_block">
+            <p>Форум посвященный PREP KZ</p>
+        </div>
+        <div>
+            {% for topic in topics %}
+                <div class="topic_item">
+                <div class="topic_left_side">
+                <i class="topic_image"></i>
+                    <p>{{ topic.title }}</p>
+                    </div>
+                    <div class="topic_right_side">
+                    <div>
+                        <i class="pencil">
+                        </i>
+                        <p>{{ topic.total_posts }}</p>
+                    </div>
+                    <div>
+                        <i>
 
+                        </i>
+
+                    </div>
+                </div></div>
+            {% endfor %}
+        </div>
         </div>
 
         <div class="forum_subblock">
@@ -27,10 +51,19 @@
             {% endif %}
             <div class="relevant_posts">
                 <p>Последние сообщения</p>
-
+                {% for latest in latest_comment %}
+                    <div class="latest_post_item">
+                    <div></div>
+                    <div><p class="latest_post_name">{{ latest.post.name }}</p><p class="latest_post_author">{{ latest.author }} - {{ latest.date }}</p></div>
+                    <div></div>
+                    </div>
+                {% endfor %}
             </div>
             <div class="forum_stats">
-
+                <p>Статистика форума</p>
+                <div class="forum_stats_text"><p>Темы:</p><p>{{ total_posts }}</p></div>
+                <div class="forum_stats_text"><p>Сообщения:</p><p>{{ total_comments }}</p></div>
+                <div class="forum_stats_text"><p>Пользователи:</p><p>{{ total_users }}</p></div>
             </div>
         </div>
     </section>

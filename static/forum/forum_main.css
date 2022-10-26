@@ -11,6 +11,35 @@
     display: flex;
     justify-content: space-between;
 }
+.front_block{
+    height: 10vh;
+    background-color: #4f4f4f;
+}
+.front_block>p{
+    padding: 0;
+    margin: 0;
+}
+
+
+.topic_left_side{
+    display: flex;
+}
+.topic_item{
+    display: flex;
+}
+.pencil{
+    background-image: url("../img/pencil.png");
+    width: 50px;
+    height: 50px;
+}
+.topic_image{
+    background-image: url("../img/mountains.png");
+    width: 60px;
+    height: 60px;
+}
+
+
+
 .forum_subblock{
     width: 15%;
     background-color: #00bbff;
@@ -20,8 +49,24 @@
 
 }
 .relevant_posts{
-
+    background-color: #cccccc;
 }
-.forum_stats{
 
+.latest_post_item{
+    display: flex;
+}
+
+.forum_stats{
+    background-color: #9a9a9a;
+    margin-top: 2vh;
+}
+.forum_stats>p{
+padding: 15px;
+    font-size: 20px;
+    border-bottom: 1px solid #eaeaea;
+}
+.forum_stats_text{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
 }
