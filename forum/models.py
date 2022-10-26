@@ -19,6 +19,9 @@ class Topic(models.Model):
     def counted_total_comments(self):
         return self.total_comments
 
+    def last_post(self):
+        return Post.objects.filter(topic=self).last()
+
 
 class Comment(models.Model):
     """ Comment on post model """

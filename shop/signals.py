@@ -7,7 +7,6 @@ from .models import Customer, Cart, Review
 @receiver(post_save, sender=User)
 def create_user(sender, instance, created, **kwargs):
     if created:
-        print('SIGNAL WORKING')
         customer = Customer.objects.create(user=instance)
         Cart.objects.create(cart_owner=customer)
 

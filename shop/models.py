@@ -4,6 +4,8 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 
 class Customer(models.Model):
@@ -13,8 +15,15 @@ class Customer(models.Model):
     surname = models.CharField(max_length=125, null=True, blank=True)
     phone_number = models.CharField(max_length=125, null=True, blank=True)
     total_messages = models.IntegerField(default=0)
+    avatar = models.ImageField(upload_to='users', default='../static/img/default_avatar.png')
+    avatar_thumbnail = ImageSpecField(source='avatar',
+                                      processors=[ResizeToFill(100, 50)],
+                                      format='JPEG',
+                                      options={'quality': 60})
     is_admin = models.BooleanField(default=False)
     is_banned = models.BooleanField(default=False)
+
+    timezone = models.CharField(max_length=255, default='Asia/Almaty')
 
     def __str__(self):
         """ Имя пользователя """
