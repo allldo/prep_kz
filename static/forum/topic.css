@@ -1,0 +1,54 @@
+.main_topic_block{
+    width: 70%;
+    margin: 0 auto;
+    background-color: #9a9a9a;
+    height: 100vh;
+}
+.breadcrumbs_topic{
+    display: flex;
+}
+
+.topic_title{
+    font-size: 25px;
+    color: white;
+    font-weight: lighter;
+}
+
+.title_topic_create_post{
+    display: flex;
+    justify-content: space-between;
+
+}
+.topic_posts_wrapper{
+    width: 95%;
+    margin: 0 auto;
+    background-color: #4f4f4f;
+    padding: 15px;
+}
+
+.post_item{
+    display: flex;
+}
+.author_avatar{
+    width: 45px;
+    height: 45px;
+    border-radius: 20px;
+}
+
+.post_author{
+    width: 70%;
+    display: flex;
+    align-self: center;
+}
+
+.post_stats{
+    width: 15%;
+  flex-direction: column;
+    align-self: center;
+}
+
+
+.last_comment{
+    display: flex;
+    align-self: center;
+}

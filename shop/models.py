@@ -10,7 +10,7 @@ from imagekit.processors import ResizeToFill
 
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    wishlist = models.ManyToManyField('shop.Product', null=True, blank=True)
+    wishlist = models.ManyToManyField('shop.Product', blank=True)
     name = models.CharField(max_length=125, null=True, blank=True)
     surname = models.CharField(max_length=125, null=True, blank=True)
     phone_number = models.CharField(max_length=125, null=True, blank=True)
@@ -73,7 +73,7 @@ class City(models.Model):
 
 class Category(models.Model):
     product = models.ManyToManyField('Product',
-                                     related_name='products', null=True, blank=True)
+                                     related_name='products', blank=True)
     name = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=100, unique=True)
 

@@ -17,10 +17,10 @@
         <div>
             {% for topic in topics %}
                 <div class="topic_item">
-                <div class="topic_left_side">
-                <i class="topic_image"></i>
-                    <p>{{ topic.title }}</p>
-                    </div>
+                 <a href="{{ topic.get_absolute_url }}" class="topic_left_side">
+               <i class="topic_image"></i>
+           <p>{{ topic.title }}</p>
+</a>
                     <div class="topic_right_side">
                     <div>
                         <i class="pencil">

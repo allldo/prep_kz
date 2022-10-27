@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from shop.service import get_customer
 from .models import Post, Comment, Topic
@@ -14,3 +14,16 @@ def main_forum(request):
                'customer': get_customer(request)}
     # total users добавить флаг у кастомера на активность на форуме
     return render(request, 'forum/forum_main.html', context)
+
+
+def topic(request, topic_id):
+    context = {
+        'topic': get_object_or_404(Topic, pk=topic_id)
+    }
+    return render(request, 'forum/topic_page.html', context)
+
+
+def create_topic(request, topic_name):
+    get_object_or_404(Topic, title=topic_name)
+    context = {}
+    return render(request, 'forum/create_topic.html', context)
