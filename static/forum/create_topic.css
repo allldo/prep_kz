@@ -1,0 +1,26 @@
+.section_block{
+    width: 85%;
+    margin: 0 auto;
+    background-color: #3c3c3c;
+}
+.form_wrapper{
+    width: 85%;
+    margin: 0 auto;
+}
+.post_headline{
+    padding: 6px 0;
+    background-color: #1b6d85;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    width: 100%;
+    margin: 3vh 0 5vh 0;
+}
+.post_headline{
+
+}
+.top_part{
+    width: 85%;
+       margin: 0 auto;
+}

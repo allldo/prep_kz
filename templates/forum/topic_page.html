@@ -14,7 +14,7 @@
                 <a href="{% url 'forum:forum_main' %}">Форум</a><p> > {{ topic.title }}</p>
             </div>
             <div class="title_topic_create_post">
-           <h3 class="topic_title">{{ topic.title }}</h3><a href="{% url 'forum:create_topic' topic %}">Создать тему</a>
+           <h3 class="topic_title">{{ topic.title }}</h3><a href="{% url 'forum:create_post' topic %}">Создать тему</a>
             </div>
         </div>
     <div class="topic_posts_wrapper">
@@ -27,7 +27,7 @@
                  <div class="post_author">
                     <img src="{{ post.author.avatar.url }}" class="author_avatar">
                     <div>
-                        <p class="post_name">{{ post.name }}</p>
+                        <a class="post_name" href="{{ post.get_absolute_url }}">{{ post.name }}</a>
                         <p class="post_author_name">{{ post.author }} <span>{% humanizing request post.date %}</span></p>
                         </div>
                      <i class="pinned"></i>

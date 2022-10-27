@@ -59,3 +59,6 @@ class Post(models.Model):
 
     def latest_comment(self):
         return Comment.objects.filter(post=self).order_by('-date').first()
+
+    def get_absolute_url(self):
+        return reverse('forum:post_detail', kwargs={'post_id': self.pk})

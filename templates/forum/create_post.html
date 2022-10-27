@@ -1,0 +1,84 @@
+{% extends 'forum/forum_base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'forum/create_topic.css' %}">
+{% endblock head %}
+{% block title %}{% endblock title %}
+{% block content %}
+    <section class="section_block">
+    <div class="top_part">
+        <div class="breadcrumbs_topic">
+                <a href="{% url 'forum:forum_main' %}">Форум</a><p> > {{ topic.title }}</p>
+            </div>
+        <h4>Создать тему</h4>
+    </div>
+        <div class="form_wrapper">
+        <form action="{% url 'forum:new_post' topic %}" method="post">
+            <input required class="post_headline" name="post_name" placeholder="Заголовок поста">
+    {{ form.content }}
+    {{ form.media }}
+            {% csrf_token %}
+                        <button type="submit">qwe</button>
+
+</form>
+            </div>
+        </section>
+    <script>
+    tinymce.init({
+  selector: 'textarea',
+  plugins: 'image media link',
+  statusbar: false,
+  menubar: false,
+  toolbar: 'undo redo | link image |  bold italic alignleft aligncenter alignright bullist numlist outdent indent blockquote media fontsizeselect ',
+  /* enable title field in the Image dialog*/
+  image_title: false,
+  /* enable automatic uploads of images represented by blob or data URIs*/
+  automatic_uploads: true,
+  /*
+    URL of our upload handler (for more details check: https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_url)
+    images_upload_url: 'postAcceptor.php',
+    here we add custom filepicker only to Image dialog
+  */
+  file_picker_types: 'image',
+  /* and here's our custom image picker*/
+  file_picker_callback: function (cb, value, meta) {
+    var input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+
+    /*
+      Note: In modern browsers input[type="file"] is functional without
+      even adding it to the DOM, but that might not be the case in some older
+      or quirky browsers like IE, so you might want to add it to the DOM
+      just in case, and visually hide it. And do not forget do remove it
+      once you do not need it anymore.
+    */
+
+    input.onchange = function () {
+      var file = this.files[0];
+
+      var reader = new FileReader();
+      reader.onload = function () {
+        /*
+          Note: Now we need to register the blob in TinyMCEs image blob
+          registry. In the next release this part hopefully won't be
+          necessary, as we are looking to handle it internally.
+        */
+        var id = 'blobid' + (new Date()).getTime();
+        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+        var base64 = reader.result.split(',')[1];
+        var blobInfo = blobCache.create(id, file, base64);
+        blobCache.add(blobInfo);
+
+        /* call the callback and populate the Title field with the file name */
+        cb(blobInfo.blobUri(), { title: file.name });
+      };
+      reader.readAsDataURL(file);
+    };
+
+    input.click();
+  },
+  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+});
+    </script>
+{% endblock content %}
