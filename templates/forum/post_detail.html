@@ -1,60 +1,119 @@
 {% extends 'forum/forum_base.html' %}
 {% block head %}
+    {% load static %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdn.tiny.cloud/1/1aub2fra26v0pjhe6ra0de6egt98fnmfiby43teo6qikfwoe/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-
+    <link rel="stylesheet" href="{% static 'forum/post_detail.css' %}">
 {% endblock head %}
 {% block title %}
 {% endblock title %}
 {% block content %}
-<label for="editorOne"></label><textarea class="myTextarea" id="editorOne">
-  </textarea>
-
+    {% load humanizing_date %}
+    <section class="thread_section">
+    <div class="thread_author_post_headline">
+          <div class="breadcrumbs_topic">
+                <a href="{% url 'forum:forum_main' %}">Форум</a><p> > {{ topic.title }}</p>
+            </div>
+        <p class="post_headline">{{ post.name }}</p>
+        <div class="post_author_line_num">
+            <div class="post_author_date">
+                <div class="post_author_avatar_nickname"><img class="post_author_avatar" src="{{ post.author.avatar.url }}"><p class="post_author_nickname">{{ post.author }}</p></div>
+                <div class="post_author_humanized_date">{% humanizing request post.date %}</div>
+            </div>
+            <div class="post_stats">
+                <div style="display: flex;"><i></i>{{ post.views }}</div>
+                <div style="display: flex"><i class="comment"></i>{{ post.count_comments }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="comment_post">
+        <div class="comment_post_author">
+            <p>{{ post.author }}</p>
+            {% if post.author.is_admin %}
+            <a class="comment_author_admin">Администратор</a>
+            {% elif post.author.is_banned %}
+            <a class="comment_author_banned">Забанен</a>
+            {% else %}
+            <a class="comment_author_usual">Пользователь</a>
+            {% endif %}
+        <img class="comment_post_avatar" src="{{ post.author.avatar.url }}">
+        <p>Дата регистрации: 2022:12:12</p>
+        <p>Сообщения: 24325</p>
+        </div>
+        <div class="comment_post_content">
+            <p>{% humanizing request post.date %}</p>
+            <div>{{ post.content|safe }}</div>
+            <div class="comment_post_row"></div>
+        </div>
+    </div>
+    {% for comment in post.get_comments %}
+        <div class="comment_post">
+        <div class="comment_post_author">
+            <p>{{ comment.author }}</p>
+            {% if comment.author.is_admin %}
+            <a class="comment_author_admin">Администратор</a>
+            {% elif comment.author.is_banned %}
+            <a class="comment_author_banned">Забанен</a>
+            {% else %}
+            <a class="comment_author_usual">Пользователь</a>
+            {% endif %}
+        <img class="comment_post_avatar" src="{{ comment.author.avatar.url }}">
+        <p>Дата регистрации: 2022:12:12</p>
+        <p>Сообщения: 24325</p>
+        </div>
+        <div class="comment_post_content">
+            <p>{% humanizing request post.date %}</p>
+            <div>{{ comment.content|safe }}</div>
+            <div class="comment_post_row"></div>
+        </div>
+    </div>
+    {% endfor %}
+    </section>
     <script>
 $( document ).ready(function() {
     $('#editorOne').html('{{post.content}}');
 
-      tinymce.init({
-  selector: 'textarea',
-  plugins: 'image media link',
-  statusbar: false,
-          readonly : 1,
-  menubar: false,
-  toolbar: '',
-  image_title: false,
-  automatic_uploads: true,
-
-
-  file_picker_types: 'image',
-  file_picker_callback: function (cb, value, meta) {
-    var input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
-
-
-
-    input.onchange = function () {
-      var file = this.files[0];
-
-      var reader = new FileReader();
-      reader.onload = function () {
-
-        var id = 'blobid' + (new Date()).getTime();
-        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
-        var base64 = reader.result.split(',')[1];
-        var blobInfo = blobCache.create(id, file, base64);
-        blobCache.add(blobInfo);
-
-        cb(blobInfo.blobUri(), { title: file.name });
-      };
-      reader.readAsDataURL(file);
-    };
-
-    input.click();
-  },
-  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-});
-      tinymce.activeEditor.mode.set("readonly");
+{#      tinymce.init({#}
+{#  selector: 'textarea',#}
+{#  plugins: 'image media link',#}
+{#  statusbar: false,#}
+{#          readonly : 1,#}
+{#  menubar: false,#}
+{#  toolbar: '',#}
+{#  image_title: false,#}
+{#  automatic_uploads: true,#}
+{##}
+{##}
+{#  file_picker_types: 'image',#}
+{#  file_picker_callback: function (cb, value, meta) {#}
+{#    var input = document.createElement('input');#}
+{#    input.setAttribute('type', 'file');#}
+{#    input.setAttribute('accept', 'image/*');#}
+{##}
+{##}
+{##}
+{#    input.onchange = function () {#}
+{#      var file = this.files[0];#}
+{##}
+{#      var reader = new FileReader();#}
+{#      reader.onload = function () {#}
+{##}
+{#        var id = 'blobid' + (new Date()).getTime();#}
+{#        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;#}
+{#        var base64 = reader.result.split(',')[1];#}
+{#        var blobInfo = blobCache.create(id, file, base64);#}
+{#        blobCache.add(blobInfo);#}
+{##}
+{#        cb(blobInfo.blobUri(), { title: file.name });#}
+{#      };#}
+{#      reader.readAsDataURL(file);#}
+{#    };#}
+{##}
+{#    input.click();#}
+{#  },#}
+{#  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'#}
+{# });#}
+{#      tinymce.activeEditor.mode.set("readonly");#}
 
 
 });

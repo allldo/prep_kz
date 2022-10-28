@@ -1,0 +1,74 @@
+body{
+    background-color: #26272c;
+}
+.thread_section{
+    width: 65%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+.breadcrumbs_topic{
+    display: flex;
+}
+.thread_author_post_headline{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 2vh;
+    margin-bottom: 2px
+}
+.thread_author_post_headline, .comment_post{
+    padding: 20px;
+    border-radius: 4px;
+    margin: 1px 0;
+    background-color: #4f4f4f;
+}
+.post_headline{
+    font-size: 30px;
+    margin: 2vh 0;
+    color: white;
+}
+.post_author_avatar{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+.post_author_nickname{
+    margin-left: 1vh;
+}
+.post_author_humanized_date{
+    margin-left: 1vh;
+}
+.post_author_line_num{
+    display: flex;
+    justify-content: space-between;
+}
+.post_author_date{
+    display: flex;
+}
+.post_author_avatar_nickname{
+    display: flex;
+}
+.post_stats{
+    display: flex;
+}
+
+
+
+.comment{
+    background-image: url("../img/comment.png");
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+}
+.comment_post{
+display: flex;
+}
+.comment_post_author{
+    display: flex;
+    flex-direction: column;
+}
+.comment_post_avatar{
+    width: 120px;
+    height: 120px;
+}

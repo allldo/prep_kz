@@ -62,3 +62,6 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('forum:post_detail', kwargs={'post_id': self.pk})
+
+    def get_comments(self):
+        return Comment.objects.filter(post=self)

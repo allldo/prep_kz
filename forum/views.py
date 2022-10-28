@@ -49,7 +49,10 @@ def new_post(request, topic_name):
 
 
 def post_detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
     context = {
-        'post': get_object_or_404(Post, id=post_id)
+        'post': post,
+        'topic': post.topic,
+        'comments': post.get_comments,
     }
     return render(request, 'forum/post_detail.html', context)

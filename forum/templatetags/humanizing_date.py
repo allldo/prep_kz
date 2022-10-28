@@ -14,8 +14,7 @@ def humanizing(request, value):
     hDate = datetime.datetime.strptime(str(value), '%Y-%m-%d %H:%M:%S.%f%z').replace(tzinfo=customer_timezone)
     # TODO Захардкожено, надо поменять
     hDate = hDate + datetime.timedelta(hours=6)
-    subtraction = (datetime.datetime.now().replace(tzinfo=customer_timezone) - hDate).seconds
-    print(subtraction)
+    subtraction = (datetime.datetime.now().replace(tzinfo=customer_timezone) - hDate).total_seconds()
     if 120 < subtraction < 43200:
         divided_subtraction = subtraction/3600
         if divided_subtraction > 1:
