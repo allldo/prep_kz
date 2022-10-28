@@ -64,7 +64,13 @@
         <div class="comment_post_content">
             <p>{% humanizing request post.date %}</p>
             <div>{{ comment.content|safe }}</div>
-            <div class="comment_post_row"></div>
+            <div class="comment_post_row">
+                <div class="like_dislike_wrapper">
+                    <div id="like" data-comment="{{ comment.pk }}"><i class="like_btn"></i><p id="liked">{{ comment.count_likes }}</p></div>
+                    <div id="dislike" data-comment="{{ comment.pk }}"><i class="dislike_btn"></i><p id="disliked">{{ comment.count_dislikes }}</p></div>
+                    {% csrf_token %}
+                </div>
+            </div>
         </div>
     </div>
     {% endfor %}
@@ -72,49 +78,54 @@
     <script>
 $( document ).ready(function() {
     $('#editorOne').html('{{post.content}}');
+    $('#like').click(function (){
 
-{#      tinymce.init({#}
-{#  selector: 'textarea',#}
-{#  plugins: 'image media link',#}
-{#  statusbar: false,#}
-{#          readonly : 1,#}
-{#  menubar: false,#}
-{#  toolbar: '',#}
-{#  image_title: false,#}
-{#  automatic_uploads: true,#}
-{##}
-{##}
-{#  file_picker_types: 'image',#}
-{#  file_picker_callback: function (cb, value, meta) {#}
-{#    var input = document.createElement('input');#}
-{#    input.setAttribute('type', 'file');#}
-{#    input.setAttribute('accept', 'image/*');#}
-{##}
-{##}
-{##}
-{#    input.onchange = function () {#}
-{#      var file = this.files[0];#}
-{##}
-{#      var reader = new FileReader();#}
-{#      reader.onload = function () {#}
-{##}
-{#        var id = 'blobid' + (new Date()).getTime();#}
-{#        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;#}
-{#        var base64 = reader.result.split(',')[1];#}
-{#        var blobInfo = blobCache.create(id, file, base64);#}
-{#        blobCache.add(blobInfo);#}
-{##}
-{#        cb(blobInfo.blobUri(), { title: file.name });#}
-{#      };#}
-{#      reader.readAsDataURL(file);#}
-{#    };#}
-{##}
-{#    input.click();#}
-{#  },#}
-{#  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'#}
-{# });#}
-{#      tinymce.activeEditor.mode.set("readonly");#}
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'forum:like' post.pk %}",
+            data:{
+                csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
+                comment_pk: $(this).attr('data-comment'),
 
+            },
+            success: function (response){
+                if (response.liked === true){
+                    if (response.default === 'already'){
+
+                    }
+                    else{
+                    $('#liked').text(parseInt($('#liked').text())+1)
+                    if (response.default === 'from dislike'){
+                        $('#disliked').text(parseInt($('#disliked').text())-1)
+                    }
+                }
+                }
+            }
+        })
+    })
+    $('#dislike').click(function (){
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'forum:dislike' post.pk %}",
+            data:{
+                csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
+                comment_pk: $(this).attr('data-comment')
+            },
+            success: function (response){
+                    if (response.disliked === true){
+                        if (response.default === 'already'){
+
+                        }
+                        else {
+                            $('#disliked').text(parseInt($('#disliked').text()) + 1)
+                            if (response.default === 'from like') {
+                                $('#liked').text(parseInt($('#liked').text()) - 1)
+                            }
+                        }
+                }
+            }
+        })
+    })
 
 });
 

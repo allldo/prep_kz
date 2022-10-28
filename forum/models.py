@@ -33,9 +33,15 @@ class Comment(models.Model):
     author = models.ForeignKey("shop.Customer", on_delete=models.CASCADE, related_name='commentAuthor')
     post = models.ForeignKey("forum.Post", on_delete=models.CASCADE, related_name='commentPost')
     date = models.DateTimeField(auto_now_add=True)
-    likes = models.IntegerField(default=0)
-    dislikes = models.IntegerField(default=0)
+    likes = models.ManyToManyField('shop.Customer', related_name='customer_comment_likes')
+    dislikes = models.ManyToManyField('shop.Customer', related_name='customer_comment_dislikes')
     content = HTMLField()
+
+    def count_likes(self):
+        return self.likes.count()
+
+    def count_dislikes(self):
+        return self.dislikes.count()
 
 
 class Post(models.Model):
@@ -48,8 +54,8 @@ class Post(models.Model):
     closed = models.BooleanField(default=False)
     pinned = models.BooleanField(default=False)
     views = models.IntegerField(default=0)
-    likes = models.IntegerField(default=0)
-    dislikes = models.IntegerField(default=0)
+    likes = models.ManyToManyField('shop.Customer', related_name='customer_likes')
+    dislikes = models.ManyToManyField('shop.Customer', related_name='customer_dislikes')
 
     def __str__(self):
         return self.name
@@ -65,3 +71,9 @@ class Post(models.Model):
 
     def get_comments(self):
         return Comment.objects.filter(post=self)
+
+    def count_likes(self):
+        return self.likes.count()
+
+    def count_dislikes(self):
+        return self.dislikes.count()

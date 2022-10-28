@@ -72,3 +72,44 @@ display: flex;
     width: 120px;
     height: 120px;
 }
+
+.comment_post_row{
+
+}
+.like_dislike_wrapper{
+    display: flex;
+}
+.like_dislike_wrapper>div{
+    display: flex;
+    background-color: #3c3c3c;
+    margin: 0 5px 0 0;
+    padding: 5px;
+    border-radius: 10%;
+}
+.like_dislike_wrapper>div:hover{
+    cursor: pointer;
+    background-color: #4f4f4f;
+}
+#like{
+    border-bottom: 1px solid green;
+}
+#dislike{
+    border-bottom: 1px solid red;
+}
+.like_dislike_wrapper>div>p{
+    align-self: center;
+    color: #9a9a9a;
+}
+.like_btn{
+    background-image: url("../img/thumbs_up.png");
+    width: 32px;
+    height: 32px;
+    background-size: contain;
+
+}
+.dislike_btn{
+    background-image: url("../img/thumbs_down.png");
+    width: 32px;
+    height: 32px;
+    background-size: contain;
+}
