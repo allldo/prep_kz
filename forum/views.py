@@ -9,7 +9,7 @@ from shop.models import Customer
 
 from .services import like_or_dislike
 
-from .forms import TinyForm
+from .forms import TinyForm, TinyCommentForm
 
 
 def main_forum(request):
@@ -51,27 +51,38 @@ def new_post(request, topic_name):
     }))
 
 
+@require_POST
+def new_comment(request, post_name):
+    post = get_object_or_404(Post, name=post_name)
+    comment = Comment.objects.create(post=post, author=get_customer(request),
+                                     content=request.POST.get('content'))
+    return HttpResponseRedirect(reverse('forum:post_detail', kwargs={
+        'post_id': post.pk
+    }))
+
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
+    form = TinyCommentForm()
     context = {
         'post': post,
         'topic': post.topic,
         'comments': post.get_comments,
+        'form': form
     }
     return render(request, 'forum/post_detail.html', context)
 
 
 @require_POST
 def like(request, post_id):
-    _, default = like_or_dislike(request, request.POST.get('comment_pk'), True)
+    comment, default = like_or_dislike(request, request.POST.get('comment_pk'), True)
     return JsonResponse({
-        'liked': True, 'default': default
+        'liked': True, 'default': default, 'comment_pk': comment.pk
     })
 
 
 @require_POST
 def dislike(request, post_id):
-    _, default = like_or_dislike(request, request.POST.get('comment_pk'), False)
+    comment, default = like_or_dislike(request, request.POST.get('comment_pk'), False)
     return JsonResponse({
-        'disliked': True, 'default': default
+        'disliked': True, 'default': default, 'comment_pk': comment.pk
     })

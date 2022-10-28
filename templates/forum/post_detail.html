@@ -66,20 +66,83 @@
             <div>{{ comment.content|safe }}</div>
             <div class="comment_post_row">
                 <div class="like_dislike_wrapper">
-                    <div id="like" data-comment="{{ comment.pk }}"><i class="like_btn"></i><p id="liked">{{ comment.count_likes }}</p></div>
-                    <div id="dislike" data-comment="{{ comment.pk }}"><i class="dislike_btn"></i><p id="disliked">{{ comment.count_dislikes }}</p></div>
+                    <div class="like" data-comment="{{ comment.pk }}"><i class="like_btn"></i><p id="liked{{ comment.pk }}">{{ comment.count_likes }}</p></div>
+                    <div class="dislike" data-comment="{{ comment.pk }}"><i class="dislike_btn"></i><p id="disliked{{ comment.pk }}">{{ comment.count_dislikes }}</p></div>
                     {% csrf_token %}
                 </div>
             </div>
         </div>
     </div>
     {% endfor %}
+    <div>
+       <form action="{% url 'forum:new_comment' post %}" method="post">
+    {{ form.content }}
+            {% csrf_token %}
+                        <button type="submit">qwe</button>
+
+</form>    </div>
     </section>
     <script>
 $( document ).ready(function() {
-    $('#editorOne').html('{{post.content}}');
-    $('#like').click(function (){
+     tinymce.init({
+  selector: 'textarea',
+  plugins: 'image media link',
+  statusbar: false,
+  menubar: false,
+  toolbar: 'undo redo | link image |  bold italic alignleft aligncenter alignright bullist numlist outdent indent blockquote media fontsizeselect',
+  /* enable title field in the Image dialog*/
+  image_title: false,
+  /* enable automatic uploads of images represented by blob or data URIs*/
+  automatic_uploads: true,
+  /*
+    URL of our upload handler (for more details check: https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_url)
+    images_upload_url: 'postAcceptor.php',
+    here we add custom filepicker only to Image dialog
+  */
+  file_picker_types: 'image',
+  /* and here's our custom image picker*/
+  file_picker_callback: function (cb, value, meta) {
+    var input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
 
+    /*
+      Note: In modern browsers input[type="file"] is functional without
+      even adding it to the DOM, but that might not be the case in some older
+      or quirky browsers like IE, so you might want to add it to the DOM
+      just in case, and visually hide it. And do not forget do remove it
+      once you do not need it anymore.
+    */
+
+    input.onchange = function () {
+      var file = this.files[0];
+
+      var reader = new FileReader();
+      reader.onload = function () {
+        /*
+          Note: Now we need to register the blob in TinyMCEs image blob
+          registry. In the next release this part hopefully won't be
+          necessary, as we are looking to handle it internally.
+        */
+        var id = 'blobid' + (new Date()).getTime();
+        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+        var base64 = reader.result.split(',')[1];
+        var blobInfo = blobCache.create(id, file, base64);
+        blobCache.add(blobInfo);
+
+        /* call the callback and populate the Title field with the file name */
+        cb(blobInfo.blobUri(), { title: file.name });
+      };
+      reader.readAsDataURL(file);
+    };
+
+    input.click();
+  },
+  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+ });
+
+    $('.like').click(function (){
+        console.log('like')
         $.ajax({
             type: 'POST',
             url: "{% url 'forum:like' post.pk %}",
@@ -94,16 +157,16 @@ $( document ).ready(function() {
 
                     }
                     else{
-                    $('#liked').text(parseInt($('#liked').text())+1)
+                    $('#liked'+response.comment_pk).text(parseInt($('#liked'+response.comment_pk).text())+1)
                     if (response.default === 'from dislike'){
-                        $('#disliked').text(parseInt($('#disliked').text())-1)
+                        $('#disliked'+response.comment_pk).text(parseInt($('#disliked'+response.comment_pk).text())-1)
                     }
                 }
                 }
             }
         })
     })
-    $('#dislike').click(function (){
+    $('.dislike').click(function (){
         $.ajax({
             type: 'POST',
             url: "{% url 'forum:dislike' post.pk %}",
@@ -117,9 +180,9 @@ $( document ).ready(function() {
 
                         }
                         else {
-                            $('#disliked').text(parseInt($('#disliked').text()) + 1)
+                            $('#disliked'+response.comment_pk).text(parseInt($('#disliked'+response.comment_pk).text()) + 1)
                             if (response.default === 'from like') {
-                                $('#liked').text(parseInt($('#liked').text()) - 1)
+                                $('#liked'+response.comment_pk).text(parseInt($('#liked'+response.comment_pk).text()) - 1)
                             }
                         }
                 }

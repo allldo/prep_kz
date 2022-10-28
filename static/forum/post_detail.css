@@ -90,10 +90,10 @@ display: flex;
     cursor: pointer;
     background-color: #4f4f4f;
 }
-#like{
+.like{
     border-bottom: 1px solid green;
 }
-#dislike{
+.dislike{
     border-bottom: 1px solid red;
 }
 .like_dislike_wrapper>div>p{
