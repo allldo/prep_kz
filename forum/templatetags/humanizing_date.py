@@ -1,4 +1,6 @@
 import datetime
+
+from django.utils import formats
 from pytz import timezone
 from django import template
 from ..services import plural_time
@@ -15,7 +17,7 @@ def humanizing(request, value):
     # TODO Захардкожено, надо поменять
     hDate = hDate + datetime.timedelta(hours=6)
     subtraction = (datetime.datetime.now().replace(tzinfo=customer_timezone) - hDate).total_seconds()
-    if 120 < subtraction < 43200:
+    if 120 < subtraction < 86400:
         divided_subtraction = subtraction/3600
         if divided_subtraction > 1:
             return plural_time(int(divided_subtraction), 'час')
@@ -24,7 +26,8 @@ def humanizing(request, value):
     elif 86400 < subtraction < 172800:
         return 'вчера в ' + str(hDate).split(' ')[1].split('.')[0][:5]
     elif subtraction > 172800:
-        return 'вчера в ' + str(hDate).split(' ')[1].split('.')[0][:5]
+        qwe = formats.date_format(hDate, use_l10n=True, format='SHORT_DATE_FORMAT')
+        return qwe
     else:
         return 'только что'
 
