@@ -21,7 +21,7 @@
                 <div class="post_author_humanized_date">{% humanizing request post.date %}</div>
             </div>
             <div class="post_stats">
-                <div style="display: flex;"><i></i>{{ post.views }}</div>
+                <div style="display: flex;"><i></i>{{ post.get_views }}</div>
                 <div style="display: flex"><i class="comment"></i>{{ post.count_comments }}</div>
             </div>
         </div>

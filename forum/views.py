@@ -4,10 +4,10 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from shop.service import get_customer
-from .models import Post, Comment, Topic
+from .models import Post, Comment, Topic, Ip
 from shop.models import Customer
 
-from .services import like_or_dislike
+from .services import like_or_dislike, get_client_ip
 
 from .forms import TinyForm, TinyCommentForm
 
@@ -60,8 +60,17 @@ def new_comment(request, post_name):
         'post_id': post.pk
     }))
 
+
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
+    ip = get_client_ip(request)
+
+    if Ip.objects.filter(ip=ip).exists():
+        post.views.add(Ip.objects.get(ip=ip))
+    else:
+        ip = Ip.objects.create(ip=ip)
+        post.views.add(ip)
+
     form = TinyCommentForm()
     context = {
         'post': post,

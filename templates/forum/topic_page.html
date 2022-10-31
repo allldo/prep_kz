@@ -35,7 +35,7 @@
                  </div>
                  <div class="post_stats">
                      <p>Сообщений: <span>{{ post.count_comments }}</span></p>
-                     <p>Просмотров: <span>{{ post.views }}</span></p>
+                     <p>Просмотров: <span>{{ post.get_views }}</span></p>
                  </div>
                  <div class="last_comment">
                      {% if post.latest_comment %}
@@ -43,6 +43,12 @@
                      <div>
                          <p>{{ post.latest_comment.author }}</p><p>
                          {% humanizing request post.latest_comment.date %}</p>
+                     </div>
+                     {% else %}
+                         <img class="author_avatar" src="{{ post.author.avatar.url }}">
+                     <div>
+                         <p>{{ post.author }}</p><p>
+                         {% humanizing request post.date %}</p>
                      </div>
                      {% endif %}
                  </div>
