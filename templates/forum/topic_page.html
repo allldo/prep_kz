@@ -2,6 +2,7 @@
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'forum/topic.css' %}">
+        <link rel="stylesheet" href="{% static 'forum/parts/pagination.css' %}">
 {% endblock head %}
 {% block title %}
     {{ topic.title }}
@@ -22,7 +23,7 @@
 
         </div>
         <div class="post_items_wrapper">
-            {% for post in topic.get_posts %}
+            {% for post in page_obj %}
                  <div class="post_item">
                  <div class="post_author">
                     <img src="{{ post.author.avatar.url }}" class="author_avatar">
@@ -55,6 +56,9 @@
                  </div>
             {% endfor %}
         </div>
+    {% if page_obj.has_other_pages %}
+{% include 'forum/parts/pagination.html' %}
+    {% endif %}
     </div>
     </section>
 {% endblock content %}

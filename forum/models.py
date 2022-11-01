@@ -25,7 +25,7 @@ class Topic(models.Model):
         return reverse('forum:topic', kwargs={'topic_id': self.pk})
 
     def get_posts(self):
-        return Post.objects.filter(topic=self)
+        return Post.objects.filter(topic=self).order_by('-date')
 
 
 class Comment(models.Model):
@@ -80,7 +80,7 @@ class Post(models.Model):
         return reverse('forum:post_detail', kwargs={'post_id': self.pk})
 
     def get_comments(self):
-        return Comment.objects.filter(post=self)
+        return Comment.objects.filter(post=self).order_by('-date')
 
     def count_likes(self):
         return self.likes.count()

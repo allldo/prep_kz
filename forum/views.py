@@ -11,6 +11,8 @@ from .services import like_or_dislike, get_client_ip
 
 from .forms import TinyForm, TinyCommentForm
 
+from django.core.paginator import Paginator
+
 
 def main_forum(request):
     context = {'latest_comment': Comment.objects.all().order_by('-date')[:3],
@@ -24,8 +26,15 @@ def main_forum(request):
 
 
 def topic(request, topic_id):
+    top_ic = get_object_or_404(Topic, pk=topic_id)
+    posts = top_ic.get_posts()
+    paginator = Paginator(posts, 1)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        'topic': get_object_or_404(Topic, pk=topic_id)
+        'topic': top_ic,
+        'page_obj': page_obj
     }
     return render(request, 'forum/topic_page.html', context)
 
@@ -72,10 +81,14 @@ def post_detail(request, post_id):
         post.views.add(ip)
 
     form = TinyCommentForm()
+    paginator = Paginator(post.get_comments(), 1)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
         'post': post,
         'topic': post.topic,
-        'comments': post.get_comments,
+        'page_obj': page_obj,
         'form': form
     }
     return render(request, 'forum/post_detail.html', context)

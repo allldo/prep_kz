@@ -4,6 +4,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdn.tiny.cloud/1/1aub2fra26v0pjhe6ra0de6egt98fnmfiby43teo6qikfwoe/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <link rel="stylesheet" href="{% static 'forum/post_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'forum/parts/pagination.css' %}">
 {% endblock head %}
 {% block title %}
 {% endblock title %}
@@ -12,7 +13,7 @@
     <section class="thread_section">
     <div class="thread_author_post_headline">
           <div class="breadcrumbs_topic">
-                <a href="{% url 'forum:forum_main' %}">Форум</a><p> > {{ topic.title }}</p>
+                <a href="{% url 'forum:forum_main' %}">Форум</a><a href="{{ topic.get_absolute_url }}"> > {{ topic.title }}</a>
             </div>
         <p class="post_headline">{{ post.name }}</p>
         <div class="post_author_line_num">
@@ -46,7 +47,7 @@
             <div class="comment_post_row"></div>
         </div>
     </div>
-    {% for comment in post.get_comments %}
+    {% for comment in page_obj %}
         <div class="comment_post">
         <div class="comment_post_author">
             <p>{{ comment.author }}</p>
@@ -74,6 +75,9 @@
         </div>
     </div>
     {% endfor %}
+        {% if page_obj.has_other_pages %}
+        {% include 'forum/parts/pagination.html' %}
+    {% endif %}
     <div>
        <form action="{% url 'forum:new_comment' post %}" method="post">
     {{ form.content }}
