@@ -1,0 +1,33 @@
+.report{
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+    height: 500px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    position: absolute;
+    background-color: #1b6d85;
+}
+.report>div{
+    display: flex;
+}
+
+.invisible{
+    display: none;
+}
+.headline_report{
+    font-size: 24px;
+}
+.report_input{
+    height: 45%;
+}
+.submit_report{
+
+}
+.crossmark_report{
+
+}
+.crossmark_report:hover{
+    cursor: pointer;
+}

@@ -113,3 +113,16 @@ display: flex;
     height: 32px;
     background-size: contain;
 }
+
+
+/* REPORT !!! */
+.report_reveal{
+    font-size: 55px;
+}
+.report_reveal:hover{
+    cursor: pointer;
+}
+.report_reveal:before{
+    content: "\2026";
+}
+/* REPORT END! */

@@ -104,3 +104,12 @@ class Post(models.Model):
     def get_views(self):
         """ Get integer number of views on post """
         return self.views.count()
+
+
+class Report(models.Model):
+    """ Report model """
+    report_body = models.CharField(max_length=600)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, null=True, blank=True, related_name='post_report')
+    comment = models.ForeignKey('Comment', on_delete=models.CASCADE, null=True, blank=True,
+                                related_name='comment_report')
+    from_user = models.ForeignKey('shop.Customer', on_delete=models.CASCADE, related_name='report_author')

@@ -5,6 +5,8 @@
   <script src="https://cdn.tiny.cloud/1/1aub2fra26v0pjhe6ra0de6egt98fnmfiby43teo6qikfwoe/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <link rel="stylesheet" href="{% static 'forum/post_detail.css' %}">
     <link rel="stylesheet" href="{% static 'forum/parts/pagination.css' %}">
+        <link rel="stylesheet" href="{% static 'forum/parts/report.css' %}">
+
 {% endblock head %}
 {% block title %}
 {% endblock title %}
@@ -46,6 +48,9 @@
             <div>{{ post.content|safe }}</div>
             <div class="comment_post_row"></div>
         </div>
+    <i class="report_reveal" id="{{ post.pk }}_post">
+    </i>
+        {% include 'forum/parts/report.html' %}
     </div>
     {% for comment in page_obj %}
         <div class="comment_post">
@@ -72,6 +77,8 @@
                     {% csrf_token %}
                 </div>
             </div>
+              <i class="report_reveal" id="{{ comment.pk }}_comment">
+    </i>
         </div>
     </div>
     {% endfor %}
@@ -86,6 +93,7 @@
 
 </form>    </div>
     </section>
+    {% include 'forum/parts/report.html' %}
     <script>
 $( document ).ready(function() {
      tinymce.init({
@@ -195,9 +203,25 @@ $( document ).ready(function() {
     })
 
 });
+$('.report_reveal').click(function (){
+    let id_of_item = $(this).attr('id')
+    console.log(id_of_item)
+    $('.report').removeClass('invisible')
+    $('#submit_report').click(function (){
 
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'forum:submit_report' post.pk %}",
+            data:{
+                report: id_of_item,
+                body: $('.report_input').val(),
+                csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()
+            },
+            success: function (){
 
-
-
+            }
+        })
+    })
+})
     </script>
 {% endblock content %}

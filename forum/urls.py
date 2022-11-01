@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
-from .views import main_forum, topic, create_post, new_post, post_detail, like, dislike, new_comment
+from .views import main_forum, topic, create_post, new_post, post_detail,\
+    like, dislike, new_comment, submit_report
 app_name = 'forum'
 
 urlpatterns = [
@@ -13,4 +14,7 @@ urlpatterns = [
 
     path('forum/post_detail/<int:post_id>/like', like, name='like'),
     path('forum/post_detail/<int:post_id>/dislike', dislike, name='dislike'),
+
+    path('forum/post_detail/<int:post_id>/submit_report', submit_report, name='submit_report'),
+
 ]

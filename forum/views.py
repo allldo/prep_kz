@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from shop.service import get_customer
-from .models import Post, Comment, Topic, Ip
+from .models import Post, Comment, Topic, Ip, Report
 from shop.models import Customer
 
 from .services import like_or_dislike, get_client_ip
@@ -116,4 +116,22 @@ def dislike(request: WSGIRequest, post_id: int) -> JsonResponse:
     comment, default = like_or_dislike(request, request.POST.get('comment_pk'), False)
     return JsonResponse({
         'disliked': True, 'default': default, 'comment_pk': comment.pk
+    })
+
+
+@require_POST
+def submit_report(request: WSGIRequest, post_id: int) -> JsonResponse:
+    """ Report submitting view """
+    item_split = request.POST.get('report').split('_')
+    item_id = item_split[0]
+    item_type = item_split[1]
+    report_body = request.POST.get('body')
+    customer = get_customer(request)
+    if item_type == 'comment':
+        Report.objects.create(report_body=report_body, from_user=customer, comment=get_object_or_404(Comment, id=item_id))
+    else:
+        Report.objects.create(report_body=report_body, from_user=customer,
+                              comment=get_object_or_404(Post, id=item_id))
+    return JsonResponse({
+        'submitted': True
     })
