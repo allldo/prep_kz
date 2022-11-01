@@ -1,3 +1,4 @@
+from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -14,7 +15,8 @@ from .forms import TinyForm, TinyCommentForm
 from django.core.paginator import Paginator
 
 
-def main_forum(request):
+def main_forum(request: WSGIRequest) -> HttpResponse:
+    """ Main forum page """
     context = {'latest_comment': Comment.objects.all().order_by('-date')[:3],
                'total_posts': Post.objects.all().count(),
                'total_comments': Comment.objects.all().count(),
@@ -25,7 +27,8 @@ def main_forum(request):
     return render(request, 'forum/forum_main.html', context)
 
 
-def topic(request, topic_id):
+def topic(request: WSGIRequest, topic_id: int) -> HttpResponse:
+    """ Topic page """
     top_ic = get_object_or_404(Topic, pk=topic_id)
     posts = top_ic.get_posts()
     paginator = Paginator(posts, 1)
@@ -39,7 +42,8 @@ def topic(request, topic_id):
     return render(request, 'forum/topic_page.html', context)
 
 
-def create_post(request, topic_name):
+def create_post(request: WSGIRequest, topic_name: str) -> HttpResponse:
+    """ Creating post view """
     form = TinyForm()
     top_ic = get_object_or_404(Topic, title=topic_name)
     context = {
@@ -50,7 +54,8 @@ def create_post(request, topic_name):
 
 
 @require_POST
-def new_post(request, topic_name):
+def new_post(request: WSGIRequest, topic_name: str) -> HttpResponse:
+    """ Creating post then redirecting to it """
     top_ic = get_object_or_404(Topic, title=topic_name)
     post = Post.objects.create(topic=top_ic, author=get_customer(request),
                                name=request.POST.get('post_name'),
@@ -61,7 +66,8 @@ def new_post(request, topic_name):
 
 
 @require_POST
-def new_comment(request, post_name):
+def new_comment(request:WSGIRequest, post_name: str) -> HttpResponse:
+    """ creating comment then refreshing page (?) """
     post = get_object_or_404(Post, name=post_name)
     comment = Comment.objects.create(post=post, author=get_customer(request),
                                      content=request.POST.get('content'))
@@ -70,7 +76,8 @@ def new_comment(request, post_name):
     }))
 
 
-def post_detail(request, post_id):
+def post_detail(request: WSGIRequest, post_id: int) -> HttpResponse:
+    """ Post detail page with pagination """
     post = get_object_or_404(Post, id=post_id)
     ip = get_client_ip(request)
 
@@ -95,7 +102,8 @@ def post_detail(request, post_id):
 
 
 @require_POST
-def like(request, post_id):
+def like(request: WSGIRequest, post_id: int) -> JsonResponse:
+    """ Like view w/o refreshing the page """
     comment, default = like_or_dislike(request, request.POST.get('comment_pk'), True)
     return JsonResponse({
         'liked': True, 'default': default, 'comment_pk': comment.pk
@@ -103,7 +111,8 @@ def like(request, post_id):
 
 
 @require_POST
-def dislike(request, post_id):
+def dislike(request: WSGIRequest, post_id: int) -> JsonResponse:
+    """ Dislike view w/o refreshing the page """
     comment, default = like_or_dislike(request, request.POST.get('comment_pk'), False)
     return JsonResponse({
         'disliked': True, 'default': default, 'comment_pk': comment.pk

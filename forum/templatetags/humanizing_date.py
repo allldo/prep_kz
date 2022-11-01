@@ -1,5 +1,6 @@
 import datetime
 
+from django.core.handlers.wsgi import WSGIRequest
 from django.utils import formats
 from pytz import timezone
 from django import template
@@ -10,7 +11,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def humanizing(request, value):
+def humanizing(request: WSGIRequest, value: str) -> str:
     """Removes all values of arg from the given string"""
     customer_timezone = timezone(get_customer(request).timezone)
     hDate = datetime.datetime.strptime(str(value), '%Y-%m-%d %H:%M:%S.%f%z').replace(tzinfo=customer_timezone)

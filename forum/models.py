@@ -16,15 +16,19 @@ class Topic(models.Model):
         return Post.objects.filter(topic=self).count()
 
     def counted_total_comments(self):
+        """ Get total number of comments in topic """
         return self.total_comments
 
     def last_post(self):
+        """ Get last post published in topic """
         return Post.objects.filter(topic=self).last()
 
     def get_absolute_url(self):
+        """ Get absolute url for template usage """
         return reverse('forum:topic', kwargs={'topic_id': self.pk})
 
     def get_posts(self):
+        """ Get all posts in topic """
         return Post.objects.filter(topic=self).order_by('-date')
 
 
@@ -41,13 +45,16 @@ class Comment(models.Model):
         return self.author, self.post.name[:25]
 
     def count_likes(self):
+        """ Get integer number of likes on comment """
         return self.likes.count()
 
     def count_dislikes(self):
+        """ Get integer number of dislikes on comment """
         return self.dislikes.count()
 
 
 class Ip(models.Model):
+    """ Model for counting views on posts """
     ip = models.CharField(max_length=255)
 
     def __str__(self):
@@ -71,22 +78,29 @@ class Post(models.Model):
         return self.name
 
     def count_comments(self):
+        """ Count comments on post """
         return Comment.objects.filter(post=self).count()
 
     def latest_comment(self):
+        """ Get latest comment on post """
         return Comment.objects.filter(post=self).order_by('-date').first()
 
     def get_absolute_url(self):
+        """ Get url for template usage """
         return reverse('forum:post_detail', kwargs={'post_id': self.pk})
 
     def get_comments(self):
+        """ Get all comments on post """
         return Comment.objects.filter(post=self).order_by('-date')
 
     def count_likes(self):
+        """ Get integer number of likes on post """
         return self.likes.count()
 
     def count_dislikes(self):
+        """ Get integer number of dislikes on post """
         return self.dislikes.count()
 
     def get_views(self):
+        """ Get integer number of views on post """
         return self.views.count()

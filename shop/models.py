@@ -114,36 +114,36 @@ class Product(models.Model):
         index_together = (('id', 'slug'), )
 
     def __str__(self) -> str:
-        """ Получение названия товара """
+        """ Get name of product """
         return self.name
 
     def get_product_categories(self) -> QuerySet:
-        """ Позволяет получить все категории товара """
+        """ Get all categories related to product """
         categories = Category.objects.filter(product=self)
         return categories if categories.count() > 0 else None
 
     def get_absolute_url(self):
-        """ Уникальная ссылка для товара """
+        """ Url for template usage """
         return reverse('shop:product_detail', args=[self.id, self.slug])
 
-    def get_score(self):
-        """ Получение рейтинга продукта """
+    def get_score(self) -> str:
+        """ Get score of product """
         rt = self.rating
         return str(rt)
 
     def set_score(self):
-        """ Подсчет рейтинга продукта """
+        """ Scoring product """
         reviews_related = Review.objects.filter(product=self)
         if reviews_related.exists():
             reviews_total = reviews_related.count()
             self.rating = reviews_related.aggregate(Sum('rating'))['rating__sum'] / reviews_total
 
-    def get_reviews_number(self):
-        """ Количество отзывов """
+    def get_reviews_number(self) -> int:
+        """ Get integer number of reviews on product """
         return Review.objects.filter(product=self).count()
 
-    def get_reviews(self):
-        """ Получение отзывов """
+    def get_reviews(self) -> QuerySet:
+        """ Get all reviews related to product """
         return Review.objects.filter(product=self)
 
 
@@ -156,46 +156,45 @@ class Review(models.Model):
     email = models.EmailField(max_length=120, null=True, blank=True)
     content = models.TextField()
 
-    def __str__(self):
+    def __str__(self) -> str:
         """ String representation of review """
         return self.user.user.username
 
-    def get_rating(self):
-        """ Получение рейтинга в формате приемлимом для js либы """
+    def get_rating(self) -> str:
+        """ Formatted rating """
         return str(self.rating).replace(',', '.')
 
 
 class Cart(models.Model):
     cart_owner = models.ForeignKey('shop.Customer', on_delete=models.CASCADE)
-    # products = models.ManyToManyField('shop.Product', null=True, blank=True)
     product_item = models.ManyToManyField('shop.ProductCartItem', null=True, blank=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'Корзина ' + self.cart_owner.user.username
 
 # TODO потенциально в селери таск
 
-    def total_sum(self):
-        """ Стоимость всех товаров в корзине """
+    def total_sum(self) -> int:
+        """ Get integer number of total price in cart """
         total = 0
         for product_item in self.product_item.all():
             total += product_item.get_total_by_product()
         return total
 
-    def get_all_products_in_cart(self):
-        """ Получение всех продуктов в корзине """
+    def get_all_products_in_cart(self) -> QuerySet:
+        """ Get all product in cart """
         return self.product_item.select_related('product')
 
-    def total_products_in_cart(self):
-        """ Общее количество продуктов в корзине """
+    def total_products_in_cart(self) -> int:
+        """ Get integer number of products in cart """
         return self.product_item.all().count()
 
     def delete_product_from_cart(self, product_id):
-        """ Удаление товара из корзины """
+        """ Removing product from cart """
         ProductCartItem.objects.get(product_id=product_id, cart=self, customer=self.cart_owner).delete()
 
-    def add_product_to_cart(self, product_id, quantity):
-        """ Добавление в корзину """
+    def add_product_to_cart(self, product_id, quantity) -> dict:
+        """ Adding product to cart """
         product = get_object_or_404(Product, id=product_id)
         try:
             item = ProductCartItem.objects.get(product=product, customer=self.cart_owner)
@@ -208,19 +207,8 @@ class Cart(models.Model):
         return json_return
 
     def clear_cart(self):
-        """ Полная очистка корзины """
+        """ Remove everything inside of cart """
         ProductCartItem.objects.filter(cart=self, customer=self.cart_owner).delete()
-# class ProductOptions(models.Model):
-#     SIZES_CHOICES = (
-#
-#     )
-#     COLOR_CHOICES = (
-#
-#     )
-#     brand =
-#     weight =
-#     size =
-#     color =
 
 
 class ProductCartItem(models.Model):
@@ -228,10 +216,10 @@ class ProductCartItem(models.Model):
     product = models.ForeignKey('shop.Product', on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
-    def __str__(self):
-        """ Название единицы товара """
+    def __str__(self) -> str:
+        """ Title of product """
         return self.product.name + ' в количестве '+str(self.quantity)
 
-    def get_total_by_product(self):
-        """ Подсчет суммы по этой единицы """
+    def get_total_by_product(self) -> int:
+        """ Counting price """
         return self.quantity*self.product.price

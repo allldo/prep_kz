@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from django.core.handlers.wsgi import WSGIRequest
 from django.shortcuts import get_object_or_404
 
@@ -5,7 +7,8 @@ from forum.models import Comment
 from shop.service import get_customer
 
 
-def plural_time(number: int, type_time: str):
+def plural_time(number: int, type_time: str) -> str:
+    """ Time in plural """
     if type_time == 'час':
         if number == 1:
             return '1 час назад'
@@ -22,8 +25,8 @@ def plural_time(number: int, type_time: str):
             return f'{number} минут назад'
 
 
-def like_or_dislike(request: WSGIRequest, comment_pk: int, like: bool):
-    """ """
+def like_or_dislike(request: WSGIRequest, comment_pk: int, like: bool) -> Tuple[Comment, str]:
+    """ Determining like or dislike """
     customer = get_customer(request)
     default = ''
     comment = get_object_or_404(Comment, id=comment_pk)
@@ -47,7 +50,8 @@ def like_or_dislike(request: WSGIRequest, comment_pk: int, like: bool):
         return comment, default
 
 
-def get_client_ip(request):
+def get_client_ip(request: WSGIRequest) -> str:
+    """ Getting client ip for view counting """
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
