@@ -24,6 +24,7 @@
                 <div class="post_author_humanized_date">{% humanizing request post.date %}</div>
             </div>
             <div class="post_stats">
+                {% if customer.is_admin %}<div class="trash_bin" id="{{ post.pk }}_post-delete"></div>{% endif %}
                 <div style="display: flex;"><i></i>{{ post.get_views }}</div>
                 <div style="display: flex"><i class="comment"></i>{{ post.count_comments }}</div>
             </div>
@@ -53,7 +54,7 @@
         {% include 'forum/parts/report.html' %}
     </div>
     {% for comment in page_obj %}
-        <div class="comment_post">
+        <div class="comment_post" id="{{ comment.pk }}_com">
         <div class="comment_post_author">
             <p>{{ comment.author }}</p>
             {% if comment.author.is_admin %}
@@ -79,6 +80,7 @@
             </div>
               <i class="report_reveal" id="{{ comment.pk }}_comment">
     </i>
+            {% if customer.is_admin %}<div class="trash_bin" id="{{ comment.pk }}_comment-delete"></div>{% endif %}
         </div>
     </div>
     {% endfor %}
@@ -227,6 +229,24 @@ $('.report_reveal').click(function (){
     $('.crossmark_report').click(function (){
         $('.report').addClass('invisible')
         $('.darken').addClass('invisible')
+    })
+})
+$('.trash_bin').click(function (){
+    console.log($(this).attr('id'))
+    $.ajax({
+        type: 'POST',
+        url: "{% url 'forum:delete_content' post.pk %}",
+        data:{
+            delete_message: $(this).attr('id'),
+            csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
+        },
+        success: function (response){
+            if (response.redirect === true) {
+                window.location.replace("../" + response.topic_id);
+            }
+            console.log(response)
+            $('#'+response.item_id+'_com').remove()
+        }
     })
 })
   document.addEventListener("click", (e) => {

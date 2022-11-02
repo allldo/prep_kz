@@ -44,3 +44,12 @@
     opacity: 0.6;
     z-index: 4;
 }
+.trash_bin{
+    background-image: url("../../img/trash_bin.png");
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+}
+.trash_bin:hover{
+    cursor: pointer;
+}

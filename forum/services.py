@@ -58,3 +58,9 @@ def get_client_ip(request: WSGIRequest) -> str:
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
+
+def split_id(request_data: str) -> Tuple[str, str]:
+    """ Splitting request data """
+    item_split = request_data.split('_')
+    return item_split[0], item_split[1]

@@ -1,3 +1,5 @@
+from typing import Union
+
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
@@ -8,7 +10,7 @@ from shop.service import get_customer
 from .models import Post, Comment, Topic, Ip, Report
 from shop.models import Customer
 
-from .services import like_or_dislike, get_client_ip
+from .services import like_or_dislike, get_client_ip, split_id
 
 from .forms import TinyForm, TinyCommentForm
 
@@ -31,7 +33,7 @@ def topic(request: WSGIRequest, topic_id: int) -> HttpResponse:
     """ Topic page """
     top_ic = get_object_or_404(Topic, pk=topic_id)
     posts = top_ic.get_posts()
-    paginator = Paginator(posts, 1)
+    paginator = Paginator(posts, 15)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -96,7 +98,8 @@ def post_detail(request: WSGIRequest, post_id: int) -> HttpResponse:
         'post': post,
         'topic': post.topic,
         'page_obj': page_obj,
-        'form': form
+        'form': form,
+        'customer': get_customer(request)
     }
     return render(request, 'forum/post_detail.html', context)
 
@@ -122,9 +125,7 @@ def dislike(request: WSGIRequest, post_id: int) -> JsonResponse:
 @require_POST
 def submit_report(request: WSGIRequest, post_id: int) -> JsonResponse:
     """ Report submitting view """
-    item_split = request.POST.get('report').split('_')
-    item_id = item_split[0]
-    item_type = item_split[1]
+    item_id, item_type = split_id(request.POST.get('report'))
     report_body = request.POST.get('body')
     customer = get_customer(request)
     if item_type == 'comment':
@@ -135,3 +136,23 @@ def submit_report(request: WSGIRequest, post_id: int) -> JsonResponse:
     return JsonResponse({
         'submitted': True
     })
+
+
+@require_POST
+def delete_content(request: WSGIRequest, post_id: int) -> Union[JsonResponse, HttpResponse]:
+    """ Delete post or comment """
+    item_id, item_type = split_id(request.POST.get('delete_message'))
+    print(item_id, item_type)
+    if item_type == 'comment-delete':
+        get_object_or_404(Comment, id=item_id).delete()
+        return JsonResponse({
+            "item_id": item_id, "item_type": item_type
+        })
+    else:
+        post = get_object_or_404(Post, id=item_id)
+        topic_to_redirect = post.topic
+        post.delete()
+        return JsonResponse({
+            'redirect': True, 'topic_id': topic_to_redirect.pk
+        })
+
