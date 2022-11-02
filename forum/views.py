@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST
 
 from shop.service import get_customer
+from .decorators import requires_admin
 from .models import Post, Comment, Topic, Ip, Report
 from shop.models import Customer
 
@@ -142,7 +143,6 @@ def submit_report(request: WSGIRequest, post_id: int) -> JsonResponse:
 def delete_content(request: WSGIRequest, post_id: int) -> Union[JsonResponse, HttpResponse]:
     """ Delete post or comment """
     item_id, item_type = split_id(request.POST.get('delete_message'))
-    print(item_id, item_type)
     if item_type == 'comment-delete':
         get_object_or_404(Comment, id=item_id).delete()
         return JsonResponse({
@@ -156,3 +156,6 @@ def delete_content(request: WSGIRequest, post_id: int) -> Union[JsonResponse, Ht
             'redirect': True, 'topic_id': topic_to_redirect.pk
         })
 
+# @require_POST
+# @requires_admin
+# def ban_user(request):
