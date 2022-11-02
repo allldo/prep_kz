@@ -6,8 +6,11 @@
     margin: 0 auto;
     left: 0;
     right: 0;
+    text-align: center;
     position: absolute;
     background-color: #1b6d85;
+    transition: 0.5s;
+    z-index: 5;
 }
 .report>div{
     display: flex;
@@ -30,4 +33,14 @@
 }
 .crossmark_report:hover{
     cursor: pointer;
+}
+.darken{
+    width: 100%;
+    top: 0;
+    height: 140vh;
+    bottom: 0;
+    position: absolute;
+    background-color: black;
+    opacity: 0.6;
+    z-index: 4;
 }

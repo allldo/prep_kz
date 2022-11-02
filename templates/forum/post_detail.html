@@ -93,7 +93,8 @@
 
 </form>    </div>
     </section>
-    {% include 'forum/parts/report.html' %}
+    <div class="darken invisible">
+    </div>
     <script>
 $( document ).ready(function() {
      tinymce.init({
@@ -205,7 +206,7 @@ $( document ).ready(function() {
 });
 $('.report_reveal').click(function (){
     let id_of_item = $(this).attr('id')
-    console.log(id_of_item)
+    $('.darken').removeClass('invisible')
     $('.report').removeClass('invisible')
     $('#submit_report').click(function (){
 
@@ -217,11 +218,25 @@ $('.report_reveal').click(function (){
                 body: $('.report_input').val(),
                 csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()
             },
-            success: function (){
-
+            success: function (response){
+                $('.darken').addClass('invisible')
+                $('.report').addClass('invisible')
             }
         })
     })
+    $('.crossmark_report').click(function (){
+        $('.report').addClass('invisible')
+        $('.darken').addClass('invisible')
+    })
 })
+  document.addEventListener("click", (e) => {
+      console.log('click')
+  const modal = e.target.closest('.report');
+  const loupe_btn = e.target.closest('.report_reveal');
+  if (!modal && !loupe_btn) {
+    $('.darken').addClass('invisible')
+    $('.report').addClass('invisible')
+   }
+ });
     </script>
 {% endblock content %}

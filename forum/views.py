@@ -88,7 +88,7 @@ def post_detail(request: WSGIRequest, post_id: int) -> HttpResponse:
         post.views.add(ip)
 
     form = TinyCommentForm()
-    paginator = Paginator(post.get_comments(), 1)
+    paginator = Paginator(post.get_comments(), 15)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -131,7 +131,7 @@ def submit_report(request: WSGIRequest, post_id: int) -> JsonResponse:
         Report.objects.create(report_body=report_body, from_user=customer, comment=get_object_or_404(Comment, id=item_id))
     else:
         Report.objects.create(report_body=report_body, from_user=customer,
-                              comment=get_object_or_404(Post, id=item_id))
+                              post=get_object_or_404(Post, id=item_id))
     return JsonResponse({
         'submitted': True
     })

@@ -42,7 +42,7 @@ class Comment(models.Model):
     content = HTMLField()
 
     def __str__(self):
-        return self.author, self.post.name[:25]
+        return str(self.author) + self.post.name[:25]
 
     def count_likes(self):
         """ Get integer number of likes on comment """
@@ -113,3 +113,6 @@ class Report(models.Model):
     comment = models.ForeignKey('Comment', on_delete=models.CASCADE, null=True, blank=True,
                                 related_name='comment_report')
     from_user = models.ForeignKey('shop.Customer', on_delete=models.CASCADE, related_name='report_author')
+
+    def __str__(self):
+        return self.report_body
