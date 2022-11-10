@@ -8,10 +8,10 @@ from django.views.decorators.http import require_POST
 
 from shop.service import get_customer
 from .decorators import requires_admin
-from .models import Post, Comment, Topic, Ip, Report
+from .models import Post, Comment, Topic, Ip, Report, Notification
 from shop.models import Customer
 
-from .services import like_or_dislike, get_client_ip, split_id
+from .services import like_or_dislike, get_client_ip, split_id, get_username_or_none
 
 from .forms import TinyForm, TinyCommentForm
 
@@ -71,9 +71,15 @@ def new_post(request: WSGIRequest, topic_name: str) -> HttpResponse:
 @require_POST
 def new_comment(request:WSGIRequest, post_name: str) -> HttpResponse:
     """ creating comment then refreshing page (?) """
+    content = request.POST.get('content')
+
     post = get_object_or_404(Post, name=post_name)
     comment = Comment.objects.create(post=post, author=get_customer(request),
-                                     content=request.POST.get('content'))
+                                     content=content)
+    Notification.create_notification(
+        get_username_or_none(content),
+        comment
+    )
     return HttpResponseRedirect(reverse('forum:post_detail', kwargs={
         'post_id': post.pk
     }))

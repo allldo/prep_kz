@@ -1,3 +1,4 @@
+import re
 from typing import Tuple
 
 from django.core.handlers.wsgi import WSGIRequest
@@ -64,3 +65,18 @@ def split_id(request_data: str) -> Tuple[str, str]:
     """ Splitting request data """
     item_split = request_data.split('_')
     return item_split[0], item_split[1]
+
+
+def get_username_or_none(content: str) -> list:
+    """ Find username with @ in comment message """
+    result = []
+    cleaned = re.sub(r'<.*?>', '', content)
+    cleaned = cleaned.split(' ')
+    for string in cleaned:
+        if '@' in string:
+            nickname = string.split('@')[1]
+            nickname = re.split(r',|!|;|:', nickname)
+            print(nickname)
+            result.append(nickname[0])
+    return result
+

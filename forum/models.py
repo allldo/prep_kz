@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 from tinymce.models import HTMLField
 
+from shop.models import Customer
+
 
 class Topic(models.Model):
     """ Модель темы """
@@ -116,3 +118,33 @@ class Report(models.Model):
 
     def __str__(self):
         return self.report_body
+
+
+class Notification(models.Model):
+    """ Notification model for comment """
+    user = models.ForeignKey('shop.Customer', on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    notification_from = models.ForeignKey('forum.Comment', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return 'notification to ' + str(self.user) + ' on ' + str(self.date)
+
+    @staticmethod
+    def create_notification(*args, **kwargs):
+        if len(args[0]) == 0:
+            return
+        if len(args[0]) > 1:
+            for user in args:
+                query_result = Customer.objects.filter(user__username=user).first()
+                if query_result:
+                    Notification.objects.create(
+                        user=query_result,
+                        notification_from=args[1]
+                    )
+            return
+        query_result = Customer.objects.filter(user__username=args[0][0]).first()
+        if query_result:
+            Notification.objects.create(
+                user=query_result,
+                notification_from=args[1]
+            )
